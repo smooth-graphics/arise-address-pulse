@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -19,6 +20,13 @@ export default {
 		},
 		extend: {
 			colors: {
+				// Arise Brand Colors
+				'dark-charcoal': '#606060',
+				'bold-red': '#ee3224',
+				'vibrant-orange': '#f47920',
+				'bright-yellow': '#ffd200',
+				
+				// Shadcn defaults preserved
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
@@ -52,16 +60,24 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				sidebar: {
-					DEFAULT: 'hsl(var(--sidebar-background))',
-					foreground: 'hsl(var(--sidebar-foreground))',
-					primary: 'hsl(var(--sidebar-primary))',
-					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
-					accent: 'hsl(var(--sidebar-accent))',
-					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
-					border: 'hsl(var(--sidebar-border))',
-					ring: 'hsl(var(--sidebar-ring))'
-				}
+			},
+			fontFamily: {
+				'inter': ['Inter', 'sans-serif'],
+				'mono': ['Fira Code', 'Source Code Pro', 'monospace'],
+			},
+			fontSize: {
+				// Desktop sizes
+				'h1-desktop': '56px',
+				'h2-desktop': '36px', 
+				'h3-desktop': '28px',
+				'h4-desktop': '24px',
+				'h5-desktop': '20px',
+				// Mobile sizes
+				'h1-mobile': '36px',
+				'h2-mobile': '28px',
+				'h3-mobile': '24px',
+				'h4-mobile': '20px',
+				'h5-mobile': '16px',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,11 +100,43 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'typewriter': {
+					'0%': { width: '0' },
+					'100%': { width: '100%' }
+				},
+				'fade-in-up': {
+					'0%': {
+						opacity: '0',
+						transform: 'translateY(20px)'
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translateY(0)'
+					}
+				},
+				'pulse-button': {
+					'0%, 100%': { transform: 'scale(1)' },
+					'50%': { transform: 'scale(1.05)' }
+				},
+				'pin-drop': {
+					'0%': { transform: 'translateY(-20px)', opacity: '0' },
+					'50%': { transform: 'translateY(0)', opacity: '1' },
+					'100%': { transform: 'translateY(0)', opacity: '1' }
+				},
+				'draw-line': {
+					'0%': { strokeDashoffset: '100' },
+					'100%': { strokeDashoffset: '0' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'typewriter': 'typewriter 2s steps(40) 1s forwards',
+				'fade-in-up': 'fade-in-up 0.6s ease-out',
+				'pulse-button': 'pulse-button 1.2s ease-in-out infinite',
+				'pin-drop': 'pin-drop 0.6s ease-out',
+				'draw-line': 'draw-line 0.8s ease-in-out'
 			}
 		}
 	},

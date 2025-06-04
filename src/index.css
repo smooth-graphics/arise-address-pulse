@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -33,22 +34,6 @@
     --ring: 222.2 84% 4.9%;
 
     --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
@@ -79,14 +64,6 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
 
@@ -96,6 +73,85 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-inter;
   }
+
+  /* Typography Classes */
+  .h1-desktop {
+    @apply text-h1-desktop font-bold leading-tight;
+  }
+  
+  .h1-mobile {
+    @apply text-h1-mobile font-bold leading-tight;
+  }
+  
+  .h2-desktop {
+    @apply text-h2-desktop font-bold leading-tight;
+  }
+  
+  .h2-mobile {
+    @apply text-h2-mobile font-bold leading-tight;
+  }
+  
+  .h3-desktop {
+    @apply text-h3-desktop font-bold leading-tight;
+  }
+  
+  .h3-mobile {
+    @apply text-h3-mobile font-bold leading-tight;
+  }
+
+  .section-title {
+    @apply text-h4-desktop md:text-h4-mobile font-semibold text-dark-charcoal;
+  }
+
+  .body-text {
+    @apply text-base md:text-sm leading-relaxed text-gray-600;
+  }
+
+  .emphasis-text {
+    @apply font-semibold text-bold-red;
+  }
+
+  .caption-text {
+    @apply text-sm text-gray-500 font-light;
+  }
+
+  /* Button Styles */
+  .btn-primary {
+    @apply bg-bold-red text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300 hover:bg-vibrant-orange hover:scale-105;
+  }
+
+  .btn-secondary {
+    @apply border border-bold-red text-bold-red font-semibold px-6 py-3 rounded-lg transition-all duration-300 hover:bg-bright-yellow hover:text-dark-charcoal;
+  }
+
+  /* Code Blocks */
+  .code-block {
+    @apply bg-gray-900 text-gray-100 p-4 rounded-lg font-mono text-sm overflow-x-auto;
+  }
+
+  .code-inline {
+    @apply bg-gray-100 text-gray-800 px-2 py-1 rounded font-mono text-sm;
+  }
+
+  /* Animation utilities */
+  .hover-lift {
+    @apply transition-transform duration-300 hover:-translate-y-2 hover:shadow-lg;
+  }
+
+  .icon-glow {
+    @apply transition-all duration-300 hover:scale-110;
+    filter: drop-shadow(0 0 8px rgba(255, 210, 0, 0.3));
+  }
+}
+
+/* Custom animations */
+@keyframes network-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+.network-animation {
+  animation: network-pulse 3s ease-in-out infinite;
 }
