@@ -2,215 +2,240 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { 
-  Brain, Shield, Zap, Globe, BarChart3, CreditCard, 
-  Smartphone, Bot, Lock, TrendingUp, Users, Clock,
-  CheckCircle, ArrowRight
-} from 'lucide-react';
+import { MapPin, Shield, Zap, Globe, FileCheck, Users, Building, CreditCard, CheckCircle, Clock, ArrowRight } from 'lucide-react';
 
 const Features = () => {
-  const heroFeatures = [
+  const mainFeatures = [
     {
-      icon: Brain,
-      title: "AI-Powered Intelligence",
-      description: "Advanced machine learning algorithms provide personalized financial insights and automated decision making.",
-      image: "gradient-to-br from-purple-500 to-pink-500"
+      icon: MapPin,
+      title: "Global Address Verification",
+      description: "Verify and standardize addresses in 240+ countries including comprehensive Nigerian postal code validation",
+      benefits: ["Real-time verification", "Auto-correction", "Postal code validation", "Nigerian area codes"],
+      color: "from-bold-red to-vibrant-orange"
     },
     {
       icon: Shield,
-      title: "Military-Grade Security",
-      description: "Bank-level encryption, biometric authentication, and real-time fraud detection keep your assets safe.",
-      image: "gradient-to-br from-blue-500 to-cyan-500"
+      title: "Identity Document Validation",
+      description: "Secure verification of government IDs, passports, driver's licenses, and Nigerian identification documents",
+      benefits: ["Government ID verification", "Passport validation", "Driver's license check", "Nigerian NIN verification"],
+      color: "from-vibrant-orange to-bright-yellow"
+    },
+    {
+      icon: FileCheck,
+      title: "Document Authentication",
+      description: "Advanced document verification using AI to detect fraud and ensure authenticity",
+      benefits: ["Fraud detection", "Document authenticity", "Biometric matching", "Digital signatures"],
+      color: "from-bright-yellow to-bold-red"
     },
     {
       icon: Zap,
-      title: "Lightning Speed",
-      description: "Process transactions in milliseconds with our optimized blockchain infrastructure and edge computing.",
-      image: "gradient-to-br from-yellow-500 to-orange-500"
+      title: "Instant API Processing",
+      description: "Lightning-fast verification with sub-200ms response times for real-time applications",
+      benefits: ["Sub-200ms response", "99.9% uptime", "Bulk processing", "Real-time webhooks"],
+      color: "from-bold-red to-vibrant-orange"
     }
   ];
 
-  const allFeatures = [
+  const additionalFeatures = [
     {
-      category: "Trading & Investments",
-      features: [
-        { icon: TrendingUp, title: "Smart Portfolio Management", description: "AI-driven portfolio optimization with real-time rebalancing" },
-        { icon: BarChart3, title: "Advanced Analytics", description: "Deep market insights with predictive modeling" },
-        { icon: Bot, title: "Automated Trading", description: "Set custom trading rules and let AI execute them" },
-        { icon: Globe, title: "Global Markets", description: "Access to 50+ international exchanges" }
-      ]
+      icon: Globe,
+      title: "Nigerian Postal Integration",
+      description: "Direct integration with Nigerian Postal Service for accurate local address validation"
     },
     {
-      category: "Payments & Banking",
-      features: [
-        { icon: CreditCard, title: "Smart Payments", description: "Contactless payments with dynamic security tokens" },
-        { icon: Smartphone, title: "Mobile Banking", description: "Full-featured banking in your pocket" },
-        { icon: Users, title: "Multi-Account Management", description: "Manage personal and business accounts seamlessly" },
-        { icon: Clock, title: "Instant Transfers", description: "24/7 real-time money transfers globally" }
-      ]
+      icon: Building,
+      title: "Business Verification",
+      description: "Verify business addresses and corporate identities with CAC integration"
     },
     {
-      category: "Security & Compliance",
-      features: [
-        { icon: Lock, title: "Biometric Authentication", description: "Face ID, fingerprint, and voice recognition" },
-        { icon: Shield, title: "Fraud Protection", description: "Real-time transaction monitoring and alerts" },
-        { icon: CheckCircle, title: "Regulatory Compliance", description: "Full compliance with financial regulations" },
-        { icon: Brain, title: "Risk Assessment", description: "AI-powered risk analysis for all transactions" }
-      ]
+      icon: Users,
+      title: "Bulk Processing",
+      description: "Process thousands of addresses and identities simultaneously"
+    },
+    {
+      icon: CreditCard,
+      title: "Compliance Ready",
+      description: "Meet KYC, AML, and Nigerian regulatory requirements automatically"
+    },
+    {
+      icon: Clock,
+      title: "Real-time Monitoring",
+      description: "Monitor verification status and get instant notifications"
+    },
+    {
+      icon: CheckCircle,
+      title: "Data Standardization",
+      description: "Clean and standardize data according to international formats"
+    }
+  ];
+
+  const useCases = [
+    {
+      title: "E-commerce & Delivery",
+      description: "Reduce failed deliveries and shipping costs with accurate address verification",
+      icon: "🚚"
+    },
+    {
+      title: "Financial Services",
+      description: "Meet KYC requirements and prevent fraud with identity verification",
+      icon: "🏦"
+    },
+    {
+      title: "Digital Banking",
+      description: "Onboard customers securely with automated identity validation",
+      icon: "💳"
+    },
+    {
+      title: "Insurance",
+      description: "Verify customer information and prevent fraudulent claims",
+      icon: "🛡️"
+    },
+    {
+      title: "Telecommunications",
+      description: "Verify customer identities for SIM registration and service activation",
+      icon: "📱"
+    },
+    {
+      title: "Real Estate",
+      description: "Validate property addresses and verify buyer/seller identities",
+      icon: "🏠"
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-dark-charcoal to-gray-800 text-white pt-20">
+    <div className="min-h-screen bg-white px-4 md:px-8 lg:px-12">
       {/* Hero Section */}
-      <section className="py-20 px-4 relative overflow-hidden">
-        <div className="container mx-auto text-center">
-          <div className="inline-block px-4 py-2 bg-gradient-to-r from-bold-red/20 to-vibrant-orange/20 rounded-full border border-bold-red/30 mb-6">
-            <span className="text-bright-yellow font-medium">🚀 Advanced Features</span>
+      <section className="pt-24 pb-16 bg-gradient-to-br from-white via-gray-50 to-white">
+        <div className="container mx-auto text-center max-w-6xl">
+          <div className="inline-block px-4 py-2 bg-gradient-to-r from-bold-red/10 to-vibrant-orange/10 rounded-full border border-bold-red/20 mb-6">
+            <span className="text-bold-red font-semibold text-sm">✨ Comprehensive Verification Suite</span>
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-bright-yellow to-vibrant-orange bg-clip-text text-transparent">
-            Built for the Future
+          <h1 className="text-3xl md:text-5xl font-bold mb-6 text-gray-900 leading-tight">
+            Complete Address & Identity
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-bold-red via-vibrant-orange to-bright-yellow">
+              Verification Platform
+            </span>
           </h1>
           
-          <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-16">
-            Experience next-generation financial technology with features designed for speed, security, and intelligence.
+          <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-8 leading-relaxed">
+            Everything you need to verify addresses and identities across Nigeria and globally. 
+            From postal code validation to government ID verification.
           </p>
+          
+          <Button className="group bg-gradient-to-r from-bold-red to-vibrant-orange hover:from-vibrant-orange hover:to-bright-yellow text-white px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+            Start Free Trial
+            <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          </Button>
+        </div>
+      </section>
 
-          {/* Hero Feature Cards */}
-          <div className="grid md:grid-cols-3 gap-8 mb-20">
-            {heroFeatures.map((feature, index) => (
-              <Card key={index} className="group bg-white/5 backdrop-blur-xl border border-white/20 hover:border-vibrant-orange/50 transition-all duration-500 hover:scale-105">
-                <CardContent className="p-8 text-center">
-                  <div className={`w-20 h-20 rounded-3xl bg-${feature.image} flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform duration-300`}>
-                    <feature.icon className="w-10 h-10 text-white" />
+      {/* Main Features */}
+      <section className="py-16">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Core Verification Features
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Powerful tools for address and identity verification with Nigerian market expertise
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {mainFeatures.map((feature, index) => (
+              <Card key={index} className="group border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                <CardContent className="p-8">
+                  <div className={`w-16 h-16 rounded-xl bg-gradient-to-r ${feature.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                    <feature.icon className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-2xl font-bold mb-4">{feature.title}</h3>
-                  <p className="text-gray-300 leading-relaxed">{feature.description}</p>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-3">{feature.title}</h3>
+                  <p className="text-gray-600 mb-4 leading-relaxed">{feature.description}</p>
+                  <div className="space-y-2">
+                    {feature.benefits.map((benefit, i) => (
+                      <div key={i} className="flex items-center text-sm text-gray-600">
+                        <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
+                        {benefit}
+                      </div>
+                    ))}
+                  </div>
                 </CardContent>
               </Card>
             ))}
           </div>
         </div>
-
-        {/* Floating Elements */}
-        <div className="absolute top-20 left-10 w-20 h-20 bg-gradient-to-r from-bold-red to-vibrant-orange rounded-full opacity-20 animate-bounce"></div>
-        <div className="absolute top-40 right-20 w-16 h-16 bg-gradient-to-r from-vibrant-orange to-bright-yellow rounded-full opacity-20 animate-pulse"></div>
       </section>
 
-      {/* Feature Categories */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto">
-          {allFeatures.map((category, categoryIndex) => (
-            <div key={categoryIndex} className="mb-20">
-              <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-bright-yellow to-vibrant-orange bg-clip-text text-transparent">
-                  {category.category}
-                </h2>
-              </div>
-
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {category.features.map((feature, index) => (
-                  <Card key={index} className="group bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl border border-white/20 hover:border-bright-yellow/50 transition-all duration-500 hover:scale-105">
-                    <CardContent className="p-6">
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-bold-red to-vibrant-orange flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                        <feature.icon className="w-6 h-6 text-white" />
-                      </div>
-                      <h3 className="text-lg font-bold mb-2">{feature.title}</h3>
-                      <p className="text-gray-300 text-sm leading-relaxed">{feature.description}</p>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Interactive Demo Section */}
-      <section className="py-20 px-4 bg-gradient-to-r from-dark-charcoal/50 to-gray-800/50">
-        <div className="container mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
-              See It In Action
+      {/* Additional Features Grid */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Additional Capabilities
             </h2>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Experience our features with interactive demos and real-time simulations
+            <p className="text-lg text-gray-600">
+              Extended features for comprehensive verification workflows
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-            {/* AI Trading Demo */}
-            <Card className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-2xl border border-white/20 p-8 rounded-3xl">
-              <h3 className="text-2xl font-bold mb-4 text-white">AI Trading Assistant</h3>
-              <div className="space-y-4">
-                <div className="flex justify-between items-center p-4 bg-green-500/20 rounded-xl border border-green-500/30">
-                  <span className="text-green-400">BUY AAPL</span>
-                  <span className="text-white font-bold">+2.3%</span>
-                </div>
-                <div className="flex justify-between items-center p-4 bg-blue-500/20 rounded-xl border border-blue-500/30">
-                  <span className="text-blue-400">HOLD TSLA</span>
-                  <span className="text-white font-bold">+0.8%</span>
-                </div>
-                <div className="flex justify-between items-center p-4 bg-red-500/20 rounded-xl border border-red-500/30">
-                  <span className="text-red-400">SELL MSFT</span>
-                  <span className="text-white font-bold">-1.2%</span>
-                </div>
-              </div>
-              <Button className="w-full mt-6 bg-gradient-to-r from-bold-red to-vibrant-orange hover:from-vibrant-orange hover:to-bright-yellow">
-                Try AI Trading
-                <ArrowRight className="ml-2 w-4 h-4" />
-              </Button>
-            </Card>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {additionalFeatures.map((feature, index) => (
+              <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                <CardContent className="p-6">
+                  <div className="w-12 h-12 bg-gradient-to-r from-bold-red to-vibrant-orange rounded-lg flex items-center justify-center mb-4">
+                    <feature.icon className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{feature.title}</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">{feature.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
 
-            {/* Security Demo */}
-            <Card className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-2xl border border-white/20 p-8 rounded-3xl">
-              <h3 className="text-2xl font-bold mb-4 text-white">Security Dashboard</h3>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 bg-green-500/20 rounded-xl border border-green-500/30">
-                  <div className="flex items-center">
-                    <CheckCircle className="w-5 h-5 text-green-400 mr-2" />
-                    <span className="text-white">2FA Enabled</span>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between p-4 bg-green-500/20 rounded-xl border border-green-500/30">
-                  <div className="flex items-center">
-                    <CheckCircle className="w-5 h-5 text-green-400 mr-2" />
-                    <span className="text-white">Biometric Active</span>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between p-4 bg-green-500/20 rounded-xl border border-green-500/30">
-                  <div className="flex items-center">
-                    <CheckCircle className="w-5 h-5 text-green-400 mr-2" />
-                    <span className="text-white">Fraud Protection</span>
-                  </div>
-                </div>
-              </div>
-              <Button className="w-full mt-6 bg-gradient-to-r from-bold-red to-vibrant-orange hover:from-vibrant-orange hover:to-bright-yellow">
-                Test Security
-                <ArrowRight className="ml-2 w-4 h-4" />
-              </Button>
-            </Card>
+      {/* Use Cases */}
+      <section className="py-16">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Industry Use Cases
+            </h2>
+            <p className="text-lg text-gray-600">
+              See how different industries use our verification services
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {useCases.map((useCase, index) => (
+              <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 text-center">
+                <CardContent className="p-6">
+                  <div className="text-4xl mb-4">{useCase.icon}</div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{useCase.title}</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">{useCase.description}</p>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto text-center">
-          <h2 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-bright-yellow via-vibrant-orange to-bold-red bg-clip-text text-transparent">
-            Ready to Experience the Future?
+      <section className="py-16 bg-gradient-to-r from-bold-red via-vibrant-orange to-bright-yellow">
+        <div className="container mx-auto text-center max-w-6xl">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            Ready to Start Verifying?
           </h2>
-          <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-            Join thousands of users who are already using our advanced financial platform.
+          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+            Get started with our comprehensive verification platform today
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button className="bg-gradient-to-r from-bold-red to-vibrant-orange hover:from-vibrant-orange hover:to-bright-yellow text-white px-10 py-5 text-xl font-bold rounded-2xl shadow-2xl hover:shadow-bright-yellow/25 transition-all duration-300 transform hover:scale-105">
+            <Button className="bg-white text-bold-red hover:bg-gray-100 px-8 py-4 text-lg font-semibold rounded-xl shadow-lg">
               Start Free Trial
             </Button>
-            <Button variant="outline" className="border-2 border-bright-yellow text-bright-yellow hover:bg-bright-yellow hover:text-dark-charcoal px-10 py-5 text-xl font-bold rounded-2xl transition-all duration-300">
-              Schedule Demo
+            <Button variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-bold-red px-8 py-4 text-lg font-semibold rounded-xl">
+              View Documentation
             </Button>
           </div>
         </div>

@@ -74,6 +74,18 @@
 
   body {
     @apply bg-background text-foreground font-inter;
+    /* Add minimum padding to prevent content from touching screen edges */
+    min-height: 100vh;
+  }
+
+  /* Ensure all main content has proper spacing from edges */
+  main {
+    @apply min-h-screen;
+  }
+
+  /* Container improvements for better spacing */
+  .container {
+    @apply mx-auto px-4 sm:px-6 lg:px-8;
   }
 
   /* Typography Classes */
@@ -144,6 +156,15 @@
     @apply transition-all duration-300 hover:scale-110;
     filter: drop-shadow(0 0 8px rgba(255, 210, 0, 0.3));
   }
+
+  /* Spacing utilities for better mobile experience */
+  .page-padding {
+    @apply px-4 sm:px-6 lg:px-8 xl:px-12;
+  }
+
+  .section-spacing {
+    @apply py-12 sm:py-16 lg:py-20;
+  }
 }
 
 /* Custom animations */
@@ -154,4 +175,17 @@
 
 .network-animation {
   animation: network-pulse 3s ease-in-out infinite;
+}
+
+/* Responsive improvements */
+@media (max-width: 640px) {
+  .container {
+    @apply px-4;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    @apply px-8;
+  }
 }

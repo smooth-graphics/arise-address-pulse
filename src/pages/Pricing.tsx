@@ -1,189 +1,190 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Check, Zap, Crown, Building, ArrowRight, Star } from 'lucide-react';
+import { CheckCircle, X, ArrowRight, MapPin, Shield, Zap } from 'lucide-react';
 
 const Pricing = () => {
-  const [isAnnual, setIsAnnual] = useState(false);
-
   const plans = [
     {
       name: "Starter",
-      icon: Zap,
-      description: "Perfect for individuals getting started",
-      monthlyPrice: 0,
-      annualPrice: 0,
-      popular: false,
+      price: "₦5,000",
+      period: "/month",
+      description: "Perfect for small businesses just getting started with address verification",
       features: [
-        "Basic portfolio tracking",
-        "3 bank account connections",
-        "Mobile app access",
+        "1,000 address verifications/month",
+        "500 identity verifications/month", 
+        "Nigerian postal code validation",
+        "Basic API access",
         "Email support",
-        "Basic security features",
-        "Monthly reports"
+        "Standard response time"
       ],
-      buttonText: "Get Started Free",
-      buttonStyle: "outline"
+      notIncluded: [
+        "Bulk processing",
+        "Premium support",
+        "Custom integrations"
+      ],
+      color: "border-gray-200",
+      buttonStyle: "border-2 border-bold-red text-bold-red hover:bg-bold-red hover:text-white",
+      popular: false
     },
     {
       name: "Professional",
-      icon: Crown,
-      description: "Advanced features for serious traders",
-      monthlyPrice: 29,
-      annualPrice: 290,
-      popular: true,
+      price: "₦25,000",
+      period: "/month",
+      description: "Ideal for growing businesses with moderate verification needs",
       features: [
-        "Advanced AI trading signals",
-        "Unlimited account connections",
-        "Real-time market data",
-        "Priority support",
-        "Advanced security & 2FA",
-        "Custom alerts & notifications",
-        "Tax optimization tools",
-        "API access"
+        "10,000 address verifications/month",
+        "5,000 identity verifications/month",
+        "Global address validation (240+ countries)",
+        "Document verification",
+        "Bulk CSV processing",
+        "Priority API access",
+        "Phone & email support",
+        "Webhooks & real-time notifications",
+        "99.9% SLA guarantee"
       ],
-      buttonText: "Start 14-Day Trial",
-      buttonStyle: "primary"
+      notIncluded: [
+        "Custom integrations",
+        "Dedicated account manager"
+      ],
+      color: "border-bold-red ring-2 ring-bold-red",
+      buttonStyle: "bg-gradient-to-r from-bold-red to-vibrant-orange text-white",
+      popular: true
     },
     {
       name: "Enterprise",
-      icon: Building,
-      description: "Comprehensive solution for institutions",
-      monthlyPrice: 99,
-      annualPrice: 990,
-      popular: false,
+      price: "Custom",
+      period: "",
+      description: "For large organizations with high-volume verification requirements",
       features: [
-        "Everything in Professional",
+        "Unlimited address verifications",
+        "Unlimited identity verifications",
+        "Custom verification rules",
+        "Advanced fraud detection",
         "White-label solutions",
+        "Custom API endpoints",
         "Dedicated account manager",
-        "Custom integrations",
-        "SLA guarantee",
-        "Advanced compliance tools",
-        "Multi-user management",
-        "Custom reporting"
+        "24/7 premium support",
+        "Custom SLA agreements",
+        "On-premise deployment options",
+        "Advanced analytics & reporting"
       ],
-      buttonText: "Contact Sales",
-      buttonStyle: "outline"
+      notIncluded: [],
+      color: "border-gray-200",
+      buttonStyle: "border-2 border-bold-red text-bold-red hover:bg-bold-red hover:text-white",
+      popular: false
     }
   ];
 
-  const addOns = [
+  const addons = [
     {
-      name: "Premium Data Feeds",
-      price: 49,
-      description: "Real-time Level 2 market data from all major exchanges"
+      icon: MapPin,
+      title: "Enhanced Address Matching",
+      price: "₦2,000/month",
+      description: "Advanced fuzzy matching for incomplete or misspelled addresses"
     },
     {
-      name: "Advanced Analytics",
-      price: 29,
-      description: "Detailed portfolio analysis and performance attribution"
+      icon: Shield,
+      title: "Advanced Identity Checks",
+      price: "₦5,000/month", 
+      description: "Biometric verification and enhanced document authentication"
     },
     {
-      name: "Tax Pro",
-      price: 19,
-      description: "Automated tax harvesting and professional tax reports"
+      icon: Zap,
+      title: "Real-time Webhooks",
+      price: "₦1,500/month",
+      description: "Instant notifications for verification results and status updates"
+    }
+  ];
+
+  const faqs = [
+    {
+      question: "What counts as a verification?",
+      answer: "Each address or identity document submitted for verification counts as one verification, regardless of the result."
+    },
+    {
+      question: "Do you support Nigerian addresses specifically?",
+      answer: "Yes! We have specialized support for Nigerian postal codes, states, and local government areas with direct integration to Nigerian postal services."
+    },
+    {
+      question: "What payment methods do you accept?",
+      answer: "We accept bank transfers, debit cards, and mobile money payments including payments in Nigerian Naira."
+    },
+    {
+      question: "Is there a free trial?",
+      answer: "Yes, we offer a 14-day free trial with 100 free verifications to test our service."
+    },
+    {
+      question: "Can I upgrade or downgrade my plan?",
+      answer: "Yes, you can change your plan at any time. Changes take effect at the next billing cycle."
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-dark-charcoal to-gray-800 text-white pt-20">
+    <div className="min-h-screen bg-white px-4 md:px-8 lg:px-12">
       {/* Hero Section */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto text-center">
-          <div className="inline-block px-4 py-2 bg-gradient-to-r from-bold-red/20 to-vibrant-orange/20 rounded-full border border-bold-red/30 mb-6">
-            <span className="text-bright-yellow font-medium">💰 Simple Pricing</span>
+      <section className="pt-24 pb-16 bg-gradient-to-br from-white via-gray-50 to-white">
+        <div className="container mx-auto text-center max-w-6xl">
+          <div className="inline-block px-4 py-2 bg-gradient-to-r from-bold-red/10 to-vibrant-orange/10 rounded-full border border-bold-red/20 mb-6">
+            <span className="text-bold-red font-semibold text-sm">✨ Transparent, affordable pricing</span>
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-bright-yellow to-vibrant-orange bg-clip-text text-transparent">
-            Choose Your Plan
+          <h1 className="text-3xl md:text-5xl font-bold mb-6 text-gray-900 leading-tight">
+            Simple Pricing for
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-bold-red via-vibrant-orange to-bright-yellow">
+              Address & Identity Verification
+            </span>
           </h1>
           
-          <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-12">
-            Transparent pricing that scales with your financial journey. No hidden fees, cancel anytime.
+          <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-8 leading-relaxed">
+            Choose the perfect plan for your verification needs. All plans include Nigerian postal code validation and global coverage.
           </p>
-
-          {/* Billing Toggle */}
-          <div className="flex items-center justify-center mb-16">
-            <span className={`mr-3 font-medium ${!isAnnual ? 'text-white' : 'text-gray-400'}`}>
-              Monthly
-            </span>
-            <button
-              onClick={() => setIsAnnual(!isAnnual)}
-              className="relative w-16 h-8 bg-gray-600 rounded-full transition-colors duration-300 focus:outline-none"
-            >
-              <div className={`absolute top-1 left-1 w-6 h-6 bg-gradient-to-r from-bold-red to-vibrant-orange rounded-full transition-transform duration-300 ${isAnnual ? 'translate-x-8' : ''}`}></div>
-            </button>
-            <span className={`ml-3 font-medium ${isAnnual ? 'text-white' : 'text-gray-400'}`}>
-              Annual
-            </span>
-            {isAnnual && (
-              <span className="ml-3 px-3 py-1 bg-gradient-to-r from-bold-red to-vibrant-orange rounded-full text-xs font-bold">
-                Save 17%
-              </span>
-            )}
-          </div>
         </div>
       </section>
 
-      {/* Pricing Cards */}
-      <section className="pb-20 px-4">
-        <div className="container mx-auto">
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+      {/* Pricing Plans */}
+      <section className="py-16">
+        <div className="container mx-auto max-w-6xl">
+          <div className="grid md:grid-cols-3 gap-8">
             {plans.map((plan, index) => (
-              <Card key={index} className={`relative bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl border transition-all duration-500 hover:scale-105 ${
-                plan.popular ? 'border-vibrant-orange/50 shadow-2xl shadow-vibrant-orange/20' : 'border-white/20 hover:border-bright-yellow/50'
-              }`}>
+              <Card key={index} className={`relative ${plan.color} shadow-lg hover:shadow-xl transition-all duration-300`}>
                 {plan.popular && (
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <div className="bg-gradient-to-r from-bold-red to-vibrant-orange px-6 py-2 rounded-full text-white font-bold text-sm flex items-center">
-                      <Star className="w-4 h-4 mr-1" />
+                    <div className="bg-gradient-to-r from-bold-red to-vibrant-orange text-white px-4 py-2 rounded-full text-sm font-semibold">
                       Most Popular
                     </div>
                   </div>
                 )}
-                
                 <CardContent className="p-8">
-                  <div className="text-center mb-8">
-                    <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${plan.popular ? 'from-bold-red to-vibrant-orange' : 'from-vibrant-orange to-bright-yellow'} flex items-center justify-center mb-4 mx-auto`}>
-                      <plan.icon className="w-8 h-8 text-white" />
+                  <div className="text-center mb-6">
+                    <h3 className="text-xl font-semibold text-gray-900 mb-2">{plan.name}</h3>
+                    <div className="mb-2">
+                      <span className="text-3xl font-bold text-gray-900">{plan.price}</span>
+                      <span className="text-gray-600">{plan.period}</span>
                     </div>
-                    
-                    <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
-                    <p className="text-gray-300 mb-6">{plan.description}</p>
-                    
-                    <div className="mb-6">
-                      <div className="text-5xl font-bold mb-1">
-                        ${isAnnual ? plan.annualPrice : plan.monthlyPrice}
-                        <span className="text-lg font-normal text-gray-400">
-                          {plan.monthlyPrice === 0 ? '' : isAnnual ? '/year' : '/month'}
-                        </span>
-                      </div>
-                      {isAnnual && plan.monthlyPrice > 0 && (
-                        <div className="text-gray-400 text-sm">
-                          ${Math.round(plan.annualPrice / 12)}/month billed annually
-                        </div>
-                      )}
-                    </div>
+                    <p className="text-gray-600 text-sm">{plan.description}</p>
                   </div>
 
-                  <ul className="space-y-4 mb-8">
-                    {plan.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-center">
-                        <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
-                        <span className="text-gray-300">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <Button className={`w-full py-4 font-bold rounded-xl transition-all duration-300 ${
-                    plan.buttonStyle === 'primary' 
-                      ? 'bg-gradient-to-r from-bold-red to-vibrant-orange hover:from-vibrant-orange hover:to-bright-yellow text-white shadow-lg hover:shadow-2xl transform hover:scale-105' 
-                      : 'border-2 border-bright-yellow text-bright-yellow hover:bg-bright-yellow hover:text-dark-charcoal'
-                  }`}>
-                    {plan.buttonText}
+                  <Button className={`w-full mb-6 py-3 rounded-xl font-semibold transition-all duration-300 ${plan.buttonStyle}`}>
+                    {plan.name === "Enterprise" ? "Contact Sales" : "Start Free Trial"}
                     <ArrowRight className="ml-2 w-4 h-4" />
                   </Button>
+
+                  <div className="space-y-3">
+                    {plan.features.map((feature, i) => (
+                      <div key={i} className="flex items-start">
+                        <CheckCircle className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
+                        <span className="text-gray-700 text-sm">{feature}</span>
+                      </div>
+                    ))}
+                    {plan.notIncluded.map((feature, i) => (
+                      <div key={i} className="flex items-start opacity-50">
+                        <X className="w-5 h-5 text-gray-400 mr-3 mt-0.5 flex-shrink-0" />
+                        <span className="text-gray-500 text-sm">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
                 </CardContent>
               </Card>
             ))}
@@ -191,30 +192,28 @@ const Pricing = () => {
         </div>
       </section>
 
-      {/* Add-ons Section */}
-      <section className="py-20 px-4 bg-gradient-to-r from-dark-charcoal/50 to-gray-800/50">
-        <div className="container mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
-              Premium Add-ons
+      {/* Add-ons */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Optional Add-ons
             </h2>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Enhance your experience with professional-grade tools and data
+            <p className="text-lg text-gray-600">
+              Enhance your verification capabilities with these premium features
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            {addOns.map((addon, index) => (
-              <Card key={index} className="bg-white/5 backdrop-blur-xl border border-white/20 hover:border-vibrant-orange/50 transition-all duration-300 hover:scale-105">
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-bold mb-2">{addon.name}</h3>
-                  <div className="text-2xl font-bold text-vibrant-orange mb-3">
-                    ${addon.price}/month
+          <div className="grid md:grid-cols-3 gap-6">
+            {addons.map((addon, index) => (
+              <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                <CardContent className="p-6 text-center">
+                  <div className="w-12 h-12 mx-auto mb-4 bg-gradient-to-r from-bold-red to-vibrant-orange rounded-lg flex items-center justify-center">
+                    <addon.icon className="w-6 h-6 text-white" />
                   </div>
-                  <p className="text-gray-300 text-sm mb-4">{addon.description}</p>
-                  <Button variant="outline" className="w-full border border-bright-yellow text-bright-yellow hover:bg-bright-yellow hover:text-dark-charcoal transition-all duration-300">
-                    Add to Plan
-                  </Button>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{addon.title}</h3>
+                  <div className="text-2xl font-bold text-bold-red mb-2">{addon.price}</div>
+                  <p className="text-gray-600 text-sm">{addon.description}</p>
                 </CardContent>
               </Card>
             ))}
@@ -222,38 +221,21 @@ const Pricing = () => {
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section className="py-20 px-4">
+      {/* FAQ */}
+      <section className="py-16">
         <div className="container mx-auto max-w-4xl">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Frequently Asked Questions
             </h2>
           </div>
 
           <div className="space-y-6">
-            {[
-              {
-                question: "Can I change plans anytime?",
-                answer: "Yes, you can upgrade or downgrade your plan at any time. Changes take effect immediately and you'll be prorated accordingly."
-              },
-              {
-                question: "Is there a free trial?",
-                answer: "Yes! Professional and Enterprise plans come with a 14-day free trial. No credit card required to start."
-              },
-              {
-                question: "What payment methods do you accept?",
-                answer: "We accept all major credit cards, PayPal, and bank transfers for Enterprise customers."
-              },
-              {
-                question: "Is my financial data secure?",
-                answer: "Absolutely. We use bank-level 256-bit encryption and never store your banking credentials. We're SOC 2 Type II certified."
-              }
-            ].map((faq, index) => (
-              <Card key={index} className="bg-white/5 backdrop-blur-xl border border-white/20">
+            {faqs.map((faq, index) => (
+              <Card key={index} className="border-0 shadow-lg">
                 <CardContent className="p-6">
-                  <h3 className="text-xl font-bold mb-3 text-white">{faq.question}</h3>
-                  <p className="text-gray-300 leading-relaxed">{faq.answer}</p>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{faq.question}</h3>
+                  <p className="text-gray-600">{faq.answer}</p>
                 </CardContent>
               </Card>
             ))}
@@ -261,24 +243,19 @@ const Pricing = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto text-center">
-          <h2 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-bright-yellow via-vibrant-orange to-bold-red bg-clip-text text-transparent">
+      {/* CTA */}
+      <section className="py-16 bg-gradient-to-r from-bold-red via-vibrant-orange to-bright-yellow">
+        <div className="container mx-auto text-center max-w-6xl">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
             Ready to Get Started?
           </h2>
-          <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-            Join thousands of users who trust Arise FinTech for their financial future.
+          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+            Start your free trial today and see how easy address and identity verification can be
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button className="bg-gradient-to-r from-bold-red to-vibrant-orange hover:from-vibrant-orange hover:to-bright-yellow text-white px-10 py-5 text-xl font-bold rounded-2xl shadow-2xl hover:shadow-bright-yellow/25 transition-all duration-300 transform hover:scale-105">
-              Start Free Trial
-            </Button>
-            <Button variant="outline" className="border-2 border-bright-yellow text-bright-yellow hover:bg-bright-yellow hover:text-dark-charcoal px-10 py-5 text-xl font-bold rounded-2xl transition-all duration-300">
-              Contact Sales
-            </Button>
-          </div>
+          <Button className="bg-white text-bold-red hover:bg-gray-100 px-8 py-4 text-lg font-semibold rounded-xl shadow-lg">
+            Start 14-Day Free Trial
+          </Button>
         </div>
       </section>
     </div>
