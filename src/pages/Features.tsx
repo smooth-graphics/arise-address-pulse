@@ -2,356 +2,217 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Check, X, Zap, Upload, Globe, BarChart3, Code, Shield } from 'lucide-react';
+import { 
+  Brain, Shield, Zap, Globe, BarChart3, CreditCard, 
+  Smartphone, Bot, Lock, TrendingUp, Users, Clock,
+  CheckCircle, ArrowRight
+} from 'lucide-react';
 
 const Features = () => {
-  const spotlightFeatures = [
+  const heroFeatures = [
     {
-      title: 'Autocomplete & Suggestions',
-      description: 'Accelerate form completion with predictive suggestions as users type. Our intelligent autocomplete reduces cart abandonment and improves user experience.',
-      image: '/placeholder.svg',
-      imageAlt: 'Autocomplete dropdown showing address suggestions',
-      side: 'left'
+      icon: Brain,
+      title: "AI-Powered Intelligence",
+      description: "Advanced machine learning algorithms provide personalized financial insights and automated decision making.",
+      image: "gradient-to-br from-purple-500 to-pink-500"
     },
     {
-      title: 'Bulk Verification Portal',
-      description: 'Validate thousands of addresses at once with our user-friendly bulk upload interface. Get detailed reports in minutes with confidence scores and error analysis.',
-      image: '/placeholder.svg',
-      imageAlt: 'CSV upload interface with progress bar',
-      side: 'right'
+      icon: Shield,
+      title: "Military-Grade Security",
+      description: "Bank-level encryption, biometric authentication, and real-time fraud detection keep your assets safe.",
+      image: "gradient-to-br from-blue-500 to-cyan-500"
     },
     {
-      title: 'International Coverage',
-      description: 'We cover 240+ countries & territories with local postal formats, multi-language support, and region-specific validation rules.',
-      image: '/placeholder.svg',
-      imageAlt: 'World map with location pins',
-      side: 'left'
-    },
-    {
-      title: 'Analytics & Insights',
-      description: 'Visualize verification accuracy, error types, and usage trends with comprehensive dashboards and real-time reporting.',
-      image: '/placeholder.svg',
-      imageAlt: 'Analytics dashboard with charts',
-      side: 'right'
+      icon: Zap,
+      title: "Lightning Speed",
+      description: "Process transactions in milliseconds with our optimized blockchain infrastructure and edge computing.",
+      image: "gradient-to-br from-yellow-500 to-orange-500"
     }
   ];
 
-  const apiFeatures = [
+  const allFeatures = [
     {
-      title: 'RESTful API',
-      description: 'Simple HTTP requests with JSON responses',
-      icon: Code
+      category: "Trading & Investments",
+      features: [
+        { icon: TrendingUp, title: "Smart Portfolio Management", description: "AI-driven portfolio optimization with real-time rebalancing" },
+        { icon: BarChart3, title: "Advanced Analytics", description: "Deep market insights with predictive modeling" },
+        { icon: Bot, title: "Automated Trading", description: "Set custom trading rules and let AI execute them" },
+        { icon: Globe, title: "Global Markets", description: "Access to 50+ international exchanges" }
+      ]
     },
     {
-      title: 'Real-time Webhooks',
-      description: 'Get notified instantly when verification completes',
-      icon: Zap
+      category: "Payments & Banking",
+      features: [
+        { icon: CreditCard, title: "Smart Payments", description: "Contactless payments with dynamic security tokens" },
+        { icon: Smartphone, title: "Mobile Banking", description: "Full-featured banking in your pocket" },
+        { icon: Users, title: "Multi-Account Management", description: "Manage personal and business accounts seamlessly" },
+        { icon: Clock, title: "Instant Transfers", description: "24/7 real-time money transfers globally" }
+      ]
     },
     {
-      title: 'Batch Processing',
-      description: 'Process thousands of addresses in one request',
-      icon: Upload
-    },
-    {
-      title: 'Global Coverage',
-      description: '240+ countries and territories supported',
-      icon: Globe
+      category: "Security & Compliance",
+      features: [
+        { icon: Lock, title: "Biometric Authentication", description: "Face ID, fingerprint, and voice recognition" },
+        { icon: Shield, title: "Fraud Protection", description: "Real-time transaction monitoring and alerts" },
+        { icon: CheckCircle, title: "Regulatory Compliance", description: "Full compliance with financial regulations" },
+        { icon: Brain, title: "Risk Assessment", description: "AI-powered risk analysis for all transactions" }
+      ]
     }
-  ];
-
-  const comparisonData = [
-    { feature: 'Real-Time API', arise: true, competitorA: true, competitorB: false },
-    { feature: 'Bulk CSV Upload', arise: true, competitorA: false, competitorB: true },
-    { feature: 'Global Coverage (240+ countries)', arise: true, competitorA: false, competitorB: false },
-    { feature: 'Autocomplete Widget', arise: true, competitorA: true, competitorB: false },
-    { feature: 'Analytics Dashboard', arise: true, competitorA: false, competitorB: false },
-    { feature: '99.9% SLA', arise: true, competitorA: false, competitorB: true },
-    { feature: 'Sub-second Response Times', arise: true, competitorA: false, competitorB: false },
-    { feature: 'Confidence Scoring', arise: true, competitorA: true, competitorB: false }
-  ];
-
-  const customerLogos = [
-    'ShipFast', 'GlobalMart', 'DeliveryPro', 'LogiTech', 'SendQuick', 'MailMaster'
   ];
 
   return (
-    <div className="min-h-screen pt-16">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-dark-charcoal to-gray-800 text-white pt-20">
       {/* Hero Section */}
-      <section className="bg-white py-16">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="h1-desktop lg:h1-mobile text-dark-charcoal mb-6">
-            Built for Accuracy. Designed for Speed.
+      <section className="py-20 px-4 relative overflow-hidden">
+        <div className="container mx-auto text-center">
+          <div className="inline-block px-4 py-2 bg-gradient-to-r from-bold-red/20 to-vibrant-orange/20 rounded-full border border-bold-red/30 mb-6">
+            <span className="text-bright-yellow font-medium">🚀 Advanced Features</span>
+          </div>
+          
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-bright-yellow to-vibrant-orange bg-clip-text text-transparent">
+            Built for the Future
           </h1>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Everything you need to keep your address data squeaky clean, with features 
-            that scale from startup to enterprise.
+          
+          <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-16">
+            Experience next-generation financial technology with features designed for speed, security, and intelligence.
           </p>
-        </div>
-      </section>
 
-      {/* Feature Spotlight Modules */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="space-y-24">
-            {spotlightFeatures.map((feature, index) => (
-              <div key={index} className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${
-                feature.side === 'right' ? 'lg:grid-cols-2' : ''
-              }`}>
-                <div className={`space-y-6 ${feature.side === 'right' ? 'lg:order-2' : ''}`}>
-                  <h2 className="text-3xl font-bold text-dark-charcoal">{feature.title}</h2>
-                  <p className="text-gray-600 leading-relaxed text-lg">{feature.description}</p>
-                  <Button className="btn-primary">
-                    Learn More
-                  </Button>
-                </div>
-
-                <div className={`${feature.side === 'right' ? 'lg:order-1' : ''}`}>
-                  <Card className="border-0 shadow-lg overflow-hidden">
-                    <div className="bg-gradient-to-br from-gray-100 to-gray-200 h-64 flex items-center justify-center">
-                      <div className="text-center space-y-4">
-                        <div className="w-16 h-16 mx-auto bg-bold-red/10 rounded-full flex items-center justify-center">
-                          {index === 0 && <Zap className="w-8 h-8 text-bold-red" />}
-                          {index === 1 && <Upload className="w-8 h-8 text-vibrant-orange" />}
-                          {index === 2 && <Globe className="w-8 h-8 text-bright-yellow" />}
-                          {index === 3 && <BarChart3 className="w-8 h-8 text-bold-red" />}
-                        </div>
-                        <p className="text-gray-600 font-medium">{feature.imageAlt}</p>
-                      </div>
-                    </div>
-                  </Card>
-                </div>
-              </div>
+          {/* Hero Feature Cards */}
+          <div className="grid md:grid-cols-3 gap-8 mb-20">
+            {heroFeatures.map((feature, index) => (
+              <Card key={index} className="group bg-white/5 backdrop-blur-xl border border-white/20 hover:border-vibrant-orange/50 transition-all duration-500 hover:scale-105">
+                <CardContent className="p-8 text-center">
+                  <div className={`w-20 h-20 rounded-3xl bg-${feature.image} flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform duration-300`}>
+                    <feature.icon className="w-10 h-10 text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4">{feature.title}</h3>
+                  <p className="text-gray-300 leading-relaxed">{feature.description}</p>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </div>
+
+        {/* Floating Elements */}
+        <div className="absolute top-20 left-10 w-20 h-20 bg-gradient-to-r from-bold-red to-vibrant-orange rounded-full opacity-20 animate-bounce"></div>
+        <div className="absolute top-40 right-20 w-16 h-16 bg-gradient-to-r from-vibrant-orange to-bright-yellow rounded-full opacity-20 animate-pulse"></div>
       </section>
 
-      {/* Under the Hood Diagram */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="h2-desktop lg:h2-mobile text-dark-charcoal mb-6">
-              Under the Hood
-            </h2>
-            <p className="text-lg text-gray-600">
-              See how our address verification engine processes your data
-            </p>
-          </div>
+      {/* Feature Categories */}
+      <section className="py-20 px-4">
+        <div className="container mx-auto">
+          {allFeatures.map((category, categoryIndex) => (
+            <div key={categoryIndex} className="mb-20">
+              <div className="text-center mb-12">
+                <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-bright-yellow to-vibrant-orange bg-clip-text text-transparent">
+                  {category.category}
+                </h2>
+              </div>
 
-          <div className="max-w-4xl mx-auto">
-            <div className="flex flex-col md:flex-row items-center justify-between space-y-8 md:space-y-0 md:space-x-8">
-              {[
-                { label: 'Input', icon: Upload, color: 'bg-bold-red' },
-                { label: 'Geocoding Engine', icon: Globe, color: 'bg-vibrant-orange' },
-                { label: 'Validation Rules', icon: Shield, color: 'bg-bright-yellow' },
-                { label: 'Output', icon: Check, color: 'bg-bold-red' }
-              ].map((step, index) => (
-                <React.Fragment key={index}>
-                  <div className="text-center group cursor-pointer">
-                    <div className={`w-20 h-20 ${step.color} rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform`}>
-                      <step.icon className="w-10 h-10 text-white" />
-                    </div>
-                    <h3 className="font-semibold text-dark-charcoal">{step.label}</h3>
-                  </div>
-                  {index < 3 && (
-                    <div className="hidden md:block flex-1">
-                      <div className="h-1 bg-vibrant-orange rounded-full"></div>
-                    </div>
-                  )}
-                </React.Fragment>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Developer Tools Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
-              <h2 className="h2-desktop lg:h2-mobile text-dark-charcoal">
-                Developer-Friendly Tools
-              </h2>
-              <p className="text-gray-600 leading-relaxed">
-                Integrate address verification into your application with our comprehensive 
-                developer tools and SDKs.
-              </p>
-
-              <div className="grid grid-cols-2 gap-4">
-                {apiFeatures.map((feature, index) => (
-                  <Card key={index} className="border-0 shadow-sm hover:shadow-md transition-shadow">
-                    <CardContent className="p-4 text-center space-y-2">
-                      <feature.icon className="w-8 h-8 text-bold-red mx-auto" />
-                      <h4 className="font-semibold text-sm text-dark-charcoal">{feature.title}</h4>
-                      <p className="text-xs text-gray-600">{feature.description}</p>
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {category.features.map((feature, index) => (
+                  <Card key={index} className="group bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl border border-white/20 hover:border-bright-yellow/50 transition-all duration-500 hover:scale-105">
+                    <CardContent className="p-6">
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-bold-red to-vibrant-orange flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <feature.icon className="w-6 h-6 text-white" />
+                      </div>
+                      <h3 className="text-lg font-bold mb-2">{feature.title}</h3>
+                      <p className="text-gray-300 text-sm leading-relaxed">{feature.description}</p>
                     </CardContent>
                   </Card>
                 ))}
               </div>
-
-              <Button className="btn-primary">
-                View API Documentation →
-              </Button>
             </div>
-
-            <div className="space-y-6">
-              <h3 className="text-xl font-semibold text-dark-charcoal">API Example</h3>
-              <div className="bg-gray-900 rounded-lg p-6 text-gray-100 font-mono text-sm overflow-x-auto">
-                <pre>{`curl -X POST https://api.arise.io/validate \\
-  -H "Authorization: Bearer <API_KEY>" \\
-  -H "Content-Type: application/json" \\
-  -d '{
-    "address": "1600 Pennsylvania Ave NW",
-    "city": "Washington",
-    "state": "DC",
-    "country": "US"
-  }'`}</pre>
-              </div>
-
-              <div className="flex flex-wrap gap-4">
-                {['JavaScript', 'Python', 'PHP', 'Ruby'].map((sdk) => (
-                  <Button key={sdk} variant="outline" className="hover:bg-bright-yellow hover:border-bright-yellow">
-                    {sdk} SDK
-                  </Button>
-                ))}
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
 
-      {/* Comparison Table */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="h2-desktop lg:h2-mobile text-dark-charcoal mb-6">
-              How We Stack Up
+      {/* Interactive Demo Section */}
+      <section className="py-20 px-4 bg-gradient-to-r from-dark-charcoal/50 to-gray-800/50">
+        <div className="container mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
+              See It In Action
             </h2>
-            <p className="text-lg text-gray-600">
-              See why developers choose Arise over the competition
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+              Experience our features with interactive demos and real-time simulations
             </p>
           </div>
 
-          <div className="max-w-4xl mx-auto">
-            {/* Desktop Table */}
-            <div className="hidden md:block overflow-x-auto">
-              <table className="w-full border-collapse bg-white shadow-lg rounded-lg overflow-hidden">
-                <thead>
-                  <tr className="bg-vibrant-orange text-white">
-                    <th className="p-4 text-left font-semibold">Feature</th>
-                    <th className="p-4 text-center font-semibold">Arise</th>
-                    <th className="p-4 text-center font-semibold">Competitor A</th>
-                    <th className="p-4 text-center font-semibold">Competitor B</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {comparisonData.map((row, index) => (
-                    <tr key={index} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
-                      <td className="p-4 font-medium text-dark-charcoal">{row.feature}</td>
-                      <td className="p-4 text-center">
-                        {row.arise ? (
-                          <Check className="w-5 h-5 text-bold-red mx-auto" />
-                        ) : (
-                          <X className="w-5 h-5 text-gray-400 mx-auto" />
-                        )}
-                      </td>
-                      <td className="p-4 text-center">
-                        {row.competitorA ? (
-                          <Check className="w-5 h-5 text-bold-red mx-auto" />
-                        ) : (
-                          <X className="w-5 h-5 text-gray-400 mx-auto" />
-                        )}
-                      </td>
-                      <td className="p-4 text-center">
-                        {row.competitorB ? (
-                          <Check className="w-5 h-5 text-bold-red mx-auto" />
-                        ) : (
-                          <X className="w-5 h-5 text-gray-400 mx-auto" />
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            {/* Mobile Accordions */}
-            <div className="md:hidden space-y-4">
-              {comparisonData.map((row, index) => (
-                <Card key={index} className="border-0 shadow-sm">
-                  <CardContent className="p-4">
-                    <h4 className="font-semibold text-dark-charcoal mb-3">{row.feature}</h4>
-                    <div className="grid grid-cols-3 gap-4 text-center">
-                      <div>
-                        <div className="text-xs text-gray-500 mb-1">Arise</div>
-                        {row.arise ? (
-                          <Check className="w-4 h-4 text-bold-red mx-auto" />
-                        ) : (
-                          <X className="w-4 h-4 text-gray-400 mx-auto" />
-                        )}
-                      </div>
-                      <div>
-                        <div className="text-xs text-gray-500 mb-1">Competitor A</div>
-                        {row.competitorA ? (
-                          <Check className="w-4 h-4 text-bold-red mx-auto" />
-                        ) : (
-                          <X className="w-4 h-4 text-gray-400 mx-auto" />
-                        )}
-                      </div>
-                      <div>
-                        <div className="text-xs text-gray-500 mb-1">Competitor B</div>
-                        {row.competitorB ? (
-                          <Check className="w-4 h-4 text-bold-red mx-auto" />
-                        ) : (
-                          <X className="w-4 h-4 text-gray-400 mx-auto" />
-                        )}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Customer Logos & Success Stories */}
-      <section className="py-16 bg-dark-charcoal text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="h2-desktop lg:h2-mobile mb-12">
-            Trusted by Leading Companies
-          </h2>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 mb-12">
-            {customerLogos.map((logo, index) => (
-              <div 
-                key={index}
-                className="bg-white/10 p-4 rounded-lg grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer hover:bg-white/20"
-              >
-                <div className="font-semibold text-white">{logo}</div>
+          <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            {/* AI Trading Demo */}
+            <Card className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-2xl border border-white/20 p-8 rounded-3xl">
+              <h3 className="text-2xl font-bold mb-4 text-white">AI Trading Assistant</h3>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center p-4 bg-green-500/20 rounded-xl border border-green-500/30">
+                  <span className="text-green-400">BUY AAPL</span>
+                  <span className="text-white font-bold">+2.3%</span>
+                </div>
+                <div className="flex justify-between items-center p-4 bg-blue-500/20 rounded-xl border border-blue-500/30">
+                  <span className="text-blue-400">HOLD TSLA</span>
+                  <span className="text-white font-bold">+0.8%</span>
+                </div>
+                <div className="flex justify-between items-center p-4 bg-red-500/20 rounded-xl border border-red-500/30">
+                  <span className="text-red-400">SELL MSFT</span>
+                  <span className="text-white font-bold">-1.2%</span>
+                </div>
               </div>
-            ))}
-          </div>
+              <Button className="w-full mt-6 bg-gradient-to-r from-bold-red to-vibrant-orange hover:from-vibrant-orange hover:to-bright-yellow">
+                Try AI Trading
+                <ArrowRight className="ml-2 w-4 h-4" />
+              </Button>
+            </Card>
 
-          <Button className="btn-secondary border-bright-yellow text-bright-yellow hover:bg-bright-yellow hover:text-dark-charcoal">
-            Read our case studies →
-          </Button>
+            {/* Security Demo */}
+            <Card className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-2xl border border-white/20 p-8 rounded-3xl">
+              <h3 className="text-2xl font-bold mb-4 text-white">Security Dashboard</h3>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between p-4 bg-green-500/20 rounded-xl border border-green-500/30">
+                  <div className="flex items-center">
+                    <CheckCircle className="w-5 h-5 text-green-400 mr-2" />
+                    <span className="text-white">2FA Enabled</span>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between p-4 bg-green-500/20 rounded-xl border border-green-500/30">
+                  <div className="flex items-center">
+                    <CheckCircle className="w-5 h-5 text-green-400 mr-2" />
+                    <span className="text-white">Biometric Active</span>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between p-4 bg-green-500/20 rounded-xl border border-green-500/30">
+                  <div className="flex items-center">
+                    <CheckCircle className="w-5 h-5 text-green-400 mr-2" />
+                    <span className="text-white">Fraud Protection</span>
+                  </div>
+                </div>
+              </div>
+              <Button className="w-full mt-6 bg-gradient-to-r from-bold-red to-vibrant-orange hover:from-vibrant-orange hover:to-bright-yellow">
+                Test Security
+                <ArrowRight className="ml-2 w-4 h-4" />
+              </Button>
+            </Card>
+          </div>
         </div>
       </section>
 
-      {/* Bottom CTA */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 text-center space-y-8">
-          <h2 className="h2-desktop lg:h2-mobile text-dark-charcoal">
-            See All Features in Action
+      {/* CTA Section */}
+      <section className="py-20 px-4">
+        <div className="container mx-auto text-center">
+          <h2 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-bright-yellow via-vibrant-orange to-bold-red bg-clip-text text-transparent">
+            Ready to Experience the Future?
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Start your free trial and experience the power of accurate address data.
+          <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+            Join thousands of users who are already using our advanced financial platform.
           </p>
-          <Button className="btn-primary text-lg px-8 py-4">
-            Start Free Trial
-          </Button>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button className="bg-gradient-to-r from-bold-red to-vibrant-orange hover:from-vibrant-orange hover:to-bright-yellow text-white px-10 py-5 text-xl font-bold rounded-2xl shadow-2xl hover:shadow-bright-yellow/25 transition-all duration-300 transform hover:scale-105">
+              Start Free Trial
+            </Button>
+            <Button variant="outline" className="border-2 border-bright-yellow text-bright-yellow hover:bg-bright-yellow hover:text-dark-charcoal px-10 py-5 text-xl font-bold rounded-2xl transition-all duration-300">
+              Schedule Demo
+            </Button>
+          </div>
         </div>
       </section>
     </div>

@@ -1,469 +1,268 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Check, Play, ArrowRight, MapPin, Shield, Upload, Zap, Globe, BarChart3, Star, Users, Building } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import { ArrowRight, TrendingUp, Shield, Zap, Globe, ChevronDown, Play, Star, Check } from 'lucide-react';
 
 const Index = () => {
-  const [demoInput, setDemoInput] = useState('');
-  const [isVerifying, setIsVerifying] = useState(false);
-  const [isVerified, setIsVerified] = useState(false);
-  const [isAnnual, setIsAnnual] = useState(false);
+  const [animatedValue, setAnimatedValue] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
 
-  const handleVerifyDemo = async () => {
-    if (!demoInput.trim()) return;
-    
-    setIsVerifying(true);
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    setIsVerifying(false);
-    setIsVerified(true);
-    
-    setTimeout(() => {
-      setIsVerified(false);
-      setDemoInput('');
-    }, 3000);
-  };
+  useEffect(() => {
+    setIsVisible(true);
+    const interval = setInterval(() => {
+      setAnimatedValue(prev => (prev + 1000) % 100000);
+    }, 50);
+    return () => clearInterval(interval);
+  }, []);
 
   const features = [
     {
-      icon: Zap,
-      title: 'Real-Time API Lookup',
-      description: 'Instantly verify addresses as users type with sub-second response times.',
-      color: 'text-bold-red'
-    },
-    {
-      icon: Upload,
-      title: 'Bulk CSV Validation',
-      description: 'Upload hundreds of thousands of addresses in one go and get detailed reports.',
-      color: 'text-vibrant-orange'
-    },
-    {
-      icon: Globe,
-      title: 'Global Coverage',
-      description: 'Support for 240+ countries and territories with local postal standards.',
-      color: 'text-bright-yellow'
-    },
-    {
-      icon: MapPin,
-      title: 'Autocomplete',
-      description: 'Smart dropdown suggestions speed up form-fills and reduce errors.',
-      color: 'text-bold-red'
+      icon: TrendingUp,
+      title: "AI-Powered Analytics",
+      description: "Advanced machine learning algorithms analyze market trends and provide real-time insights for smarter financial decisions.",
+      gradient: "from-bold-red to-vibrant-orange"
     },
     {
       icon: Shield,
-      title: 'Fuzzy Matching',
-      description: 'Catch typos, misspellings, and abbreviations with intelligent algorithms.',
-      color: 'text-vibrant-orange'
+      title: "Bank-Grade Security",
+      description: "Enterprise-level encryption and multi-factor authentication keep your financial data safe and secure.",
+      gradient: "from-vibrant-orange to-bright-yellow"
     },
     {
-      icon: BarChart3,
-      title: 'Dashboard & Analytics',
-      description: 'Track verification stats, accuracy rates, and usage patterns in real-time.',
-      color: 'text-bright-yellow'
+      icon: Zap,
+      title: "Lightning Fast Transactions",
+      description: "Process payments and transfers in milliseconds with our optimized blockchain infrastructure.",
+      gradient: "from-bright-yellow to-bold-red"
+    },
+    {
+      icon: Globe,
+      title: "Global Reach",
+      description: "Connect with financial markets worldwide and manage multi-currency portfolios seamlessly.",
+      gradient: "from-dark-charcoal to-vibrant-orange"
     }
   ];
 
-  const integrations = [
-    'Shopify', 'Salesforce', 'Magento', 'WooCommerce', 'Zapier'
-  ];
-
-  const testimonials = [
-    {
-      name: 'Sarah Johnson',
-      role: 'CTO, ShipFast',
-      avatar: '/placeholder.svg',
-      quote: 'Arise reduced our delivery failures by 85%. The API integration was seamless and the accuracy is incredible.'
-    },
-    {
-      name: 'Michael Chen',
-      role: 'Operations Director, GlobalMart',
-      avatar: '/placeholder.svg',
-      quote: 'We process millions of addresses monthly. Arise handles our volume effortlessly while maintaining 99.9% accuracy.'
-    },
-    {
-      name: 'Emily Rodriguez',
-      role: 'Founder, LocalDelivery',
-      avatar: '/placeholder.svg',
-      quote: 'The autocomplete feature improved our checkout conversion by 40%. Our customers love the smooth experience.'
-    }
-  ];
-
-  const pricingTiers = [
-    {
-      name: 'Starter',
-      price: isAnnual ? 182 : 19,
-      period: isAnnual ? 'year' : 'month',
-      verifications: '10,000',
-      features: ['Email support', 'Basic Dashboard', 'REST API'],
-      buttonText: 'Get Started',
-      buttonStyle: 'btn-primary'
-    },
-    {
-      name: 'Business',
-      price: isAnnual ? 470 : 49,
-      period: isAnnual ? 'year' : 'month',
-      verifications: '50,000',
-      features: ['Priority email support', 'Advanced Analytics', 'Webhooks', 'CSV Export'],
-      buttonText: 'Start Free Trial',
-      buttonStyle: 'btn-primary bg-vibrant-orange hover:bg-bold-red',
-      popular: true
-    },
-    {
-      name: 'Enterprise',
-      price: 'Custom',
-      period: '',
-      verifications: 'Unlimited',
-      features: ['Dedicated support', 'SLA', 'On-boarding', 'Custom integrations'],
-      buttonText: 'Contact Sales',
-      buttonStyle: 'btn-secondary'
-    }
+  const stats = [
+    { label: "Active Users", value: "2.5M+", suffix: "" },
+    { label: "Transactions", value: "$847B", suffix: "" },
+    { label: "Countries", value: "180+", suffix: "" },
+    { label: "Uptime", value: "99.9", suffix: "%" }
   ];
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-dark-charcoal to-gray-800 text-white overflow-hidden">
+      {/* Animated Background */}
+      <div className="fixed inset-0 opacity-10">
+        <div className="absolute inset-0 bg-gradient-to-r from-bold-red/20 via-vibrant-orange/20 to-bright-yellow/20 animate-pulse"></div>
+        {[...Array(50)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-1 h-1 bg-bright-yellow rounded-full animate-pulse"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 3}s`,
+              animationDuration: `${2 + Math.random() * 2}s`
+            }}
+          />
+        ))}
+      </div>
+
       {/* Hero Section */}
-      <section className="bg-dark-charcoal text-white relative overflow-hidden">
-        {/* Animated Background Network */}
-        <div className="absolute inset-0 opacity-20">
-          <svg className="w-full h-full" viewBox="0 0 1000 600">
-            <defs>
-              <pattern id="network" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
-                <circle cx="50" cy="50" r="2" fill="#444444" className="network-animation" />
-                <line x1="50" y1="50" x2="100" y2="50" stroke="#444444" strokeWidth="1" opacity="0.6" />
-                <line x1="50" y1="50" x2="50" y2="100" stroke="#444444" strokeWidth="1" opacity="0.6" />
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#network)" />
-          </svg>
-        </div>
-
-        <div className="container mx-auto px-4 py-24 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
-              <h1 className="h1-desktop lg:h1-mobile font-bold text-white leading-tight">
-                <span className="inline-block overflow-hidden">
-                  <span className="block animate-typewriter">
-                    Arise: Instant Address Verification & Validation
-                  </span>
-                </span>
-              </h1>
-              
-              <h2 className="text-xl lg:text-base text-gray-300 leading-relaxed">
-                Clean, accurate address data at lightning speed. Say goodbye to bad mail and delivery errors.
-              </h2>
-
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button className="btn-primary text-lg px-8 py-4">
-                  Get Started Free
-                </Button>
-                <Button className="btn-secondary text-lg px-8 py-4 flex items-center gap-2">
-                  <Play className="w-5 h-5" />
-                  Watch Demo
-                </Button>
-              </div>
+      <section className="relative pt-32 pb-20 px-4">
+        <div className="container mx-auto text-center">
+          <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <div className="inline-block px-4 py-2 bg-gradient-to-r from-bold-red/20 to-vibrant-orange/20 rounded-full border border-bold-red/30 mb-6">
+              <span className="text-bright-yellow font-medium">🚀 Next-Gen Financial Platform</span>
             </div>
-
-            {/* Hero Illustration */}
-            <div className="relative">
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 relative">
-                <div className="text-center space-y-4">
-                  <div className="relative">
-                    <MapPin className="w-16 h-16 text-bright-yellow mx-auto animate-pin-drop" />
-                    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-32 h-8">
-                      <svg className="w-full h-full" viewBox="0 0 100 20">
-                        <path 
-                          d="M10,10 Q30,5 50,10 T90,10" 
-                          stroke="#ffd200" 
-                          strokeWidth="2" 
-                          fill="none"
-                          strokeDasharray="5,5"
-                          className="animate-pulse"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                  <h3 className="text-xl font-semibold">Lightning Fast Verification</h3>
-                  <p className="text-gray-300">Watch addresses transform in real-time</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Quick Demo Section */}
-      <section className="bg-gray-50 py-16">
-        <div className="container mx-auto px-4">
-          <div className="max-w-2xl mx-auto text-center space-y-8">
-            <h3 className="section-title">See How It Works in 10 Seconds</h3>
             
-            <div className="bg-white rounded-lg p-6 shadow-lg">
-              <div className="flex gap-4">
-                <Input
-                  value={demoInput}
-                  onChange={(e) => setDemoInput(e.target.value)}
-                  placeholder="Enter an address to verify..."
-                  className="flex-1 text-base p-3 border-gray-300 rounded-lg"
-                  disabled={isVerifying}
-                />
-                <Button 
-                  onClick={handleVerifyDemo}
-                  disabled={isVerifying || !demoInput.trim()}
-                  className="btn-primary px-8"
-                >
-                  {isVerifying ? (
-                    <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full" />
-                  ) : (
-                    'Verify'
-                  )}
-                </Button>
-              </div>
-
-              {isVerified && (
-                <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg animate-fade-in-up">
-                  <div className="flex items-center gap-2 text-green-700">
-                    <Check className="w-5 h-5 text-bright-yellow" />
-                    <span className="font-semibold">Valid Address: 123 Main St, Lagos, Nigeria</span>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
-              <div className="flex items-start gap-3">
-                <Check className="w-5 h-5 text-bold-red mt-1 flex-shrink-0" />
-                <span className="text-sm">Auto-correct typos</span>
-              </div>
-              <div className="flex items-start gap-3">
-                <Check className="w-5 h-5 text-bold-red mt-1 flex-shrink-0" />
-                <span className="text-sm">Standardize formatting</span>
-              </div>
-              <div className="flex items-start gap-3">
-                <Check className="w-5 h-5 text-bold-red mt-1 flex-shrink-0" />
-                <span className="text-sm">Integrate anywhere (CRM, e-commerce, ERP)</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works Overview */}
-      <section className="py-16 bg-gradient-to-r from-white via-yellow-50 to-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="h2-desktop lg:h2-mobile text-dark-charcoal mb-4">How It Works</h2>
-            <p className="text-lg text-gray-600">Three simple steps to perfect address data</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                step: '1',
-                title: 'Capture',
-                icon: Upload,
-                description: 'Simply enter or paste address information into your form—Arise grabs it instantly.',
-                color: 'text-bold-red'
-              },
-              {
-                step: '2',
-                title: 'Validate & Standardize',
-                icon: Shield,
-                description: 'Our engine cross-checks against global postal databases, auto-corrects misspellings, and standardizes to official format.',
-                color: 'text-vibrant-orange'
-              },
-              {
-                step: '3',
-                title: 'Deliver Results',
-                icon: ArrowRight,
-                description: 'Receive clean, formatted addresses via API response or CSV export—ready for shipment or CRM.',
-                color: 'text-bright-yellow'
-              }
-            ].map((step, index) => (
-              <Card key={index} className="hover-lift border-0 shadow-lg">
-                <CardContent className="p-8 text-center space-y-4">
-                  <div className="w-16 h-16 mx-auto rounded-full bg-gray-100 flex items-center justify-center">
-                    <step.icon className={`w-8 h-8 ${step.color}`} />
-                  </div>
-                  <div className="w-8 h-8 mx-auto bg-dark-charcoal text-white rounded-full flex items-center justify-center font-bold">
-                    {step.step}
-                  </div>
-                  <h3 className="text-xl font-bold text-dark-charcoal">{step.title}</h3>
-                  <p className="text-gray-600 leading-relaxed">{step.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Key Features */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="h2-desktop lg:h2-mobile text-dark-charcoal mb-4">
-              Powerful Features to Keep Your Data Clean
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <Card key={index} className="hover-lift border-0 shadow-lg group">
-                <CardContent className="p-6 space-y-4">
-                  <div className={`w-12 h-12 ${feature.color} icon-glow group-hover:scale-110 transition-transform`}>
-                    <feature.icon className="w-full h-full" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-dark-charcoal">{feature.title}</h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">{feature.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Integrations */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4 text-center">
-          <h3 className="text-2xl font-semibold text-dark-charcoal mb-8">Seamless Integrations</h3>
-          
-          <div className="flex flex-wrap justify-center items-center gap-8 mb-8">
-            {integrations.map((integration, index) => (
-              <div 
-                key={index}
-                className="bg-white px-6 py-3 rounded-lg shadow-sm grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer"
-              >
-                <span className="font-medium text-dark-charcoal">{integration}</span>
-              </div>
-            ))}
-          </div>
-
-          <p className="text-dark-charcoal">
-            Don't see your platform? Our RESTful API works with any system.
-          </p>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="py-16 bg-dark-charcoal text-white">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <Card key={index} className="bg-white/10 border-0 backdrop-blur-sm">
-                <CardContent className="p-6 space-y-4">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-bright-yellow rounded-full flex items-center justify-center">
-                      <Users className="w-6 h-6 text-dark-charcoal" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-bright-yellow">{testimonial.name}</h4>
-                      <p className="text-sm text-gray-300">{testimonial.role}</p>
-                    </div>
-                  </div>
-                  <blockquote className="text-white italic leading-relaxed">
-                    "{testimonial.quote}"
-                  </blockquote>
-                  <div className="flex text-bright-yellow">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-current" />
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Pricing Snapshot */}
-      <section className="py-16 bg-white relative">
-        <div className="absolute inset-0 opacity-5">
-          <div className="w-full h-full bg-repeat" style={{
-            backgroundImage: 'radial-gradient(circle, #eeeeee 1px, transparent 1px)',
-            backgroundSize: '20px 20px'
-          }} />
-        </div>
-
-        <div className="container mx-auto px-4 relative">
-          <div className="text-center mb-12">
-            <h2 className="h2-desktop lg:h2-mobile text-dark-charcoal mb-4">
-              Simple, Transparent Pricing
-            </h2>
-
-            {/* Monthly/Annual Toggle */}
-            <div className="flex items-center justify-center gap-4 mb-8">
-              <span className={`font-medium ${!isAnnual ? 'text-bold-red' : 'text-gray-500'}`}>Monthly</span>
-              <button
-                onClick={() => setIsAnnual(!isAnnual)}
-                className={`relative w-14 h-7 rounded-full transition-colors ${
-                  isAnnual ? 'bg-bold-red' : 'bg-gray-300'
-                }`}
-              >
-                <div className={`absolute w-5 h-5 bg-white rounded-full top-1 transition-transform ${
-                  isAnnual ? 'translate-x-8' : 'translate-x-1'
-                }`} />
-              </button>
-              <span className={`font-medium ${isAnnual ? 'text-bold-red' : 'text-gray-500'}`}>Annual</span>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {pricingTiers.map((tier, index) => (
-              <Card key={index} className={`relative border-2 ${tier.popular ? 'border-vibrant-orange shadow-xl scale-105' : 'border-gray-200'}`}>
-                {tier.popular && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-bright-yellow text-dark-charcoal px-4 py-1 rounded-full text-sm font-semibold">
-                      Most Popular
-                    </span>
-                  </div>
-                )}
-                <CardContent className="p-8 text-center space-y-6">
-                  <h3 className="text-xl font-bold text-dark-charcoal">{tier.name}</h3>
-                  <div>
-                    <div className="flex items-baseline justify-center gap-1">
-                      <span className="text-4xl font-bold text-dark-charcoal">
-                        {typeof tier.price === 'number' ? `$${tier.price}` : tier.price}
-                      </span>
-                      {tier.period && <span className="text-gray-500">/{tier.period}</span>}
-                    </div>
-                    <p className="text-sm text-gray-600 mt-2">{tier.verifications} verifications</p>
-                  </div>
-                  <ul className="space-y-3">
-                    {tier.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-center gap-2">
-                        <Check className="w-4 h-4 text-bold-red flex-shrink-0" />
-                        <span className="text-sm text-gray-600">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <Button className={tier.buttonStyle + ' w-full'}>
-                    {tier.buttonText}
-                  </Button>
-                  <p className="text-xs text-gray-500">No hidden fees. Upgrade or downgrade anytime.</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Call to Action */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-bold-red to-bright-yellow" />
-        <div className="absolute inset-0 bg-gradient-to-l from-bright-yellow via-transparent to-transparent" />
-        
-        <div className="container mx-auto px-4 py-16 relative">
-          <div className="text-center space-y-8">
-            <h2 className="h2-desktop lg:h2-mobile text-white font-bold">
-              Ready to Clean Your Address Data?
-            </h2>
-            <p className="text-xl text-white opacity-90">
-              Sign up now and get the first 5,000 verifications free!
+            <h1 className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-to-r from-white via-bright-yellow to-vibrant-orange bg-clip-text text-transparent leading-tight">
+              Arise
+              <span className="block text-4xl md:text-6xl mt-2">FinTech</span>
+            </h1>
+            
+            <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-8 leading-relaxed">
+              Revolutionizing financial services with AI-powered insights, lightning-fast transactions, 
+              and enterprise-grade security. The future of finance is here.
             </p>
-            <Button className="bg-dark-charcoal text-white font-semibold px-8 py-4 text-lg animate-pulse-button hover:bg-gray-700">
-              Sign Up Free
-            </Button>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+              <Button className="group bg-gradient-to-r from-bold-red to-vibrant-orange hover:from-vibrant-orange hover:to-bright-yellow text-white px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+                Get Started Free
+                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Button>
+              <Button variant="outline" className="group border-2 border-bright-yellow text-bright-yellow hover:bg-bright-yellow hover:text-dark-charcoal px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-300">
+                <Play className="mr-2 w-5 h-5" />
+                Watch Demo
+              </Button>
+            </div>
+
+            {/* Animated Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+              {stats.map((stat, index) => (
+                <Card key={index} className="bg-white/10 backdrop-blur-lg border border-white/20 hover:bg-white/20 transition-all duration-300">
+                  <CardContent className="p-6 text-center">
+                    <div className="text-2xl md:text-3xl font-bold text-bright-yellow mb-1">
+                      {stat.value}
+                    </div>
+                    <div className="text-gray-300 text-sm">{stat.label}</div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
+        </div>
+
+        {/* Floating Elements */}
+        <div className="absolute top-20 left-10 w-20 h-20 bg-gradient-to-r from-bold-red to-vibrant-orange rounded-full opacity-20 animate-bounce"></div>
+        <div className="absolute top-40 right-20 w-16 h-16 bg-gradient-to-r from-vibrant-orange to-bright-yellow rounded-full opacity-20 animate-pulse"></div>
+        <div className="absolute bottom-20 left-1/4 w-12 h-12 bg-bright-yellow rounded-full opacity-20 animate-ping"></div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-20 px-4 relative">
+        <div className="container mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-bright-yellow to-vibrant-orange bg-clip-text text-transparent">
+              Cutting-Edge Features
+            </h2>
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+              Powered by advanced technology and designed for the modern financial ecosystem
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {features.map((feature, index) => (
+              <Card key={index} className="group bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl border border-white/20 hover:border-vibrant-orange/50 transition-all duration-500 hover:scale-105 hover:shadow-2xl">
+                <CardContent className="p-8">
+                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${feature.gradient} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                    <feature.icon className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-3 text-white">{feature.title}</h3>
+                  <p className="text-gray-300 leading-relaxed">{feature.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Interactive Dashboard Preview */}
+      <section className="py-20 px-4">
+        <div className="container mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
+              Intelligent Dashboard
+            </h2>
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+              Real-time analytics and insights at your fingertips
+            </p>
+          </div>
+
+          <div className="relative max-w-6xl mx-auto">
+            <Card className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-2xl border border-white/20 p-8 rounded-3xl shadow-2xl">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {/* Portfolio Value */}
+                <Card className="bg-gradient-to-br from-bold-red/20 to-vibrant-orange/20 border border-bold-red/30 p-6 rounded-2xl">
+                  <h4 className="text-gray-300 mb-2">Portfolio Value</h4>
+                  <div className="text-3xl font-bold text-white mb-2">
+                    ${animatedValue.toLocaleString()}
+                  </div>
+                  <div className="flex items-center text-green-400">
+                    <TrendingUp className="w-4 h-4 mr-1" />
+                    +12.5%
+                  </div>
+                </Card>
+
+                {/* Market Chart */}
+                <Card className="bg-gradient-to-br from-vibrant-orange/20 to-bright-yellow/20 border border-vibrant-orange/30 p-6 rounded-2xl md:col-span-2">
+                  <h4 className="text-gray-300 mb-4">Market Overview</h4>
+                  <div className="h-24 flex items-end justify-between space-x-1">
+                    {[...Array(20)].map((_, i) => (
+                      <div
+                        key={i}
+                        className="bg-gradient-to-t from-bright-yellow to-vibrant-orange rounded-t opacity-70 hover:opacity-100 transition-opacity cursor-pointer"
+                        style={{
+                          height: `${Math.random() * 100}%`,
+                          width: '4%'
+                        }}
+                      />
+                    ))}
+                  </div>
+                </Card>
+
+                {/* Recent Transactions */}
+                <Card className="bg-gradient-to-br from-bright-yellow/20 to-bold-red/20 border border-bright-yellow/30 p-6 rounded-2xl lg:col-span-3">
+                  <h4 className="text-gray-300 mb-4">Recent Transactions</h4>
+                  <div className="space-y-3">
+                    {[
+                      { type: 'Received', amount: '+$2,500', from: 'Tech Corp' },
+                      { type: 'Sent', amount: '-$890', to: 'Supplier XYZ' },
+                      { type: 'Investment', amount: '+$15,000', from: 'Stock Portfolio' }
+                    ].map((transaction, i) => (
+                      <div key={i} className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
+                        <div>
+                          <div className="text-white font-medium">{transaction.type}</div>
+                          <div className="text-gray-400 text-sm">
+                            {transaction.from || transaction.to}
+                          </div>
+                        </div>
+                        <div className={`font-bold ${transaction.amount.startsWith('+') ? 'text-green-400' : 'text-red-400'}`}>
+                          {transaction.amount}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </Card>
+              </div>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 px-4 relative">
+        <div className="container mx-auto text-center">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-bright-yellow via-vibrant-orange to-bold-red bg-clip-text text-transparent">
+              Ready to Transform Your Financial Future?
+            </h2>
+            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+              Join millions of users who trust Arise FinTech for their financial needs. 
+              Start your journey today with our free tier.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+              <Button className="bg-gradient-to-r from-bold-red to-vibrant-orange hover:from-vibrant-orange hover:to-bright-yellow text-white px-10 py-5 text-xl font-bold rounded-2xl shadow-2xl hover:shadow-bright-yellow/25 transition-all duration-300 transform hover:scale-105">
+                Start Free Trial
+              </Button>
+              <Button variant="outline" className="border-2 border-bright-yellow text-bright-yellow hover:bg-bright-yellow hover:text-dark-charcoal px-10 py-5 text-xl font-bold rounded-2xl transition-all duration-300">
+                Contact Sales
+              </Button>
+            </div>
+
+            <div className="flex flex-wrap justify-center gap-8 text-gray-400">
+              <div className="flex items-center">
+                <Check className="w-5 h-5 text-green-400 mr-2" />
+                No credit card required
+              </div>
+              <div className="flex items-center">
+                <Check className="w-5 h-5 text-green-400 mr-2" />
+                14-day free trial
+              </div>
+              <div className="flex items-center">
+                <Check className="w-5 h-5 text-green-400 mr-2" />
+                Cancel anytime
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Background Elements */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-10 left-1/4 w-32 h-32 bg-gradient-to-r from-bold-red/10 to-vibrant-orange/10 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-10 right-1/4 w-40 h-40 bg-gradient-to-r from-vibrant-orange/10 to-bright-yellow/10 rounded-full blur-3xl"></div>
         </div>
       </section>
     </div>
