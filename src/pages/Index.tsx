@@ -1,8 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowRight, MapPin, Shield, Zap, CheckCircle, Globe, Users, Clock, Star, Building, CreditCard, FileCheck } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Index = () => {
   const [animatedCount, setAnimatedCount] = useState(0);
@@ -75,7 +75,7 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white px-4 md:px-8 lg:px-12">
+    <div className="min-h-screen bg-white page-padding">
       {/* Hero Section */}
       <section className="relative pt-20 pb-16 bg-gradient-to-br from-white via-gray-50 to-white overflow-hidden">
         {/* Background Pattern */}
@@ -102,10 +102,12 @@ const Index = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-              <Button className="group bg-gradient-to-r from-bold-red to-vibrant-orange hover:from-vibrant-orange hover:to-bright-yellow text-white px-6 py-3 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                Start Free Trial
-                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
+              <Link to="/auth">
+                <Button className="group bg-gradient-to-r from-bold-red to-vibrant-orange hover:from-vibrant-orange hover:to-bright-yellow text-white px-6 py-3 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                  Start Free Trial
+                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
               <Button variant="outline" className="border-2 border-bold-red text-bold-red hover:bg-bold-red hover:text-white px-6 py-3 text-lg font-semibold rounded-xl transition-all duration-300">
                 View Demo
               </Button>
@@ -293,9 +295,11 @@ const Index = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button className="bg-white text-bold-red hover:bg-gray-100 px-6 py-3 text-lg font-semibold rounded-xl shadow-lg">
-              Start Free Trial
-            </Button>
+            <Link to="/auth">
+              <Button className="bg-white text-bold-red hover:bg-gray-100 px-6 py-3 text-lg font-semibold rounded-xl shadow-lg">
+                Start Free Trial
+              </Button>
+            </Link>
             <Button variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-bold-red px-6 py-3 text-lg font-semibold rounded-xl">
               Contact Sales
             </Button>
