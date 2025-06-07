@@ -8,6 +8,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import DashboardLayout from "@/components/layout/DashboardLayout";
 
 // Public pages
 import Index from "./pages/Index";
@@ -25,9 +26,12 @@ import NotFound from "./pages/NotFound";
 import Welcome from "./pages/auth/Welcome";
 import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
+import VerifyOTP from "./pages/auth/VerifyOTP";
+import ForgotPassword from "./pages/auth/ForgotPassword";
 
-// Dashboard pages (will be created next)
-// import Dashboard from "./pages/dashboard/Dashboard";
+// Dashboard pages
+import DashboardHome from "./pages/dashboard/DashboardHome";
+import VerifyAddress from "./pages/dashboard/VerifyAddress";
 
 const queryClient = new QueryClient();
 
@@ -126,16 +130,21 @@ const App = () => (
             <Route path="/auth/welcome" element={<Welcome />} />
             <Route path="/auth/login" element={<Login />} />
             <Route path="/auth/signup" element={<Signup />} />
+            <Route path="/auth/verify-otp" element={<VerifyOTP />} />
+            <Route path="/auth/forgot-password" element={<ForgotPassword />} />
             
             {/* Legacy auth route redirect */}
             <Route path="/auth" element={<Welcome />} />
 
-            {/* Dashboard routes (protected, will be added next) */}
-            {/* <Route path="/dashboard/*" element={
+            {/* Dashboard routes (protected) */}
+            <Route path="/dashboard/*" element={
               <ProtectedRoute>
-                <Dashboard />
+                <DashboardLayout />
               </ProtectedRoute>
-            } /> */}
+            }>
+              <Route index element={<DashboardHome />} />
+              <Route path="verify" element={<VerifyAddress />} />
+            </Route>
 
             {/* 404 route */}
             <Route path="*" element={<NotFound />} />
