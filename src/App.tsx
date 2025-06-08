@@ -32,6 +32,11 @@ import ForgotPassword from "./pages/auth/ForgotPassword";
 // Dashboard pages
 import DashboardHome from "./pages/dashboard/DashboardHome";
 import VerifyAddress from "./pages/dashboard/VerifyAddress";
+import Profile from "./pages/dashboard/Profile";
+import History from "./pages/dashboard/History";
+import Documents from "./pages/dashboard/Documents";
+import Notifications from "./pages/dashboard/Notifications";
+import Search from "./pages/dashboard/Search";
 
 const queryClient = new QueryClient();
 
@@ -144,6 +149,11 @@ const App = () => (
             }>
               <Route index element={<DashboardHome />} />
               <Route path="verify" element={<VerifyAddress />} />
+              <Route path="profile" element={<Profile />} />
+              <Route path="history" element={<History />} />
+              <Route path="documents" element={<Documents />} />
+              <Route path="notifications" element={<Notifications />} />
+              <Route path="search" element={<Search />} />
             </Route>
 
             {/* 404 route */}

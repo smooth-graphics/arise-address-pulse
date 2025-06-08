@@ -19,7 +19,8 @@ import {
   List,
   CreditCard,
   Menu,
-  LogOut
+  LogOut,
+  Search
 } from 'lucide-react';
 
 const DashboardLayout = () => {
@@ -37,6 +38,7 @@ const DashboardLayout = () => {
     if (user?.role === 'admin') {
       return [
         { name: 'Overview', href: '/dashboard', icon: Home },
+        { name: 'Search', href: '/dashboard/search', icon: Search },
         { name: 'Users', href: '/dashboard/users', icon: Users },
         { name: 'Verification Queue', href: '/dashboard/queue', icon: List },
         { name: 'Documents', href: '/dashboard/documents', icon: FileText },
@@ -49,6 +51,7 @@ const DashboardLayout = () => {
     if (user?.role === 'organization') {
       return [
         { name: 'Overview', href: '/dashboard', icon: Home },
+        { name: 'Search', href: '/dashboard/search', icon: Search },
         { name: 'Profile', href: '/dashboard/profile', icon: Building },
         { name: 'Bulk Upload', href: '/dashboard/bulk-upload', icon: Upload },
         { name: 'Verifications', href: '/dashboard/verifications', icon: FileText },
@@ -64,6 +67,7 @@ const DashboardLayout = () => {
       { name: 'Overview', href: '/dashboard', icon: Home },
       { name: 'Profile', href: '/dashboard/profile', icon: User },
       { name: 'Verify Address', href: '/dashboard/verify', icon: MapPin },
+      { name: 'Search', href: '/dashboard/search', icon: Search },
       { name: 'Documents', href: '/dashboard/documents', icon: FileText },
       { name: 'History', href: '/dashboard/history', icon: History },
       { name: 'Notifications', href: '/dashboard/notifications', icon: Bell },
