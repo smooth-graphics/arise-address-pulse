@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -17,7 +16,7 @@ import {
   Key, 
   Activity,
   Users,
-  Queue,
+  List,
   CreditCard,
   Menu,
   LogOut
@@ -39,7 +38,7 @@ const DashboardLayout = () => {
       return [
         { name: 'Overview', href: '/dashboard', icon: Home },
         { name: 'Users', href: '/dashboard/users', icon: Users },
-        { name: 'Verification Queue', href: '/dashboard/queue', icon: Queue },
+        { name: 'Verification Queue', href: '/dashboard/queue', icon: List },
         { name: 'Documents', href: '/dashboard/documents', icon: FileText },
         { name: 'API Monitor', href: '/dashboard/api-monitor', icon: Activity },
         { name: 'Pricing', href: '/dashboard/pricing', icon: CreditCard },
