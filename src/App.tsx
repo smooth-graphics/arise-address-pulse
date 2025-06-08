@@ -31,6 +31,8 @@ import ForgotPassword from "./pages/auth/ForgotPassword";
 
 // Dashboard pages
 import DashboardHome from "./pages/dashboard/DashboardHome";
+import OrganizationDashboard from "./pages/dashboard/OrganizationDashboard";
+import GovernmentDashboard from "./pages/dashboard/GovernmentDashboard";
 import VerifyAddress from "./pages/dashboard/VerifyAddress";
 import Profile from "./pages/dashboard/Profile";
 import History from "./pages/dashboard/History";
