@@ -1,9 +1,8 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Bell, CheckCircle, AlertCircle, Info, Trash2, MarkAsRead } from 'lucide-react';
+import { Bell, CheckCircle, AlertCircle, Info, Trash2 } from 'lucide-react';
 
 interface Notification {
   id: string;
