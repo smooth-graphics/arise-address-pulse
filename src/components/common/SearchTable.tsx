@@ -193,7 +193,7 @@ function SearchTable<T extends Record<string, any>>({
               {columns.map((column) => (
                 <TableHead 
                   key={String(column.key)}
-                  className={`${column.width ? `w-${column.width}` : ''} ${
+                  className={`${column.width || ''} ${
                     column.sortable ? 'cursor-pointer hover:bg-gray-50' : ''
                   }`}
                   onClick={() => column.sortable && handleSort(column.key)}
