@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -193,9 +192,8 @@ function SearchTable<T extends Record<string, any>>({
               {columns.map((column) => (
                 <TableHead 
                   key={String(column.key)}
-                  className={`${column.width || ''} ${
-                    column.sortable ? 'cursor-pointer hover:bg-gray-50' : ''
-                  }`}
+                  className={`${column.sortable ? 'cursor-pointer hover:bg-gray-50' : ''}`}
+                  style={{ width: column.width }}
                   onClick={() => column.sortable && handleSort(column.key)}
                 >
                   <div className="flex items-center gap-2">

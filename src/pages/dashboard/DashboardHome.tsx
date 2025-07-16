@@ -20,7 +20,8 @@ import {
   BarChart3,
   Shield,
   CreditCard,
-  Zap
+  Zap,
+  Lock
 } from 'lucide-react';
 
 const DashboardHome = () => {
@@ -49,7 +50,6 @@ const DashboardHome = () => {
     return <OrganizationDashboard />;
   }
 
-  // Individual user dashboard with wallet and plan features
   return (
     <div className="space-y-8 p-6">
       {/* Header with gradient background */}
