@@ -1,6 +1,6 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { User, AuthContextType, SignupData } from '@/types/auth';
+import { User, AuthContextType, SignupData, UserRole } from '@/types/auth';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -19,20 +19,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     // Check for stored auth token on mount
     const token = localStorage.getItem('auth_token');
+    const storedRole = localStorage.getItem('user_role') as UserRole;
     if (token) {
       // TODO: Validate token with API
       console.log('Token found, validating with API...');
-      // Simulate API call
+      // Simulate API call with demo users based on role
       setTimeout(() => {
-        const mockUser: User = {
-          id: '1',
-          email: 'user@example.com',
-          firstName: 'John',
-          lastName: 'Doe',
-          role: 'individual',
-          isVerified: true,
-          createdAt: new Date().toISOString(),
-        };
+        const mockUser: User = getDemoUser(storedRole || 'individual');
         setUser(mockUser);
         setIsLoading(false);
       }, 1000);
@@ -41,32 +34,75 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
+  const getDemoUser = (role: UserRole): User => {
+    const baseUser = {
+      id: '1',
+      email: 'user@example.com',
+      firstName: 'John',
+      lastName: 'Doe',
+      isVerified: true,
+      createdAt: new Date().toISOString(),
+    };
+
+    switch (role) {
+      case 'organization-admin':
+        return {
+          ...baseUser,
+          email: 'admin@techcorp.com',
+          firstName: 'Sarah',
+          lastName: 'Johnson',
+          role: 'organization-admin',
+          organizationId: 'org-1',
+          organizationName: 'TechCorp Nigeria',
+        };
+      case 'organization-member':
+        return {
+          ...baseUser,
+          email: 'member@techcorp.com',
+          firstName: 'David',
+          lastName: 'Okafor',
+          role: 'organization-member',
+          organizationId: 'org-1',
+          organizationName: 'TechCorp Nigeria',
+        };
+      case 'admin':
+        return {
+          ...baseUser,
+          email: 'gov@fmc.gov.ng',
+          firstName: 'Dr. Amina',
+          lastName: 'Mohammed',
+          role: 'admin',
+        };
+      default:
+        return {
+          ...baseUser,
+          role: 'individual',
+        };
+    }
+  };
+
   const login = async (email: string, password: string) => {
     setIsLoading(true);
     try {
       // TODO: Replace with actual API call
       console.log('Logging in with:', { email, password });
       
-      // Simulate API response
-      const response = await new Promise<{ user: User; token: string }>((resolve) => {
-        setTimeout(() => {
-          resolve({
-            user: {
-              id: '1',
-              email,
-              firstName: 'John',
-              lastName: 'Doe',
-              role: 'individual',
-              isVerified: true,
-              createdAt: new Date().toISOString(),
-            },
-            token: 'mock_jwt_token',
-          });
-        }, 1000);
-      });
+      // Determine role based on email for demo purposes
+      let role: UserRole = 'individual';
+      if (email.includes('admin@')) {
+        role = 'organization-admin';
+      } else if (email.includes('member@')) {
+        role = 'organization-member';
+      } else if (email.includes('gov@') || email.includes('@fmc.')) {
+        role = 'admin';
+      }
+      
+      const mockUser = getDemoUser(role);
+      mockUser.email = email;
 
-      localStorage.setItem('auth_token', response.token);
-      setUser(response.user);
+      localStorage.setItem('auth_token', 'mock_jwt_token');
+      localStorage.setItem('user_role', role);
+      setUser(mockUser);
     } catch (error) {
       console.error('Login failed:', error);
       throw error;
@@ -95,7 +131,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = () => {
     localStorage.removeItem('auth_token');
+    localStorage.removeItem('user_role');
     setUser(null);
+  };
+
+  const switchRole = (role: UserRole) => {
+    const newUser = getDemoUser(role);
+    localStorage.setItem('user_role', role);
+    setUser(newUser);
   };
 
   const verifyOTP = async (otp: string) => {
@@ -125,6 +168,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     verifyOTP,
     forgotPassword,
     resetPassword,
+    switchRole,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -42,11 +42,11 @@ const DashboardHome = () => {
   };
 
   // Render specific dashboard based on user role
-  if (user?.role === 'government' as any) {
+  if (user?.role === 'admin') {
     return <GovernmentDashboard />;
   }
   
-  if (user?.role === 'organization' as any) {
+  if (user?.role === 'organization-admin' || user?.role === 'organization-member' || user?.role === 'organization') {
     return <OrganizationDashboard />;
   }
 

@@ -1,5 +1,5 @@
 
-export type UserRole = 'individual' | 'organization' | 'admin';
+export type UserRole = 'individual' | 'organization' | 'organization-admin' | 'organization-member' | 'admin';
 
 export interface User {
   id: string;
@@ -23,6 +23,7 @@ export interface AuthContextType {
   verifyOTP: (otp: string) => Promise<void>;
   forgotPassword: (email: string) => Promise<void>;
   resetPassword: (token: string, password: string) => Promise<void>;
+  switchRole: (role: UserRole) => void;
 }
 
 export interface SignupData {
