@@ -1,372 +1,288 @@
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
+import { useToast } from '@/hooks/use-toast';
+import SearchTable from '@/components/common/SearchTable';
 import { 
   Upload, 
-  FileText, 
   Download, 
+  FileText, 
   CheckCircle, 
-  AlertCircle,
+  AlertCircle, 
+  Clock,
   X,
-  ArrowRight,
-  BarChart3
+  RefreshCw
 } from 'lucide-react';
 
-interface CSVField {
-  name: string;
-  type: 'name' | 'address' | 'phone' | 'id' | 'ignore';
-  required: boolean;
-}
-
-interface BulkResult {
+interface BulkUploadItem {
   id: string;
-  originalData: Record<string, string>;
-  verificationResult: {
-    status: 'verified' | 'partial' | 'failed';
-    confidenceScore: number;
-    verifiedAddress?: string;
-    matchDetails: {
-      streetMatch: number;
-      cityMatch: number;
-      postalMatch: number;
-    };
-  };
+  address: string;
+  status: 'pending' | 'processing' | 'completed' | 'failed';
+  result?: string;
+  confidence?: number;
+  timestamp: string;
+  error?: string;
 }
 
-const BulkUploadPage = () => {
-  const [file, setFile] = useState<File | null>(null);
-  const [csvFields, setCsvFields] = useState<CSVField[]>([]);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [results, setResults] = useState<BulkResult[]>([]);
-  const [currentStep, setCurrentStep] = useState<'upload' | 'mapping' | 'processing' | 'results'>('upload');
-  const fileInputRef = useRef<HTMLInputElement>(null);
+const BulkUploadPage: React.FC = () => {
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadedData, setUploadedData] = useState<BulkUploadItem[]>([]);
+  const { toast } = useToast();
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const uploadedFile = event.target.files?.[0];
-    if (uploadedFile && uploadedFile.type === 'text/csv') {
-      setFile(uploadedFile);
-      // Parse CSV headers (mock implementation)
-      const mockHeaders = ['Name', 'Street Address', 'City', 'Phone Number', 'Email'];
-      setCsvFields(mockHeaders.map(header => ({
-        name: header,
-        type: header.toLowerCase().includes('address') ? 'address' : 
-              header.toLowerCase().includes('name') ? 'name' :
-              header.toLowerCase().includes('phone') ? 'phone' : 'ignore',
-        required: header.toLowerCase().includes('address') || header.toLowerCase().includes('name')
-      })));
-      setCurrentStep('mapping');
+  const sampleData: BulkUploadItem[] = [
+    {
+      id: '1',
+      address: '15 Admiralty Way, Lekki Phase 1, Lagos',
+      status: 'completed',
+      result: 'Verified',
+      confidence: 98,
+      timestamp: '2024-01-15T10:30:00Z',
+    },
+    {
+      id: '2',
+      address: '23 Gana Street, Maitama, Abuja',
+      status: 'processing',
+      timestamp: '2024-01-15T10:32:00Z',
+    },
+    {
+      id: '3',
+      address: '45 Awolowo Road, Ikoyi, Lagos',
+      status: 'failed',
+      error: 'Address format invalid',
+      timestamp: '2024-01-15T10:35:00Z',
+    },
+    {
+      id: '4',
+      address: '12 Herbert Macaulay Street, Central Area, Abuja',
+      status: 'pending',
+      timestamp: '2024-01-15T10:40:00Z',
+    },
+  ];
+
+  const handleFileUpload = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (!file.name.endsWith('.csv') && !file.name.endsWith('.xlsx')) {
+      toast({
+        title: "Invalid File Type",
+        description: "Please upload a CSV or Excel file.",
+        variant: "destructive",
+      });
+      return;
     }
-  };
 
-  const handleFieldMapping = (index: number, type: CSVField['type']) => {
-    const updatedFields = [...csvFields];
-    updatedFields[index].type = type;
-    setCsvFields(updatedFields);
-  };
+    setIsUploading(true);
+    setUploadProgress(0);
 
-  const startProcessing = async () => {
-    setCurrentStep('processing');
-    setIsProcessing(true);
-    setProgress(0);
-
-    // Simulate bulk processing
-    const totalRecords = 100; // Mock total
-    const mockResults: BulkResult[] = [];
-
-    for (let i = 0; i < totalRecords; i++) {
-      await new Promise(resolve => setTimeout(resolve, 50)); // Simulate processing time
-      
-      const mockResult: BulkResult = {
-        id: `bulk_${i}`,
-        originalData: {
-          name: `Person ${i + 1}`,
-          address: `${Math.floor(Math.random() * 999) + 1} Sample Street, Lagos`,
-          phone: `+234${Math.floor(Math.random() * 9000000000) + 1000000000}`,
-        },
-        verificationResult: {
-          status: Math.random() > 0.8 ? 'failed' : Math.random() > 0.3 ? 'verified' : 'partial',
-          confidenceScore: Math.floor(Math.random() * 40) + 60,
-          verifiedAddress: `${Math.floor(Math.random() * 999) + 1} Verified Street, Lagos State, Nigeria`,
-          matchDetails: {
-            streetMatch: Math.floor(Math.random() * 30) + 70,
-            cityMatch: Math.floor(Math.random() * 20) + 80,
-            postalMatch: Math.floor(Math.random() * 40) + 60
-          }
+    // Simulate upload progress
+    const interval = setInterval(() => {
+      setUploadProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          setIsUploading(false);
+          setUploadedData(sampleData);
+          toast({
+            title: "Upload Complete",
+            description: `Successfully uploaded ${sampleData.length} addresses for verification.`,
+          });
+          return 100;
         }
-      };
+        return prev + 10;
+      });
+    }, 200);
+  }, [toast]);
 
-      mockResults.push(mockResult);
-      setProgress(((i + 1) / totalRecords) * 100);
-    }
-
-    setResults(mockResults);
-    setIsProcessing(false);
-    setCurrentStep('results');
+  const handleExport = (format: 'csv' | 'pdf') => {
+    console.log(`Exporting as ${format}`);
+    toast({
+      title: "Export Started",
+      description: `Your ${format.toUpperCase()} file will be ready shortly.`,
+    });
   };
 
-  const exportResults = (format: 'csv' | 'pdf') => {
-    // Mock export functionality
-    console.log(`Exporting ${results.length} results as ${format.toUpperCase()}`);
-    // In real implementation, this would generate and download the file
+  const getStatusBadge = (status: string) => {
+    const statusConfig = {
+      pending: { variant: 'secondary' as const, icon: Clock, color: 'text-gray-600' },
+      processing: { variant: 'default' as const, icon: RefreshCw, color: 'text-blue-600' },
+      completed: { variant: 'default' as const, icon: CheckCircle, color: 'text-green-600' },
+      failed: { variant: 'destructive' as const, icon: AlertCircle, color: 'text-red-600' },
+    };
+
+    const config = statusConfig[status as keyof typeof statusConfig];
+    const Icon = config.icon;
+
+    return (
+      <Badge variant={config.variant} className="flex items-center gap-1">
+        <Icon className={`h-3 w-3 ${config.color}`} />
+        {status.charAt(0).toUpperCase() + status.slice(1)}
+      </Badge>
+    );
   };
 
-  const resetUpload = () => {
-    setFile(null);
-    setCsvFields([]);
-    setResults([]);
-    setProgress(0);
-    setCurrentStep('upload');
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
-  };
+  const columns = [
+    {
+      key: 'address' as const,
+      label: 'Address',
+      sortable: true,
+      filterable: true,
+      width: '40%',
+    },
+    {
+      key: 'status' as const,
+      label: 'Status',
+      sortable: true,
+      filterable: true,
+      render: (value: string) => getStatusBadge(value),
+    },
+    {
+      key: 'result' as const,
+      label: 'Result',
+      render: (value: string, item: BulkUploadItem) => {
+        if (item.status === 'completed' && value) {
+          return (
+            <div className="flex items-center gap-2">
+              <span>{value}</span>
+              {item.confidence && (
+                <Badge variant="outline" className="text-xs">
+                  {item.confidence}%
+                </Badge>
+              )}
+            </div>
+          );
+        }
+        if (item.status === 'failed' && item.error) {
+          return <span className="text-red-600 text-sm">{item.error}</span>;
+        }
+        return <span className="text-gray-400">-</span>;
+      },
+    },
+    {
+      key: 'timestamp' as const,
+      label: 'Timestamp',
+      render: (value: string) => new Date(value).toLocaleString(),
+    },
+  ];
 
-  const getStatusStats = () => {
-    const verified = results.filter(r => r.verificationResult.status === 'verified').length;
-    const partial = results.filter(r => r.verificationResult.status === 'partial').length;
-    const failed = results.filter(r => r.verificationResult.status === 'failed').length;
-    return { verified, partial, failed, total: results.length };
+  const stats = {
+    total: uploadedData.length,
+    completed: uploadedData.filter(item => item.status === 'completed').length,
+    failed: uploadedData.filter(item => item.status === 'failed').length,
+    pending: uploadedData.filter(item => item.status === 'pending' || item.status === 'processing').length,
   };
-
-  const stats = getStatusStats();
 
   return (
     <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-bold text-gray-900">Bulk Address Verification</h2>
-        <p className="text-gray-600">Upload CSV files and verify multiple addresses at once</p>
+        <p className="text-gray-600">Upload CSV or Excel files to verify multiple addresses at once</p>
       </div>
 
-      {/* Progress Steps */}
-      <div className="flex items-center justify-between mb-8">
-        {[
-          { step: 'upload', label: 'Upload CSV', icon: Upload },
-          { step: 'mapping', label: 'Map Fields', icon: ArrowRight },
-          { step: 'processing', label: 'Processing', icon: BarChart3 },
-          { step: 'results', label: 'Results', icon: CheckCircle }
-        ].map(({ step, label, icon: Icon }, index) => (
-          <div key={step} className="flex items-center">
-            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${
-              currentStep === step ? 'bg-blue-600 text-white' :
-              ['mapping', 'processing', 'results'].indexOf(currentStep) > ['upload', 'mapping', 'processing', 'results'].indexOf(step) - 1
-                ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-600'
-            }`}>
-              <Icon className="h-4 w-4" />
-            </div>
-            <span className="ml-2 text-sm font-medium text-gray-700">{label}</span>
-            {index < 3 && <ArrowRight className="h-4 w-4 text-gray-400 mx-4" />}
-          </div>
-        ))}
-      </div>
-
-      {/* Upload Step */}
-      {currentStep === 'upload' && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Upload CSV File</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
-              <Upload className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <div className="space-y-2">
-                <p className="text-lg font-medium text-gray-900">
-                  Choose a CSV file to upload
-                </p>
-                <p className="text-gray-600">
-                  File should contain address data in CSV format (max 10MB)
-                </p>
-              </div>
+      {/* Upload Area */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Upload Addresses</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+            <Upload className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+            <div className="space-y-2">
+              <p className="text-lg font-medium">Drop your file here or click to browse</p>
+              <p className="text-sm text-gray-500">Supports CSV and Excel files up to 10MB</p>
               <input
-                ref={fileInputRef}
                 type="file"
-                accept=".csv"
+                accept=".csv,.xlsx,.xls"
                 onChange={handleFileUpload}
                 className="hidden"
+                id="file-upload"
               />
-              <Button 
-                onClick={() => fileInputRef.current?.click()}
-                className="mt-4"
-              >
-                <Upload className="h-4 w-4 mr-2" />
-                Select CSV File
+              <Button asChild className="mt-4">
+                <label htmlFor="file-upload" className="cursor-pointer">
+                  <FileText className="h-4 w-4 mr-2" />
+                  Choose File
+                </label>
               </Button>
             </div>
-          </CardContent>
-        </Card>
-      )}
+          </div>
 
-      {/* Field Mapping Step */}
-      {currentStep === 'mapping' && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center justify-between">
-              Map CSV Fields
-              <Button variant="outline" onClick={resetUpload} size="sm">
-                <X className="h-4 w-4 mr-2" />
-                Change File
+          {isUploading && (
+            <div className="space-y-2">
+              <div className="flex justify-between text-sm">
+                <span>Uploading...</span>
+                <span>{uploadProgress}%</span>
+              </div>
+              <Progress value={uploadProgress} className="w-full" />
+            </div>
+          )}
+
+          <div className="flex gap-4 text-sm text-gray-600">
+            <div className="flex items-center gap-2">
+              <Download className="h-4 w-4" />
+              <Button variant="link" className="p-0 h-auto text-sm">
+                Download Sample Template
               </Button>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="bg-blue-50 p-4 rounded-lg">
-              <p className="text-sm text-blue-800">
-                <FileText className="h-4 w-4 inline mr-2" />
-                File: {file?.name} ({((file?.size || 0) / 1024).toFixed(1)} KB)
-              </p>
             </div>
-
-            <div className="space-y-3">
-              <h4 className="font-medium text-gray-900">Map your CSV columns to data types:</h4>
-              {csvFields.map((field, index) => (
-                <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <span className="font-medium text-gray-900">{field.name}</span>
-                    {field.required && (
-                      <Badge variant="outline" className="text-xs">Required</Badge>
-                    )}
-                  </div>
-                  <div className="flex gap-2">
-                    {['name', 'address', 'phone', 'id', 'ignore'].map((type) => (
-                      <Button
-                        key={type}
-                        variant={field.type === type ? 'default' : 'outline'}
-                        size="sm"
-                        onClick={() => handleFieldMapping(index, type as CSVField['type'])}
-                      >
-                        {type.charAt(0).toUpperCase() + type.slice(1)}
-                      </Button>
-                    ))}
-                  </div>
-                </div>
-              ))}
+            <div className="flex items-center gap-2">
+              <FileText className="h-4 w-4" />
+              <Button variant="link" className="p-0 h-auto text-sm">
+                View Upload Guidelines
+              </Button>
             </div>
+          </div>
+        </CardContent>
+      </Card>
 
-            <Button 
-              onClick={startProcessing}
-              className="w-full"
-              disabled={!csvFields.some(f => f.type === 'address')}
-            >
-              Start Processing ({csvFields.filter(f => f.type !== 'ignore').length} mapped fields)
-            </Button>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Processing Step */}
-      {currentStep === 'processing' && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Processing Bulk Verification</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="text-center space-y-4">
-              <div className="text-2xl font-bold text-blue-600">{Math.round(progress)}%</div>
-              <Progress value={progress} className="h-3" />
-              <p className="text-gray-600">
-                {isProcessing ? 'Verifying addresses...' : 'Processing complete!'}
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Results Step */}
-      {currentStep === 'results' && (
-        <div className="space-y-6">
-          {/* Results Summary */}
+      {/* Results */}
+      {uploadedData.length > 0 && (
+        <>
+          {/* Statistics */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <Card>
-              <CardContent className="pt-6">
+              <CardContent className="p-4 text-center">
                 <div className="text-2xl font-bold">{stats.total}</div>
-                <p className="text-sm text-gray-600">Total Processed</p>
+                <div className="text-sm text-gray-600">Total</div>
               </CardContent>
             </Card>
             <Card>
-              <CardContent className="pt-6">
-                <div className="text-2xl font-bold text-green-600">{stats.verified}</div>
-                <p className="text-sm text-gray-600">Verified</p>
+              <CardContent className="p-4 text-center">
+                <div className="text-2xl font-bold text-green-600">{stats.completed}</div>
+                <div className="text-sm text-gray-600">Completed</div>
               </CardContent>
             </Card>
             <Card>
-              <CardContent className="pt-6">
-                <div className="text-2xl font-bold text-yellow-600">{stats.partial}</div>
-                <p className="text-sm text-gray-600">Partial Match</p>
+              <CardContent className="p-4 text-center">
+                <div className="text-2xl font-bold text-yellow-600">{stats.pending}</div>
+                <div className="text-sm text-gray-600">Pending</div>
               </CardContent>
             </Card>
             <Card>
-              <CardContent className="pt-6">
+              <CardContent className="p-4 text-center">
                 <div className="text-2xl font-bold text-red-600">{stats.failed}</div>
-                <p className="text-sm text-gray-600">Failed</p>
+                <div className="text-sm text-gray-600">Failed</div>
               </CardContent>
             </Card>
           </div>
 
-          {/* Export Options */}
+          {/* Results Table */}
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                Export Results
-                <Button onClick={resetUpload} variant="outline">
-                  Process New File
-                </Button>
-              </CardTitle>
+              <CardTitle>Verification Results</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="flex gap-3">
-                <Button onClick={() => exportResults('csv')} className="flex-1">
-                  <Download className="h-4 w-4 mr-2" />
-                  Export as CSV
-                </Button>
-                <Button onClick={() => exportResults('pdf')} variant="outline" className="flex-1">
-                  <Download className="h-4 w-4 mr-2" />
-                  Export as PDF
-                </Button>
-              </div>
+              <SearchTable
+                data={uploadedData}
+                columns={columns}
+                searchPlaceholder="Search addresses..."
+                onExport={handleExport}
+                pageSize={10}
+              />
             </CardContent>
           </Card>
-
-          {/* Results Preview */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Results Preview</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2 max-h-96 overflow-y-auto">
-                {results.slice(0, 10).map((result, index) => (
-                  <div key={result.id} className="flex items-center justify-between p-3 border rounded-lg">
-                    <div className="flex-1">
-                      <p className="font-medium">{result.originalData.address}</p>
-                      <p className="text-sm text-gray-600">{result.verificationResult.verifiedAddress}</p>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Badge className={
-                        result.verificationResult.status === 'verified' ? 'bg-green-100 text-green-800' :
-                        result.verificationResult.status === 'partial' ? 'bg-yellow-100 text-yellow-800' :
-                        'bg-red-100 text-red-800'
-                      }>
-                        {result.verificationResult.confidenceScore}%
-                      </Badge>
-                      {result.verificationResult.status === 'verified' ? (
-                        <CheckCircle className="h-5 w-5 text-green-600" />
-                      ) : (
-                        <AlertCircle className="h-5 w-5 text-yellow-600" />
-                      )}
-                    </div>
-                  </div>
-                ))}
-                {results.length > 10 && (
-                  <p className="text-center text-gray-500 py-4">
-                    ... and {results.length - 10} more results
-                  </p>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+        </>
       )}
     </div>
   );

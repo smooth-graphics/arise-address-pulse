@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -57,11 +56,9 @@ function SearchTable<T extends Record<string, any>>({
   const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState<Record<string, string>>({});
 
-  // Filter and search data
   const filteredData = useMemo(() => {
     let filtered = data;
 
-    // Apply search
     if (searchQuery.trim()) {
       filtered = filtered.filter(item =>
         Object.values(item).some(value =>
@@ -70,7 +67,6 @@ function SearchTable<T extends Record<string, any>>({
       );
     }
 
-    // Apply column filters
     Object.entries(filters).forEach(([key, value]) => {
       if (value.trim()) {
         filtered = filtered.filter(item =>
@@ -82,7 +78,6 @@ function SearchTable<T extends Record<string, any>>({
     return filtered;
   }, [data, searchQuery, filters]);
 
-  // Sort data
   const sortedData = useMemo(() => {
     if (!sortConfig.key) return filteredData;
 
@@ -100,7 +95,6 @@ function SearchTable<T extends Record<string, any>>({
     });
   }, [filteredData, sortConfig]);
 
-  // Paginate data
   const paginatedData = useMemo(() => {
     const startIndex = (currentPage - 1) * pageSize;
     const endIndex = startIndex + pageSize;
@@ -130,7 +124,6 @@ function SearchTable<T extends Record<string, any>>({
 
   return (
     <div className={`space-y-4 ${className}`}>
-      {/* Search and Export Controls */}
       <div className="flex flex-col sm:flex-row gap-4 justify-between">
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -169,7 +162,6 @@ function SearchTable<T extends Record<string, any>>({
         )}
       </div>
 
-      {/* Column Filters */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
         {columns.filter(col => col.filterable).map(column => (
           <div key={String(column.key)} className="relative">
@@ -185,7 +177,6 @@ function SearchTable<T extends Record<string, any>>({
         ))}
       </div>
 
-      {/* Table */}
       <div className="border rounded-lg overflow-hidden">
         <Table>
           <TableHeader>
@@ -194,7 +185,7 @@ function SearchTable<T extends Record<string, any>>({
                 <TableHead 
                   key={String(column.key)}
                   className={`${column.sortable ? 'cursor-pointer hover:bg-gray-50' : ''}`}
-                  style={{ width: column.width }}
+                  style={column.width ? { width: column.width } : undefined}
                   onClick={() => column.sortable && handleSort(column.key)}
                 >
                   <div className="flex items-center gap-2">
@@ -245,7 +236,6 @@ function SearchTable<T extends Record<string, any>>({
         </Table>
       </div>
 
-      {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex items-center justify-between">
           <div className="text-sm text-gray-600">
@@ -261,7 +251,6 @@ function SearchTable<T extends Record<string, any>>({
               Previous
             </Button>
             
-            {/* Page Numbers */}
             {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
               const startPage = Math.max(1, Math.min(
                 totalPages - 4,
