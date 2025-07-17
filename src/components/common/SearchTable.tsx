@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -262,10 +263,11 @@ function SearchTable<T extends Record<string, any>>({
             
             {/* Page Numbers */}
             {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-              const pageNumber = Math.max(1, Math.min(
+              const startPage = Math.max(1, Math.min(
                 totalPages - 4,
                 currentPage - 2
-              )) + i;
+              ));
+              const pageNumber = startPage + i;
               
               if (pageNumber > totalPages) return null;
               
