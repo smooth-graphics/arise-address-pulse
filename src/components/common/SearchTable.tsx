@@ -171,8 +171,7 @@ function SearchTable<T extends Record<string, any>>({
               placeholder={`Filter ${column.label}...`}
               value={filters[String(column.key)] || ''}
               onChange={(e) => handleFilter(String(column.key), e.target.value)}
-              className="pl-8 text-xs"
-              size="sm"
+              className="pl-8 text-xs h-8"
             />
           </div>
         ))}
