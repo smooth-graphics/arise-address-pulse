@@ -38,8 +38,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const baseUser = {
       id: '1',
       email: 'user@example.com',
-      firstName: 'John',
-      lastName: 'Doe',
+      firstName: 'Onu',
+      lastName: 'Omar-Ikage',
       isVerified: true,
       createdAt: new Date().toISOString(),
     };
@@ -49,8 +49,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return {
           ...baseUser,
           email: 'admin@techcorp.com',
-          firstName: 'Sarah',
-          lastName: 'Johnson',
+          firstName: 'Onu',
+          lastName: 'Omar-Ikage',
           role: 'organization-admin',
           organizationId: 'org-1',
           organizationName: 'TechCorp Nigeria',
@@ -59,8 +59,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return {
           ...baseUser,
           email: 'member@techcorp.com',
-          firstName: 'David',
-          lastName: 'Okafor',
+          firstName: 'Onu',
+          lastName: 'Omar-Ikage',
           role: 'organization-member',
           organizationId: 'org-1',
           organizationName: 'TechCorp Nigeria',

@@ -57,8 +57,7 @@ const DashboardHome = () => {
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="relative z-10 flex justify-between items-center">
           <div className="space-y-2">
-            { /*<h2 className="text-3xl font-bold">Welcome back, {user?.firstName}!</h2>*/}
-            <h2 className="text-3xl font-bold">Welcome back, {Admin Okafor}!</h2>
+            <h2 className="text-3xl font-bold">Welcome back, {user?.firstName || 'Onu Omar-Ikage'}!</h2>
             <p className="text-white/90 text-lg">Your personal address verification hub</p>
             <div className="flex items-center gap-4 mt-4">
               <div className="flex items-center gap-2">
