@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { Outlet, useNavigate, useLocation, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { 
@@ -177,9 +177,9 @@ const SidebarContent = ({ navigationItems, user, onLogout }: any) => {
         {navigationItems.map((item: any) => {
           const isActive = location.pathname === item.href;
           return (
-            <a
+            <Link
               key={item.name}
-              href={item.href}
+              to={item.href}
               className={`group flex items-center px-2 py-2 text-sm font-medium rounded-md ${
                 isActive
                   ? 'bg-bold-red text-white'
@@ -192,7 +192,7 @@ const SidebarContent = ({ navigationItems, user, onLogout }: any) => {
                 }`}
               />
               {item.name}
-            </a>
+            </Link>
           );
         })}
       </nav>

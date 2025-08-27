@@ -40,6 +40,20 @@ import Documents from "./pages/dashboard/Documents";
 import Notifications from "./pages/dashboard/Notifications";
 import Search from "./pages/dashboard/Search";
 
+// Admin pages
+import Users from "./pages/dashboard/Users";
+import VerificationQueue from "./pages/dashboard/VerificationQueue";
+import ApiMonitor from "./pages/dashboard/ApiMonitor";
+import DashboardPricing from "./pages/dashboard/DashboardPricing";
+import DashboardSettings from "./pages/dashboard/DashboardSettings";
+
+// Organization pages
+import BulkUpload from "./pages/dashboard/BulkUpload";
+import Verifications from "./pages/dashboard/Verifications";
+import ApiAccess from "./pages/dashboard/ApiAccess";
+import Activity from "./pages/dashboard/Activity";
+import Billing from "./pages/dashboard/Billing";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -156,6 +170,20 @@ const App = () => (
               <Route path="documents" element={<Documents />} />
               <Route path="notifications" element={<Notifications />} />
               <Route path="search" element={<Search />} />
+              
+              {/* Admin routes */}
+              <Route path="users" element={<Users />} />
+              <Route path="queue" element={<VerificationQueue />} />
+              <Route path="api-monitor" element={<ApiMonitor />} />
+              <Route path="pricing" element={<DashboardPricing />} />
+              <Route path="settings" element={<DashboardSettings />} />
+              
+              {/* Organization routes */}
+              <Route path="bulk-upload" element={<BulkUpload />} />
+              <Route path="verifications" element={<Verifications />} />
+              <Route path="api" element={<ApiAccess />} />
+              <Route path="activity" element={<Activity />} />
+              <Route path="billing" element={<Billing />} />
             </Route>
 
             {/* 404 route */}
