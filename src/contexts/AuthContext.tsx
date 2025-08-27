@@ -69,8 +69,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return {
           ...baseUser,
           email: 'gov@fmc.gov.ng',
-          firstName: 'Dr. Amina',
-          lastName: 'Mohammed',
+          firstName: 'Dr. Onu',
+          lastName: 'Omar-Ikaige',
           role: 'admin',
         };
       default:
