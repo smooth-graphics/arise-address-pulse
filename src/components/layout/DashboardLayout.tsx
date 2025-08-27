@@ -99,12 +99,18 @@ const DashboardLayout = () => {
         </div>
       )}
 
-      {/* Desktop sidebar */}
-      <div className="hidden lg:flex lg:flex-shrink-0">
+      {/* Desktop sidebar <div className="hidden lg:flex lg:flex-shrink-0">
         <div className="flex flex-col w-64">
           <SidebarContent navigationItems={navigationItems} user={user} onLogout={handleLogout} />
         </div>
-      </div>
+      </div>*/}
+      <div className="hidden lg:flex lg:flex-shrink-0">
+  {/* Apply the fixed positioning and height classes to this div */}
+  <div className="fixed top-0 left-0 flex h-screen w-64 flex-col">
+    <SidebarContent navigationItems={navigationItems} user={user} onLogout={handleLogout} />
+  </div>
+</div>
+      
 
       {/* Main content */}
       <div className="flex-1 flex flex-col overflow-hidden">
