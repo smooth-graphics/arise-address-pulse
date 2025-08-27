@@ -7,16 +7,15 @@ import { CheckCircle, X, ArrowRight, MapPin, Shield, Zap } from 'lucide-react';
 const Pricing = () => {
   const plans = [
     {
-      name: "Starter",
+      name: "Basic",
       price: "₦5,000",
       period: "/month",
       description: "Perfect for small businesses just getting started with address verification",
       features: [
-        "1,000 address verifications/month",
-        "500 identity verifications/month", 
+        "50 address verifications/month",
+        "25 identity verifications/month", 
         "Nigerian postal code validation",
         "Basic API access",
-        "Email support",
         "Standard response time"
       ],
       notIncluded: [
@@ -34,8 +33,8 @@ const Pricing = () => {
       period: "/month",
       description: "Ideal for growing businesses with moderate verification needs",
       features: [
-        "10,000 address verifications/month",
-        "5,000 identity verifications/month",
+        "500 address verifications/month",
+        "125 identity verifications/month",
         "Global address validation (240+ countries)",
         "Document verification",
         "Bulk CSV processing",
@@ -58,8 +57,8 @@ const Pricing = () => {
       period: "",
       description: "For large organizations with high-volume verification requirements",
       features: [
-        "Unlimited address verifications",
-        "Unlimited identity verifications",
+        "1500 address verifications/month",
+        "500 identity verifications/month",
         "Custom verification rules",
         "Advanced fraud detection",
         "White-label solutions",
