@@ -49,7 +49,7 @@ const OrganizationDashboard = () => {
   const teamMembers: TeamMember[] = [
     {
       id: '1',
-      name: 'Admin Okafor',
+      name: 'David Okafor',
       email: 'david@techcorp.com',
       role: 'Member',
       status: 'active',
