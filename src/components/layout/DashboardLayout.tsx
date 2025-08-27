@@ -35,6 +35,7 @@ const DashboardLayout = () => {
   };
 
   const getNavigationItems = () => {
+    // ... (Your getNavigationItems function remains the same)
     if (user?.role === 'admin') {
       return [
         { name: 'Overview', href: '/dashboard', icon: Home },
@@ -99,21 +100,16 @@ const DashboardLayout = () => {
         </div>
       )}
 
-      {/* Desktop sidebar <div className="hidden lg:flex lg:flex-shrink-0">
-        <div className="flex flex-col w-64">
+      {/* Desktop sidebar */}
+      <div className="hidden lg:flex lg:flex-shrink-0">
+        <div className="fixed top-0 left-0 flex h-screen w-64 flex-col">
           <SidebarContent navigationItems={navigationItems} user={user} onLogout={handleLogout} />
         </div>
-      </div>*/}
-      <div className="hidden lg:flex lg:flex-shrink-0">
-  {/* Apply the fixed positioning and height classes to this div */}
-  <div className="fixed top-0 left-0 flex h-screen w-64 flex-col">
-    <SidebarContent navigationItems={navigationItems} user={user} onLogout={handleLogout} />
-  </div>
-</div>
+      </div>
       
-
       {/* Main content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      {/* ✅ THIS IS THE CORRECTED LINE 👇 */}
+      <div className="flex-1 flex flex-col overflow-hidden lg:ml-64">
         {/* Top navigation */}
         <div className="bg-white shadow-sm border-b">
           <div className="px-4 sm:px-6 lg:px-8">
@@ -160,6 +156,8 @@ const DashboardLayout = () => {
   );
 };
 
+
+// Your SidebarContent component remains unchanged
 const SidebarContent = ({ navigationItems, user, onLogout }: any) => {
   const location = useLocation();
 
