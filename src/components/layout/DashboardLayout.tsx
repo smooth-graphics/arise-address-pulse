@@ -35,44 +35,21 @@ const DashboardLayout = () => {
   };
 
   const getNavigationItems = () => {
-    // ... (Your getNavigationItems function remains the same)
-    if (user?.role === 'admin') {
-      return [
-        { name: 'Overview', href: '/dashboard', icon: Home },
-        { name: 'Search', href: '/dashboard/search', icon: Search },
-        { name: 'Users', href: '/dashboard/users', icon: Users },
-        { name: 'Verification Queue', href: '/dashboard/queue', icon: List },
-        { name: 'Documents', href: '/dashboard/documents', icon: FileText },
-        { name: 'API Monitor', href: '/dashboard/api-monitor', icon: Activity },
-        { name: 'Pricing', href: '/dashboard/pricing', icon: CreditCard },
-        { name: 'Settings', href: '/dashboard/settings', icon: Settings },
-      ];
-    }
-    
-    if (user?.role === 'organization') {
-      return [
-        { name: 'Overview', href: '/dashboard', icon: Home },
-        { name: 'Search', href: '/dashboard/search', icon: Search },
-        { name: 'Profile', href: '/dashboard/profile', icon: Building },
-        { name: 'Bulk Upload', href: '/dashboard/bulk-upload', icon: Upload },
-        { name: 'Verifications', href: '/dashboard/verifications', icon: FileText },
-        { name: 'Documents', href: '/dashboard/documents', icon: FileText },
-        { name: 'API Access', href: '/dashboard/api', icon: Key },
-        { name: 'Activity', href: '/dashboard/activity', icon: Activity },
-        { name: 'Billing', href: '/dashboard/billing', icon: CreditCard },
-      ];
-    }
-    
-    // Individual user
-    return [
-      { name: 'Overview', href: '/dashboard', icon: Home },
-      { name: 'Profile', href: '/dashboard/profile', icon: User },
-      { name: 'Verify Address', href: '/dashboard/verify', icon: MapPin },
-      { name: 'Search', href: '/dashboard/search', icon: Search },
-      { name: 'Documents', href: '/dashboard/documents', icon: FileText },
-      { name: 'History', href: '/dashboard/history', icon: History },
-      { name: 'Notifications', href: '/dashboard/notifications', icon: Bell },
+    // GenIEtal simplified navigation structure
+    const mainItems = [
+      { name: 'Verify', href: '/dashboard/search', icon: Search, group: 'main' },
+      { name: 'Overview', href: '/dashboard', icon: Home, group: 'main' },
+      { name: 'My Documents', href: '/dashboard/documents', icon: FileText, group: 'main' },
+      { name: 'History', href: '/dashboard/history', icon: History, group: 'main' },
     ];
+
+    const accountItems = [
+      { name: 'Profile', href: '/dashboard/profile', icon: User, group: 'account' },
+      { name: 'Settings', href: '/dashboard/settings', icon: Settings, group: 'account' },
+      { name: 'Upgrade Plan', href: '/dashboard/billing', icon: CreditCard, group: 'account' },
+    ];
+
+    return [...mainItems, ...accountItems];
   };
 
   const navigationItems = getNavigationItems();
@@ -102,53 +79,38 @@ const DashboardLayout = () => {
 
       {/* Desktop sidebar */}
       <div className="hidden lg:flex lg:flex-shrink-0">
-        <div className="fixed top-0 left-0 flex h-screen w-64 flex-col">
+        <div className="fixed top-0 left-0 flex h-screen w-80 flex-col">
           <SidebarContent navigationItems={navigationItems} user={user} onLogout={handleLogout} />
         </div>
       </div>
       
       {/* Main content */}
-      {/* ✅ THIS IS THE CORRECTED LINE 👇 */}
-      <div className="flex-1 flex flex-col overflow-hidden lg:ml-64">
-        {/* Top navigation */}
-        <div className="bg-white shadow-sm border-b">
-          <div className="px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between h-16">
-              <div className="flex items-center">
-                <button
-                  onClick={() => setSidebarOpen(true)}
-                  className="lg:hidden -ml-0.5 -mt-0.5 h-12 w-12 inline-flex items-center justify-center rounded-md text-gray-500 hover:text-gray-900"
-                >
-                  <Menu className="h-6 w-6" />
-                </button>
-                <h1 className="ml-4 lg:ml-0 text-lg font-semibold text-gray-900">
-                  {user?.role === 'admin' ? 'Admin Dashboard' : 
-                   user?.role === 'organization' ? 'Organization Dashboard' : 
-                   'Dashboard'}
-                </h1>
-              </div>
-              <div className="flex items-center space-x-4">
-                <span className="text-sm text-gray-700">
-                  {user?.firstName} {user?.lastName}
-                </span>
-                <Button
-                  onClick={() => navigate('/dashboard/notifications')}
-                  variant="ghost"
-                  size="icon"
-                >
-                  <Bell className="h-5 w-5" />
-                </Button>
-              </div>
+      <div className="flex-1 flex flex-col overflow-hidden lg:ml-80">
+        {/* Minimal header - just shows page title */}
+        <div className="bg-white border-b border-gray-100">
+          <div className="px-8 py-6">
+            <div className="flex items-center">
+              <button
+                onClick={() => setSidebarOpen(true)}
+                className="lg:hidden mr-4 p-2 rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-100"
+              >
+                <Menu className="h-6 w-6" />
+              </button>
+              <h1 className="text-2xl font-semibold text-gray-900">
+                {location.pathname === '/dashboard/search' ? 'Search' : 
+                 location.pathname === '/dashboard' ? 'Overview' : 
+                 location.pathname === '/dashboard/documents' ? 'My Documents' : 
+                 location.pathname === '/dashboard/history' ? 'History' : 
+                 'Dashboard'}
+              </h1>
             </div>
           </div>
         </div>
 
         {/* Page content */}
-        <main className="flex-1 relative overflow-y-auto focus:outline-none">
-          <div className="py-6">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-              <Outlet />
-            </div>
+        <main className="flex-1 relative overflow-y-auto focus:outline-none bg-white">
+          <div className="h-full">
+            <Outlet />
           </div>
         </main>
       </div>
@@ -161,68 +123,108 @@ const DashboardLayout = () => {
 const SidebarContent = ({ navigationItems, user, onLogout }: any) => {
   const location = useLocation();
 
+  const mainItems = navigationItems.filter((item: any) => item.group === 'main' || !item.group);
+  const accountItems = navigationItems.filter((item: any) => item.group === 'account');
+
   return (
-    <div className="flex flex-col h-full bg-white border-r border-gray-200">
+    <div className="flex flex-col h-full bg-white border-r border-gray-100">
       {/* Logo */}
-      <div className="flex items-center h-16 px-6 border-b border-gray-200">
+      <div className="px-8 py-8">
         <div className="flex items-center">
-          <div className="w-8 h-8 bg-gradient-to-r from-bold-red to-vibrant-orange rounded-lg flex items-center justify-center">
-            <div className="flex">
-              <MapPin className="w-4 h-4 text-white" />
-              <Shield className="w-4 h-4 text-white -ml-1" />
-            </div>
+          <div className="w-10 h-10 bg-genital-orange rounded-full flex items-center justify-center">
+            <Shield className="w-5 h-5 text-white" />
           </div>
-          <span className="ml-2 text-lg font-bold text-gray-900">Arise</span>
+          <div className="ml-3">
+            <div className="text-lg font-bold text-gray-900">GenIEtal</div>
+            <div className="text-xs text-gray-500">Verification</div>
+          </div>
         </div>
       </div>
 
-      {/* Navigation */}
-      <nav className="flex-1 px-4 py-4 space-y-1">
-        {navigationItems.map((item: any) => {
-          const isActive = location.pathname === item.href;
-          return (
-            <Link
-              key={item.name}
-              to={item.href}
-              className={`group flex items-center px-2 py-2 text-sm font-medium rounded-md ${
-                isActive
-                  ? 'bg-bold-red text-white'
-                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-              }`}
-            >
-              <item.icon
-                className={`mr-3 h-5 w-5 ${
-                  isActive ? 'text-white' : 'text-gray-400 group-hover:text-gray-500'
+      {/* Main Navigation */}
+      <nav className="flex-1 px-6">
+        <div className="space-y-1">
+          <div className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">MAIN</div>
+          {mainItems.map((item: any) => {
+            const isActive = location.pathname === item.href || 
+              (item.href === '/dashboard' && location.pathname === '/dashboard');
+            return (
+              <Link
+                key={item.name}
+                to={item.href}
+                className={`group flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-colors ${
+                  isActive
+                    ? 'bg-genital-orange text-white'
+                    : 'text-gray-700 hover:bg-genital-orange-light hover:text-genital-orange'
                 }`}
-              />
-              {item.name}
-            </Link>
-          );
-        })}
+              >
+                <item.icon
+                  className={`mr-3 h-4 w-4 ${
+                    isActive ? 'text-white' : 'text-gray-500 group-hover:text-genital-orange'
+                  }`}
+                />
+                {item.name}
+              </Link>
+            );
+          })}
+        </div>
+
+        <div className="mt-8 space-y-1">
+          <div className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">ACCOUNT</div>
+          {accountItems.map((item: any) => {
+            const isActive = location.pathname === item.href;
+            return (
+              <Link
+                key={item.name}
+                to={item.href}
+                className={`group flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-colors ${
+                  isActive
+                    ? 'bg-genital-orange text-white'
+                    : 'text-gray-700 hover:bg-genital-orange-light hover:text-genital-orange'
+                }`}
+              >
+                <item.icon
+                  className={`mr-3 h-4 w-4 ${
+                    isActive ? 'text-white' : 'text-gray-500 group-hover:text-genital-orange'
+                  }`}
+                />
+                {item.name}
+              </Link>
+            );
+          })}
+        </div>
       </nav>
 
-      {/* User info and logout */}
-      <div className="flex-shrink-0 px-4 py-4 border-t border-gray-200">
-        <div className="flex items-center">
-          <div className="flex-shrink-0">
-            <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-              <User className="w-5 h-5 text-gray-600" />
+      {/* User Profile Section */}
+      <div className="px-6 py-6 border-t border-gray-100">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center">
+            <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
+              <User className="w-4 h-4 text-gray-600" />
             </div>
-          </div>
-          <div className="ml-3 flex-1">
-            <p className="text-sm font-medium text-gray-900">
-              {user?.firstName} {user?.lastName}
-            </p>
-            <p className="text-xs text-gray-500 capitalize">{user?.role}</p>
+            <div className="ml-3">
+              <p className="text-sm font-medium text-gray-900">
+                {user?.firstName} {user?.lastName}
+              </p>
+              <p className="text-xs text-gray-500 capitalize">{user?.role}</p>
+            </div>
           </div>
           <Button
             onClick={onLogout}
             variant="ghost"
             size="icon"
-            className="ml-2"
+            className="text-gray-400 hover:text-gray-600"
           >
             <LogOut className="h-4 w-4" />
           </Button>
+        </div>
+        
+        {/* Terms and Privacy */}
+        <div className="mt-4 pt-4 border-t border-gray-100">
+          <div className="flex space-x-4 text-xs text-gray-500">
+            <Link to="/terms" className="hover:text-gray-700">Terms</Link>
+            <Link to="/privacy" className="hover:text-gray-700">Privacy</Link>
+          </div>
         </div>
       </div>
     </div>

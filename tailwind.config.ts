@@ -20,7 +20,12 @@ export default {
 		},
 		extend: {
 			colors: {
-				// Arise Brand Colors
+				// GenIEtal Brand Colors
+				'genital-orange': 'hsl(var(--genital-orange))',
+				'genital-orange-light': 'hsl(var(--genital-orange-light))',
+				'genital-orange-dark': 'hsl(var(--genital-orange-dark))',
+				
+				// Legacy colors for backward compatibility
 				'dark-charcoal': '#606060',
 				'bold-red': '#ee3224',
 				'vibrant-orange': '#f47920',
