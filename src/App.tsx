@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { Navbar } from "@/components/layout/Navbar";
@@ -23,7 +23,6 @@ import Docs from "./pages/Docs";
 import NotFound from "./pages/NotFound";
 
 // Auth pages
-import Welcome from "./pages/auth/Welcome";
 import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
 import VerifyOTP from "./pages/auth/VerifyOTP";
@@ -148,14 +147,14 @@ const App = () => (
             } />
 
             {/* Auth routes (no navbar/footer) */}
-            <Route path="/auth/welcome" element={<Welcome />} />
+            <Route path="/auth/welcome" element={<Navigate to="/auth/login" replace />} />
             <Route path="/auth/login" element={<Login />} />
             <Route path="/auth/signup" element={<Signup />} />
             <Route path="/auth/verify-otp" element={<VerifyOTP />} />
             <Route path="/auth/forgot-password" element={<ForgotPassword />} />
             
             {/* Legacy auth route redirect */}
-            <Route path="/auth" element={<Welcome />} />
+            <Route path="/auth" element={<Navigate to="/auth/login" replace />} />
 
             {/* Dashboard routes (protected) */}
             <Route path="/dashboard/*" element={
