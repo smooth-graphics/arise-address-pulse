@@ -79,30 +79,45 @@ const DashboardLayout = () => {
 
       {/* Desktop sidebar */}
       <div className="hidden lg:flex lg:flex-shrink-0">
-        <div className="fixed top-0 left-0 flex h-screen w-80 flex-col">
+        <div className="fixed top-0 left-0 flex h-screen w-64 flex-col">
           <SidebarContent navigationItems={navigationItems} user={user} onLogout={handleLogout} />
         </div>
       </div>
       
       {/* Main content */}
-      <div className="flex-1 flex flex-col overflow-hidden lg:ml-80">
-        {/* Minimal header - just shows page title */}
+      <div className="flex-1 flex flex-col overflow-hidden lg:ml-64">
+        {/* Header with title and actions */}
         <div className="bg-white border-b border-gray-100">
           <div className="px-8 py-6">
-            <div className="flex items-center">
-              <button
-                onClick={() => setSidebarOpen(true)}
-                className="lg:hidden mr-4 p-2 rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-100"
-              >
-                <Menu className="h-6 w-6" />
-              </button>
-              <h1 className="text-2xl font-semibold text-gray-900">
-                {location.pathname === '/dashboard/search' ? 'Search' : 
-                 location.pathname === '/dashboard' ? 'Overview' : 
-                 location.pathname === '/dashboard/documents' ? 'My Documents' : 
-                 location.pathname === '/dashboard/history' ? 'History' : 
-                 'Dashboard'}
-              </h1>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <button
+                  onClick={() => setSidebarOpen(true)}
+                  className="lg:hidden mr-4 p-2 rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-100"
+                >
+                  <Menu className="h-6 w-6" />
+                </button>
+                <h1 className="text-2xl font-semibold text-gray-900">
+                  {location.pathname === '/dashboard/search' ? 'Search' : 
+                   location.pathname === '/dashboard' ? 'Overview' : 
+                   location.pathname === '/dashboard/documents' ? 'My Documents' : 
+                   location.pathname === '/dashboard/history' ? 'History' : 
+                   'Dashboard'}
+                </h1>
+              </div>
+              
+              {/* Header actions - only show on Overview page */}
+              {location.pathname === '/dashboard' && (
+                <div className="flex items-center gap-4">
+                  <Button className="bg-genital-orange hover:bg-genital-orange-dark text-white">
+                    <MapPin className="h-4 w-4 mr-2" />
+                    Verify
+                  </Button>
+                  <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
+                    <User className="w-4 h-4 text-gray-600" />
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
