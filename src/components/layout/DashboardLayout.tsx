@@ -1,7 +1,9 @@
 import React from 'react';
 import { Outlet, useNavigate, useLocation, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { useAuth } from '@/contexts/AuthContext';
+import NotificationsPanel from '@/components/dashboard/NotificationsPanel';
 import { 
   MapPin, 
   Shield, 
@@ -113,9 +115,16 @@ const DashboardLayout = () => {
                     <MapPin className="h-4 w-4 mr-2" />
                     Verify
                   </Button>
-                  <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
-                    <User className="w-4 h-4 text-gray-600" />
-                  </div>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <button className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors">
+                        <Bell className="w-4 h-4 text-gray-600" />
+                      </button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-96 p-0" align="end">
+                      <NotificationsPanel />
+                    </PopoverContent>
+                  </Popover>
                 </div>
               )}
             </div>
