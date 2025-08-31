@@ -144,7 +144,7 @@ const DashboardLayout = () => {
 };
 
 
-// Your SidebarContent component remains unchanged
+
 const SidebarContent = ({ navigationItems, user, onLogout }: any) => {
   const location = useLocation();
 
