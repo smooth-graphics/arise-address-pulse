@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -20,8 +19,24 @@ const DashboardSettings = () => {
     email: user?.email || 'jolada55@gmail.com',
   });
 
+  // Notification preferences state
+  const [notifications, setNotifications] = useState({
+    walletAlerts: true,
+    subscriptionBilling: true,
+    newsUpdates: false,
+    verificationResults: false,
+    documentStatus: true,
+  });
+
   const handleSave = () => {
     console.log('Saving settings:', formData);
+  };
+
+  const handleNotificationToggle = (key: keyof typeof notifications) => {
+    setNotifications(prev => ({
+      ...prev,
+      [key]: !prev[key]
+    }));
   };
 
   // Mock billing data
@@ -234,37 +249,80 @@ const DashboardSettings = () => {
         </TabsContent>
 
         <TabsContent value="notifications" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Notifications</CardTitle>
-              <CardDescription>Configure your notification preferences</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label>Email Notifications</Label>
-                  <p className="text-sm text-gray-500">Receive notifications via email</p>
-                </div>
-                <Switch />
-              </div>
+          <h2 className="text-xl font-semibold">Notifications</h2>
+          
+          {/* Email Notifications Section */}
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-base font-medium text-gray-900 mb-1">Email Notifications</h3>
+              <p className="text-sm text-gray-500 mb-4">Get emails to find out what's going on when you're not online.</p>
               
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label>SMS Notifications</Label>
-                  <p className="text-sm text-gray-500">Receive notifications via SMS</p>
+              <div className="space-y-4">
+                <div className="flex items-start justify-between py-3">
+                  <div className="flex-1">
+                    <h4 className="text-sm font-medium text-gray-900">Wallet Alerts</h4>
+                    <p className="text-sm text-gray-500">Stay updated on your wallet balance and payment activities.</p>
+                  </div>
+                  <Switch 
+                    checked={notifications.walletAlerts}
+                    onCheckedChange={() => handleNotificationToggle('walletAlerts')}
+                  />
                 </div>
-                <Switch />
+                
+                <div className="flex items-start justify-between py-3">
+                  <div className="flex-1">
+                    <h4 className="text-sm font-medium text-gray-900">Subscription & Billing Updates</h4>
+                    <p className="text-sm text-gray-500">Get reminders about your subscription status and upcoming charges.</p>
+                  </div>
+                  <Switch 
+                    checked={notifications.subscriptionBilling}
+                    onCheckedChange={() => handleNotificationToggle('subscriptionBilling')}
+                  />
+                </div>
+                
+                <div className="flex items-start justify-between py-3">
+                  <div className="flex-1">
+                    <h4 className="text-sm font-medium text-gray-900">News and updates</h4>
+                    <p className="text-sm text-gray-500">News about products and features updates.</p>
+                  </div>
+                  <Switch 
+                    checked={notifications.newsUpdates}
+                    onCheckedChange={() => handleNotificationToggle('newsUpdates')}
+                  />
+                </div>
               </div>
+            </div>
+
+            {/* Push Notifications Section */}
+            <div>
+              <h3 className="text-base font-medium text-gray-900 mb-1">Push Notifications</h3>
+              <p className="text-sm text-gray-500 mb-4">Get notifications in-app to find out what's going on when you're online.</p>
               
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label>Push Notifications</Label>
-                  <p className="text-sm text-gray-500">Receive push notifications in your browser</p>
+              <div className="space-y-4">
+                <div className="flex items-start justify-between py-3">
+                  <div className="flex-1">
+                    <h4 className="text-sm font-medium text-gray-900">Verification Results</h4>
+                    <p className="text-sm text-gray-500">Get notified about your the status of your verifications.</p>
+                  </div>
+                  <Switch 
+                    checked={notifications.verificationResults}
+                    onCheckedChange={() => handleNotificationToggle('verificationResults')}
+                  />
                 </div>
-                <Switch />
+                
+                <div className="flex items-start justify-between py-3">
+                  <div className="flex-1">
+                    <h4 className="text-sm font-medium text-gray-900">Document Status Updates</h4>
+                    <p className="text-sm text-gray-500">Know when your uploaded documents are approved or need changes.</p>
+                  </div>
+                  <Switch 
+                    checked={notifications.documentStatus}
+                    onCheckedChange={() => handleNotificationToggle('documentStatus')}
+                  />
+                </div>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </TabsContent>
       </Tabs>
     </div>
