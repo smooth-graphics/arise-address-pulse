@@ -520,6 +520,3 @@ export default function Settings() {
     </div>
   );
 }
-
-
-export default DashboardSettings;
