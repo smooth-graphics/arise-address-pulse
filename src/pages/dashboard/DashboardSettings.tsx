@@ -61,7 +61,7 @@ const DashboardSettings = () => {
         <TabsContent value="account" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Account</CardTitle>
+              <h3>Account</h3>
             </CardHeader>
             <CardContent className="space-y-6">
               {/* Profile Picture Section */}
@@ -137,7 +137,7 @@ const DashboardSettings = () => {
 
         <TabsContent value="billing" className="space-y-6">
           <div className="flex justify-between items-center mb-6">
-            <p className="text-xl font-semibold">Plan & Billings</p>
+            <h2 className="text-xl font-semibold">Plan & Billings</h2>
             <Button className="bg-orange-500 hover:bg-orange-600 text-white">
               Upgrade Plan ⚡
             </Button>
