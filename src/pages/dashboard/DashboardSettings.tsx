@@ -1,14 +1,5 @@
-import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Switch } from "@/components/ui/switch";
-import { Progress } from "@/components/ui/progress";
-import { UserAvatar } from "@/components/ui/user-avatar";
-import { useAuth } from "@/contexts/AuthContext";
-import {  Bell, UserRoundSearch, Rocket, CreditCard } from 'lucide-react';
+import { useState } from "react";
+import { Bell, UserRoundSearch, Rocket, CreditCard } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface TabsProps {
