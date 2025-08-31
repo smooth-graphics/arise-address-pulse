@@ -47,9 +47,9 @@ const DashboardLayout = () => {
     ];
 
     const accountItems = [
-      { name: 'Profile', href: '/dashboard/profile', icon: User, group: 'account' },
       { name: 'Settings', href: '/dashboard/settings', icon: Settings, group: 'account' },
       { name: 'Upgrade Plan', href: '/dashboard/billing', icon: CreditCard, group: 'account' },
+      { name: 'Logout', href: '#', icon: LogOut, group: 'account', onClick: handleLogout },
     ];
 
     return [...mainItems, ...accountItems];
@@ -198,6 +198,18 @@ const SidebarContent = ({ navigationItems, user, onLogout }: any) => {
           <div className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">ACCOUNT</div>
           {accountItems.map((item: any) => {
             const isActive = location.pathname === item.href;
+            if (item.onClick) {
+              return (
+                <button
+                  key={item.name}
+                  onClick={item.onClick}
+                  className="group flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-colors text-gray-700 hover:bg-genital-orange-light hover:text-genital-orange w-full text-left"
+                >
+                  <item.icon className="mr-3 h-4 w-4 text-gray-500 group-hover:text-genital-orange" />
+                  {item.name}
+                </button>
+              );
+            }
             return (
               <Link
                 key={item.name}
@@ -222,36 +234,18 @@ const SidebarContent = ({ navigationItems, user, onLogout }: any) => {
 
       {/* User Profile Section */}
       <div className="px-6 py-6 border-t border-gray-100">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center">
-            <UserAvatar 
-              firstName={user?.firstName}
-              lastName={user?.lastName}
-              email={user?.email}
-              size="md"
-            />
-            <div className="ml-3">
-              <p className="text-sm font-medium text-gray-900">
-                {user?.firstName} {user?.lastName}
-              </p>
-              <p className="text-xs text-gray-500 capitalize">{user?.role}</p>
-            </div>
-          </div>
-          <Button
-            onClick={onLogout}
-            variant="ghost"
-            size="icon"
-            className="text-gray-400 hover:text-gray-600"
-          >
-            <LogOut className="h-4 w-4" />
-          </Button>
-        </div>
-        
-        {/* Terms and Privacy */}
-        <div className="mt-4 pt-4 border-t border-gray-100">
-          <div className="flex space-x-4 text-xs text-gray-500">
-            <Link to="/terms" className="hover:text-gray-700">Terms</Link>
-            <Link to="/privacy" className="hover:text-gray-700">Privacy</Link>
+        <div className="flex items-center">
+          <UserAvatar 
+            firstName={user?.firstName}
+            lastName={user?.lastName}
+            email={user?.email}
+            size="md"
+          />
+          <div className="ml-3">
+            <p className="text-sm font-medium text-gray-900">
+              {user?.firstName} {user?.lastName}
+            </p>
+            <p className="text-xs text-gray-500 capitalize">{user?.role}</p>
           </div>
         </div>
       </div>
