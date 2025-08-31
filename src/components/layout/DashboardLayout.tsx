@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { useAuth } from '@/contexts/AuthContext';
 import NotificationsPanel from '@/components/dashboard/NotificationsPanel';
+import { UserAvatar } from '@/components/ui/user-avatar';
 import { 
   MapPin, 
   Shield, 
@@ -223,9 +224,12 @@ const SidebarContent = ({ navigationItems, user, onLogout }: any) => {
       <div className="px-6 py-6 border-t border-gray-100">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
-              <User className="w-4 h-4 text-gray-600" />
-            </div>
+            <UserAvatar 
+              firstName={user?.firstName}
+              lastName={user?.lastName}
+              email={user?.email}
+              size="md"
+            />
             <div className="ml-3">
               <p className="text-sm font-medium text-gray-900">
                 {user?.firstName} {user?.lastName}
