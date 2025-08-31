@@ -137,7 +137,7 @@ const DashboardSettings = () => {
 
         <TabsContent value="billing" className="space-y-6">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-semibold">Plan & Billings</h2>
+            <p className="text-xl font-semibold">Plan & Billings</p>
             <Button className="bg-orange-500 hover:bg-orange-600 text-white">
               Upgrade Plan ⚡
             </Button>
