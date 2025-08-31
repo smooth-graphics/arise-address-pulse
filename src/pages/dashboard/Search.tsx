@@ -1,104 +1,109 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent } from '@/components/ui/card';
-import { Search as SearchIcon, MapPin, User, Mail } from 'lucide-react';
+import { Lock } from 'lucide-react';
 
 const Search = () => {
   const [name, setName] = useState('');
   const [address, setAddress] = useState('');
-  const [isSearching, setIsSearching] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
 
-  const handleSearch = async (e: React.FormEvent) => {
+  const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSearching(true);
+    if (!name || !address) return;
     
-    // Simulate search delay
+    setIsVerifying(true);
+    
+    // Simulate verification delay
     setTimeout(() => {
-      setIsSearching(false);
-      // Handle search results here
+      setIsVerifying(false);
+      // Handle verification results here
     }, 2000);
   };
 
   return (
-    <div className="min-h-full flex items-center justify-center px-8 py-16">
-      <div className="w-full max-w-lg">
-        {/* Search Form */}
-        <Card className="border-0 shadow-sm">
-          <CardContent className="p-8">
-            <div className="text-center mb-8">
-              <h1 className="text-2xl font-semibold text-gray-900 mb-2">
-                Search by name, email or address
-              </h1>
-              <p className="text-gray-600">
-                Enter the information you want to verify
-              </p>
-            </div>
-
-            <form onSubmit={handleSearch} className="space-y-6">
-              {/* Name Input */}
-              <div className="space-y-2">
-                <label htmlFor="name" className="text-sm font-medium text-gray-700">
-                  Name
-                </label>
-                <div className="relative">
-                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                  <Input
-                    id="name"
-                    type="text"
-                    placeholder="Enter full name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="pl-10 h-12 border-gray-200 focus:border-genital-orange focus:ring-genital-orange"
-                  />
-                </div>
-              </div>
-
-              {/* Address Input */}
-              <div className="space-y-2">
-                <label htmlFor="address" className="text-sm font-medium text-gray-700">
-                  Address
-                </label>
-                <div className="relative">
-                  <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                  <Input
-                    id="address"
-                    type="text"
-                    placeholder="Enter address"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                    className="pl-10 h-12 border-gray-200 focus:border-genital-orange focus:ring-genital-orange"
-                  />
-                </div>
-              </div>
-
-              {/* Search Button */}
-              <Button
-                type="submit"
-                disabled={isSearching || (!name && !address)}
-                className="w-full h-12 bg-genital-orange hover:bg-genital-orange-dark text-white font-medium text-base"
-              >
-                {isSearching ? (
-                  <div className="flex items-center">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                    Searching...
-                  </div>
-                ) : (
-                  <div className="flex items-center">
-                    <SearchIcon className="h-4 w-4 mr-2" />
-                    Search
-                  </div>
-                )}
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
-
-        {/* Additional Info */}
-        <div className="mt-8 text-center">
-          <p className="text-sm text-gray-500">
-            Powered by AI-enhanced verification technology
+    <div className="min-h-screen flex items-center justify-center bg-background px-4">
+      <div className="w-full max-w-md">
+        {/* Main Form */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-foreground mb-4">
+            Identity Verification
+          </h1>
+          <p className="text-muted-foreground text-sm leading-relaxed">
+            GenIEtal cross-checks names and addresses across verified database to confirm identities. Enter full details to begin.
           </p>
+        </div>
+
+        <form onSubmit={handleVerify} className="space-y-4">
+          {/* Name Input */}
+          <div>
+            <Input
+              type="text"
+              placeholder="Enter full name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="h-12 text-base"
+              required
+            />
+          </div>
+
+          {/* Address Input */}
+          <div>
+            <Input
+              type="text"
+              placeholder="Enter full address"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              className="h-12 text-base"
+              required
+            />
+          </div>
+
+          {/* Helper Text */}
+          <p className="text-xs text-muted-foreground text-center mt-2">
+            Both full name and complete address are required for verification.
+          </p>
+
+          {/* Verify Button */}
+          <Button
+            type="submit"
+            disabled={isVerifying || !name || !address}
+            className="w-full h-12 mt-6 bg-genital-orange hover:bg-genital-orange-dark text-white font-medium text-base"
+          >
+            {isVerifying ? (
+              <div className="flex items-center">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                Verifying...
+              </div>
+            ) : (
+              "Verify Identity"
+            )}
+          </Button>
+        </form>
+
+        {/* Security Footer */}
+        <div className="mt-8 text-center">
+          <div className="flex items-center justify-center text-xs text-muted-foreground mb-3">
+            <Lock className="h-3 w-3 mr-1" />
+            Your data is secure and encrypted
+          </div>
+          
+          {/* Terms and Privacy Links */}
+          <div className="flex items-center justify-center gap-4 text-xs">
+            <a 
+              href="/terms" 
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Terms
+            </a>
+            <span className="text-muted-foreground">•</span>
+            <a 
+              href="/privacy" 
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Privacy
+            </a>
+          </div>
         </div>
       </div>
     </div>
