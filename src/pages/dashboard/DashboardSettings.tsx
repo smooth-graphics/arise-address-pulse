@@ -1,4 +1,6 @@
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Bell, UserRoundSearch, Rocket, CreditCard } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -97,7 +99,9 @@ function Toggle({ checked, onChange, disabled = false }: ToggleProps) {
 }
 
 export default function Settings() {
-  const [activeTab, setActiveTab] = useState("notifications");
+  const [searchParams] = useSearchParams();
+  const tabFromUrl = searchParams.get('tab');
+  const [activeTab, setActiveTab] = useState(tabFromUrl || "notifications");
   const [formData, setFormData] = useState({
     firstName: "Joseph",
     lastName: "Oladepo",
@@ -114,6 +118,13 @@ export default function Settings() {
     verificationResults: true,
     documentUpdates: true,
   });
+
+  // Update active tab when URL changes
+  useEffect(() => {
+    if (tabFromUrl && ['account', 'billing', 'notifications'].includes(tabFromUrl)) {
+      setActiveTab(tabFromUrl);
+    }
+  }, [tabFromUrl]);
 
   const updateNotification = (key: keyof typeof notifications, value: boolean) => {
     setNotifications(prev => ({ ...prev, [key]: value }));

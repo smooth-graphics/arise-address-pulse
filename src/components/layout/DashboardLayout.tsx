@@ -37,6 +37,10 @@ const DashboardLayout = () => {
     navigate('/auth/login');
   };
 
+  const handleUpgradeClick = () => {
+    navigate('/dashboard/settings?tab=billing');
+  };
+
   const getNavigationItems = () => {
     // GenIEtal simplified navigation structure
     const mainItems = [
@@ -112,9 +116,12 @@ const DashboardLayout = () => {
               {/* Header actions - only show on Overview page */}
               {location.pathname === '/dashboard' && (
                 <div className="flex items-center gap-4">
-                  <Button className="bg-genital-orange hover:bg-genital-orange-dark text-white">
+                  <Button 
+                    onClick={handleUpgradeClick}
+                    className="bg-genital-orange hover:bg-genital-orange-dark text-white"
+                  >
                     <MapPin className="h-4 w-4 mr-2" />
-                    Verify
+                    Upgrade Plan
                   </Button>
                   <Popover>
                     <PopoverTrigger asChild>
@@ -142,8 +149,6 @@ const DashboardLayout = () => {
     </div>
   );
 };
-
-
 
 const SidebarContent = ({ navigationItems, user, onLogout }: any) => {
   const location = useLocation();
