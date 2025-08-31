@@ -74,9 +74,9 @@ export default {
 				// Desktop sizes
 				'h1-desktop': '56px',
 				'h2-desktop': '36px', 
-				'h3-desktop': '28px',
-				'h4-desktop': '24px',
-				'h5-desktop': '20px',
+				'h3-desktop': '18px',
+				'h4-desktop': '16px',
+				'h5-desktop': '14px',
 				// Mobile sizes
 				'h1-mobile': '36px',
 				'h2-mobile': '28px',
