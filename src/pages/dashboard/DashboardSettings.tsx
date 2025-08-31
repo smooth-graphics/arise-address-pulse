@@ -61,7 +61,7 @@ const DashboardSettings = () => {
         <TabsContent value="account" className="space-y-6">
           <Card>
             <CardHeader>
-              <h3>Account</h3>
+              <h3 class="text-xl font-medium">Account</h3>
             </CardHeader>
             <CardContent className="space-y-6">
               {/* Profile Picture Section */}
