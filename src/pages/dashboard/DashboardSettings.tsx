@@ -147,8 +147,8 @@ const DashboardSettings = () => {
           <Card>
             <CardContent className="p-6">
               <div className="flex justify-between items-start mb-6">
-                <div>
-                  <h3 className="text-lg font-medium text-gray-900 mb-1">Basic Plan</h3>
+                <div className="flex justify-between items-center w-full">
+                  <h3 className="text-lg font-medium text-gray-900">Basic Plan</h3>
                   <p className="text-sm text-gray-500">Subscription end date: 26 Sep 2025</p>
                 </div>
               </div>
