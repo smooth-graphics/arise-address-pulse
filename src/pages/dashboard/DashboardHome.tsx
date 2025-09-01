@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import OrganizationDashboard from './OrganizationDashboard';
@@ -246,7 +247,7 @@ function Overview() {
         </div>
       </div>
 
-      <div className="flex gap-4 p-4">
+      <div className="flex gap-4 p-4 h-[calc(100vh-6rem)]">
         {/* Main Content */}
         <div className="flex-1">
           {/* Dashboard Cards */}
@@ -347,7 +348,7 @@ function Overview() {
             <div className="flex justify-center">
               <Link
                 to="/dashboard/history"
-                className="inline-flex items-center px-3 py-2 border border-genital-orange text-genital-orange bg-white rounded-lg shadow-lg shadow-genital-orange/25 hover:bg-genital-orange/5 transition-colors text-sm font-medium"
+                className="inline-flex items-center px-3 py-2 border border-orange-primary text-orange-primary bg-white rounded-lg shadow-lg shadow-orange-primary/25 hover:bg-orange-primary/5 transition-colors text-sm font-medium"
               >
                 See history
               </Link>
@@ -356,9 +357,9 @@ function Overview() {
         </div>
 
         {/* Notifications Panel */}
-        <div className="w-[374px] bg-gray-200 rounded-2xl border border-gray-200 overflow-hidden">
+        <div className="w-[374px] bg-gray-200 rounded-2xl border border-gray-200 overflow-hidden flex flex-col h-full">
           {/* Header */}
-          <div className="flex items-center justify-between p-3 bg-white border-b border-gray-200">
+          <div className="flex items-center justify-between p-4 bg-white border-b border-gray-200">
             <div className="flex items-center gap-1">
               <span className="text-sm font-medium text-gray-700">
                 All Notifications
@@ -369,12 +370,12 @@ function Overview() {
           </div>
 
           {/* Filter Tabs */}
-          <div className="flex items-center justify-between px-3 py-2 bg-white border-b border-gray-200">
+          <div className="flex items-center justify-between px-4 py-3 bg-white border-b border-gray-200">
             <div className="flex items-center gap-2">
-              <button className="px-1.5 py-0.5 bg-gray-200 text-gray-700 text-xs font-medium rounded">
+              <button className="px-2 py-1 bg-gray-200 text-gray-700 text-xs font-medium rounded">
                 All
               </button>
-              <button className="px-1.5 py-0.5 text-gray-700 text-xs font-medium rounded hover:bg-gray-100">
+              <button className="px-2 py-1 text-gray-700 text-xs font-medium rounded hover:bg-gray-100">
                 Unread (2)
               </button>
             </div>
@@ -384,7 +385,7 @@ function Overview() {
           </div>
 
           {/* Notifications List */}
-          <div className="max-h-96 overflow-y-auto">
+          <div className="flex-1 overflow-y-auto">
             {notifications.map((notification) => (
               <NotificationItem
                 key={notification.id}
