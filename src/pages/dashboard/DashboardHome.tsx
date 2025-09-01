@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import OrganizationDashboard from './OrganizationDashboard';
@@ -235,7 +234,7 @@ function Overview() {
 
         <div className="flex items-center gap-4">
           {/* Verify Button */}
-          <button className="flex items-center gap-1.5 px-3 py-1 bg-genital-orange text-white text-sm font-medium rounded-lg shadow-lg shadow-genital-orange/25 hover:bg-genital-orange/90 transition-colors">
+          <button className="flex items-center gap-1.5 px-3 py-1 bg-orange-primary text-white text-sm font-medium rounded-lg shadow-lg shadow-orange-primary/25 hover:bg-orange-primary/90 transition-colors">
             Verify
             <Search className="w-4 h-4" strokeWidth={1.2} />
           </button>
