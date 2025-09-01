@@ -11,7 +11,8 @@ import {
   MapPin,
   X,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface SidebarProps {
   currentPath?: string;
@@ -28,47 +29,83 @@ const mainNavItems = [
 const accountNavItems = [
   { icon: SettingsIcon, label: "Settings", path: "/settings" },
   { icon: Rocket, label: "Upgrade Plan", path: "/upgrade" },
-  { icon: LogOut, label: "Logout", path: "/logout" },
+  { icon: LogOut, label: "Logout", path: "/logout", isAction: true },
 ];
 
 export default function Sidebar({
   currentPath = "/settings",
   onClose,
 }: SidebarProps) {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/auth/login');
+  };
+
   const NavItem = ({
     icon: Icon,
     label,
     path,
     isActive = false,
     onClick,
+    isAction = false,
   }: {
     icon: any;
     label: string;
     path: string;
     isActive?: boolean;
     onClick?: () => void;
-  }) => (
-    <Link
-      to={path}
-      onClick={onClick}
-      className={cn(
-        "flex h-10 pl-2 pr-4 items-center gap-2 rounded-r-lg transition-colors cursor-pointer relative",
-        isActive
-          ? "bg-white text-orange-primary"
-          : "bg-sidebar text-muted-foreground hover:bg-white/50",
-      )}
-      aria-current={isActive ? "page" : undefined}
-    >
-      <div
+    isAction?: boolean;
+  }) => {
+    const mappedPath = path === '/' ? '/dashboard' : 
+                      path === '/verify' ? '/dashboard/search' :
+                      path === '/documents' ? '/dashboard/documents' :
+                      path === '/history' ? '/dashboard/history' :
+                      path === '/settings' ? '/dashboard/settings' :
+                      path === '/upgrade' ? '/dashboard/billing' :
+                      path;
+
+    if (isAction || path === '/logout') {
+      return (
+        <button
+          onClick={onClick || handleLogout}
+          className={cn(
+            "flex h-10 pl-2 pr-4 items-center gap-2 rounded-r-lg transition-colors cursor-pointer relative w-full text-left",
+            "bg-sidebar text-muted-foreground hover:bg-white/50",
+          )}
+        >
+          <div className="w-1.5 h-8 rounded-r-lg absolute left-0 bg-sidebar" />
+          <Icon className="w-5 h-5 ml-2" strokeWidth={1.2} />
+          <span className="text-sm font-medium flex-1">{label}</span>
+        </button>
+      );
+    }
+
+    return (
+      <Link
+        to={mappedPath}
+        onClick={onClick}
         className={cn(
-          "w-1.5 h-8 rounded-r-lg absolute left-0",
-          isActive ? "bg-orange-primary" : "bg-sidebar",
+          "flex h-10 pl-2 pr-4 items-center gap-2 rounded-r-lg transition-colors cursor-pointer relative",
+          isActive
+            ? "bg-white text-orange-primary"
+            : "bg-sidebar text-muted-foreground hover:bg-white/50",
         )}
-      />
-      <Icon className="w-5 h-5 ml-2" strokeWidth={1.2} />
-      <span className="text-sm font-medium flex-1">{label}</span>
-    </Link>
-  );
+        aria-current={isActive ? "page" : undefined}
+      >
+        <div
+          className={cn(
+            "w-1.5 h-8 rounded-r-lg absolute left-0",
+            isActive ? "bg-orange-primary" : "bg-sidebar",
+          )}
+        />
+        <Icon className="w-5 h-5 ml-2" strokeWidth={1.2} />
+        <span className="text-sm font-medium flex-1">{label}</span>
+      </Link>
+    );
+  };
 
   const isPathActive = (current: string | undefined, target: string) => {
     if (!current) return false;
@@ -79,7 +116,18 @@ export default function Sidebar({
 
   return (
     <div className="w-[237px] h-screen bg-sidebar border-r flex flex-col fixed left-0 top-0 z-10">
-      {/* Static sidebar */}
+      {/* Close button for mobile */}
+      {onClose && (
+        <div className="lg:hidden absolute top-4 right-4 z-20">
+          <button
+            onClick={onClose}
+            className="p-2 rounded-lg hover:bg-white/10 text-muted-foreground"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+      )}
+
       {/* Logo Section */}
       <div className="p-6 pb-2">
         <div className="flex items-center gap-3">
@@ -131,6 +179,7 @@ export default function Sidebar({
                   label={item.label}
                   path={item.path}
                   isActive={isPathActive(currentPath, item.path)}
+                  isAction={item.isAction}
                 />
               ))}
             </div>
@@ -142,13 +191,13 @@ export default function Sidebar({
       <div className="p-4 border-t border-sidebar-border">
         <div className="flex items-center gap-3.5">
           <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 text-sm font-medium">
-            JO
+            {user?.firstName?.charAt(0)}{user?.lastName?.charAt(0)}
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-base font-normal text-foreground truncate">
-              Joseph Oladapo
+              {user?.firstName} {user?.lastName}
             </p>
-            <p className="text-xs text-text-50">Individual</p>
+            <p className="text-xs text-text-50 capitalize">{user?.role || 'Individual'}</p>
           </div>
         </div>
       </div>

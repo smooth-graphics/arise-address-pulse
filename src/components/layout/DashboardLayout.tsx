@@ -1,66 +1,36 @@
 
 import React from 'react';
-import { Outlet, useNavigate, useLocation, Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import NotificationsPanel from '@/components/dashboard/NotificationsPanel';
-import { UserAvatar } from '@/components/ui/user-avatar';
-import { 
-  MapPin, 
-  Shield, 
-  Home, 
-  User, 
-  FileText, 
-  History, 
-  Bell, 
-  Building, 
-  Upload, 
-  Settings, 
-  Key, 
-  Activity,
-  Users,
-  List,
-  CreditCard,
-  Menu,
-  LogOut,
-  Search
-} from 'lucide-react';
+import Sidebar from '@/components/Sidebar';
+import { Menu } from 'lucide-react';
 
 const DashboardLayout = () => {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
+  const { user } = useAuth();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
 
-  const handleLogout = () => {
-    logout();
-    navigate('/auth/login');
+  // Map dashboard routes to sidebar routes
+  const mapPathForSidebar = (path: string) => {
+    switch (path) {
+      case '/dashboard':
+        return '/';
+      case '/dashboard/search':
+        return '/verify';
+      case '/dashboard/documents':
+        return '/documents';
+      case '/dashboard/history':
+        return '/history';
+      case '/dashboard/settings':
+        return '/settings';
+      case '/dashboard/billing':
+        return '/upgrade';
+      default:
+        return path.replace('/dashboard', '');
+    }
   };
 
-  const handleUpgradeClick = () => {
-    navigate('/dashboard/settings?tab=billing');
-  };
-
-  const getNavigationItems = () => {
-    // GenIEtal simplified navigation structure
-    const mainItems = [
-      { name: 'Verify', href: '/dashboard/search', icon: Search, group: 'main' },
-      { name: 'Overview', href: '/dashboard', icon: Home, group: 'main' },
-      { name: 'My Documents', href: '/dashboard/documents', icon: FileText, group: 'main' },
-      { name: 'History', href: '/dashboard/history', icon: History, group: 'main' },
-    ];
-
-    const accountItems = [
-      { name: 'Settings', href: '/dashboard/settings', icon: Settings, group: 'account' },
-      { name: 'Upgrade Plan', href: '/dashboard/billing', icon: CreditCard, group: 'account' },
-      { name: 'Logout', href: '#', icon: LogOut, group: 'account', onClick: handleLogout },
-    ];
-
-    return [...mainItems, ...accountItems];
-  };
-
-  const navigationItems = getNavigationItems();
+  const currentPath = mapPathForSidebar(location.pathname);
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
@@ -68,7 +38,7 @@ const DashboardLayout = () => {
       {sidebarOpen && (
         <div className="fixed inset-0 z-40 lg:hidden">
           <div className="fixed inset-0 bg-gray-600 bg-opacity-75" onClick={() => setSidebarOpen(false)} />
-          <div className="relative flex-1 flex flex-col max-w-xs w-full bg-white">
+          <div className="relative flex-1 flex flex-col max-w-xs w-full">
             <div className="absolute top-0 right-0 -mr-12 pt-2">
               <button
                 onClick={() => setSidebarOpen(false)}
@@ -80,20 +50,18 @@ const DashboardLayout = () => {
                 </svg>
               </button>
             </div>
-            <SidebarContent navigationItems={navigationItems} user={user} onLogout={handleLogout} />
+            <Sidebar currentPath={currentPath} onClose={() => setSidebarOpen(false)} />
           </div>
         </div>
       )}
 
       {/* Desktop sidebar */}
       <div className="hidden lg:flex lg:flex-shrink-0">
-        <div className="fixed top-0 left-0 flex h-screen w-64 flex-col">
-          <SidebarContent navigationItems={navigationItems} user={user} onLogout={handleLogout} />
-        </div>
+        <Sidebar currentPath={currentPath} />
       </div>
       
       {/* Main content */}
-      <div className="flex-1 flex flex-col overflow-hidden lg:ml-64">
+      <div className="flex-1 flex flex-col overflow-hidden lg:ml-[237px]">
         {/* Mobile menu button - only show on mobile */}
         <div className="lg:hidden bg-white border-b border-gray-100">
           <div className="px-4 py-3">
@@ -112,114 +80,6 @@ const DashboardLayout = () => {
             <Outlet />
           </div>
         </main>
-      </div>
-    </div>
-  );
-};
-
-const SidebarContent = ({ navigationItems, user, onLogout }: any) => {
-  const location = useLocation();
-
-  const mainItems = navigationItems.filter((item: any) => item.group === 'main' || !item.group);
-  const accountItems = navigationItems.filter((item: any) => item.group === 'account');
-
-  return (
-    <div className="flex flex-col h-full bg-white border-r border-gray-100">
-      {/* Logo */}
-      <div className="px-8 py-8">
-        <div className="flex items-center">
-          <div className="w-10 h-10 bg-orange-primary rounded-full flex items-center justify-center">
-            <Shield className="w-5 h-5 text-white" />
-          </div>
-          <div className="ml-3">
-            <div className="text-lg font-bold text-gray-900">GenIEtal</div>
-            <div className="text-xs text-gray-500">Verification</div>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Navigation */}
-      <nav className="flex-1 px-6">
-        <div className="space-y-1">
-          <div className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">MAIN</div>
-          {mainItems.map((item: any) => {
-            const isActive = location.pathname === item.href || 
-              (item.href === '/dashboard' && location.pathname === '/dashboard');
-            return (
-              <Link
-                key={item.name}
-                to={item.href}
-                className={`group flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-colors ${
-                  isActive
-                    ? 'bg-orange-primary text-white'
-                    : 'text-gray-700 hover:bg-orange-primary/10 hover:text-orange-primary'
-                }`}
-              >
-                <item.icon
-                  className={`mr-3 h-4 w-4 ${
-                    isActive ? 'text-white' : 'text-gray-500 group-hover:text-orange-primary'
-                  }`}
-                />
-                {item.name}
-              </Link>
-            );
-          })}
-        </div>
-
-        <div className="mt-8 space-y-1">
-          <div className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">ACCOUNT</div>
-          {accountItems.map((item: any) => {
-            const isActive = location.pathname === item.href;
-            if (item.onClick) {
-              return (
-                <button
-                  key={item.name}
-                  onClick={item.onClick}
-                  className="group flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-colors text-gray-700 hover:bg-orange-primary/10 hover:text-orange-primary w-full text-left"
-                >
-                  <item.icon className="mr-3 h-4 w-4 text-gray-500 group-hover:text-orange-primary" />
-                  {item.name}
-                </button>
-              );
-            }
-            return (
-              <Link
-                key={item.name}
-                to={item.href}
-                className={`group flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-colors ${
-                  isActive
-                    ? 'bg-orange-primary text-white'
-                    : 'text-gray-700 hover:bg-orange-primary/10 hover:text-orange-primary'
-                }`}
-              >
-                <item.icon
-                  className={`mr-3 h-4 w-4 ${
-                    isActive ? 'text-white' : 'text-gray-500 group-hover:text-orange-primary'
-                  }`}
-                />
-                {item.name}
-              </Link>
-            );
-          })}
-        </div>
-      </nav>
-
-      {/* User Profile Section */}
-      <div className="px-6 py-6 border-t border-gray-100">
-        <div className="flex items-center">
-          <UserAvatar 
-            firstName={user?.firstName}
-            lastName={user?.lastName}
-            email={user?.email}
-            size="md"
-          />
-          <div className="ml-3">
-            <p className="text-sm font-medium text-gray-900">
-              {user?.firstName} {user?.lastName}
-            </p>
-            <p className="text-xs text-gray-500 capitalize">{user?.role}</p>
-          </div>
-        </div>
       </div>
     </div>
   );
