@@ -1,7 +1,7 @@
-
 import { useState } from "react";
 import { Bell, UserRoundSearch, Rocket, CreditCard } from "lucide-react";
 import { cn } from "@/lib/utils";
+import PlanUpgradeModal from "@/components/billing/PlanUpgradeModal";
 
 interface TabsProps {
   activeTab: string;
@@ -99,6 +99,7 @@ function Toggle({ checked, onChange, disabled = false }: ToggleProps) {
 
 const DashboardSettings = () => {
   const [activeTab, setActiveTab] = useState("notifications");
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "Joseph",
     lastName: "Oladepo",
@@ -125,6 +126,11 @@ const DashboardSettings = () => {
 
   const updateField = (field: keyof typeof formData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleUpgrade = (plan: string) => {
+    console.log('User selected plan:', plan);
+    // Handle upgrade logic here
   };
 
   return (
@@ -241,7 +247,10 @@ const DashboardSettings = () => {
               <h2 className="text-lg font-medium text-foreground">
                 Plan & Billings
               </h2>
-              <button className="flex items-center gap-1.5 h-9 px-3 border border-orange-primary text-orange-primary bg-white rounded-lg shadow-lg shadow-orange-primary/25 hover:bg-orange-primary/5 transition-colors text-sm font-medium">
+              <button 
+                onClick={() => setShowUpgradeModal(true)}
+                className="flex items-center gap-1.5 h-9 px-3 border border-orange-primary text-orange-primary bg-white rounded-lg shadow-lg shadow-orange-primary/25 hover:bg-orange-primary/5 transition-colors text-sm font-medium"
+              >
                 Upgrade Plan
                 <Rocket className="w-4 h-4" strokeWidth={1.2} />
               </button>
@@ -617,6 +626,14 @@ const DashboardSettings = () => {
           </div>
         )}
       </div>
+
+      {/* Plan Upgrade Modal */}
+      <PlanUpgradeModal
+        isOpen={showUpgradeModal}
+        onClose={() => setShowUpgradeModal(false)}
+        currentPlan="basic"
+        onUpgrade={handleUpgrade}
+      />
     </div>
   );
 };
