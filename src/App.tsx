@@ -27,7 +27,6 @@ import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
 import VerifyOTP from "./pages/auth/VerifyOTP";
 import ForgotPassword from "./pages/auth/ForgotPassword";
-import Layout from "./components/Layout";
 
 // Dashboard pages
 import DashboardHome from "./pages/dashboard/DashboardHome";
@@ -39,13 +38,14 @@ import History from "./pages/dashboard/History";
 import Documents from "./pages/dashboard/Documents";
 import Notifications from "./pages/dashboard/Notifications";
 import Search from "./pages/dashboard/Search";
+import VerificationResults from "./pages/dashboard/VerificationResults";
+import DashboardSettings from "./pages/dashboard/DashboardSettings";
 
 // Admin pages
 import Users from "./pages/dashboard/Users";
 import VerificationQueue from "./pages/dashboard/VerificationQueue";
 import ApiMonitor from "./pages/dashboard/ApiMonitor";
 import DashboardPricing from "./pages/dashboard/DashboardPricing";
-import DashboardSettings from "./pages/dashboard/DashboardSettings";
 
 // Organization pages
 import BulkUpload from "./pages/dashboard/BulkUpload";
@@ -55,6 +55,16 @@ import Activity from "./pages/dashboard/Activity";
 import Billing from "./pages/dashboard/Billing";
 
 const queryClient = new QueryClient();
+
+// Simple placeholder component for routes that need implementation
+const PlaceholderPage = ({ title, description }: { title: string; description: string }) => (
+  <div className="flex items-center justify-center min-h-screen">
+    <div className="text-center">
+      <h1 className="text-2xl font-bold mb-4">{title}</h1>
+      <p className="text-gray-600">{description}</p>
+    </div>
+  </div>
+);
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -165,39 +175,18 @@ const App = () => (
             }>
               <Route index element={<DashboardHome />} />
               <Route path="verify" element={<VerifyAddress />} />
-              <Route path="verification-results" element={</verification-results/>} />
+              <Route path="verification-results" element={<VerificationResults />} />
               <Route path="history" element={<History />} />
-              <Route path="documents" element={<MyDocuments />} />
+              <Route path="documents" element={<Documents />} />
               <Route path="notifications" element={<Notifications />} />
-              <Route path="settings" element={<settings/>} />
-              <Route
-          path="/upgrade"
-          element={
-            <PlaceholderPage
-              title="Upgrade Plan"
-              description="Explore premium features and upgrade your subscription."
-            />
-          }
-        />
-        <Route
-          path="/logout"
-          element={
-            <PlaceholderPage
-              title="Logout"
-              description="You have been logged out successfully."
-            />
-          }
-        />
-        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+              <Route path="settings" element={<DashboardSettings />} />
+              <Route path="search" element={<Search />} />
               
               {/* Admin routes */}
               <Route path="users" element={<Users />} />
               <Route path="queue" element={<VerificationQueue />} />
               <Route path="api-monitor" element={<ApiMonitor />} />
               <Route path="pricing" element={<DashboardPricing />} />
-              <Route path="settings" element={<DashboardSettings />} />
               
               {/* Organization routes */}
               <Route path="bulk-upload" element={<BulkUpload />} />
@@ -205,6 +194,20 @@ const App = () => (
               <Route path="api" element={<ApiAccess />} />
               <Route path="activity" element={<Activity />} />
               <Route path="billing" element={<Billing />} />
+              
+              {/* Placeholder routes */}
+              <Route path="upgrade" element={
+                <PlaceholderPage
+                  title="Upgrade Plan"
+                  description="Explore premium features and upgrade your subscription."
+                />
+              } />
+              <Route path="logout" element={
+                <PlaceholderPage
+                  title="Logout"
+                  description="You have been logged out successfully."
+                />
+              } />
             </Route>
 
             {/* 404 route */}
