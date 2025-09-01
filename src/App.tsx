@@ -27,6 +27,7 @@ import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
 import VerifyOTP from "./pages/auth/VerifyOTP";
 import ForgotPassword from "./pages/auth/ForgotPassword";
+import Layout from "./components/Layout";
 
 // Dashboard pages
 import DashboardHome from "./pages/dashboard/DashboardHome";
@@ -164,11 +165,32 @@ const App = () => (
             }>
               <Route index element={<DashboardHome />} />
               <Route path="verify" element={<VerifyAddress />} />
-              <Route path="profile" element={<Profile />} />
+              <Route path="verification-results" element={</verification-results/>} />
               <Route path="history" element={<History />} />
-              <Route path="documents" element={<Documents />} />
+              <Route path="documents" element={<MyDocuments />} />
               <Route path="notifications" element={<Notifications />} />
-              <Route path="search" element={<Search />} />
+              <Route path="settings" element={<settings/>} />
+              <Route
+          path="/upgrade"
+          element={
+            <PlaceholderPage
+              title="Upgrade Plan"
+              description="Explore premium features and upgrade your subscription."
+            />
+          }
+        />
+        <Route
+          path="/logout"
+          element={
+            <PlaceholderPage
+              title="Logout"
+              description="You have been logged out successfully."
+            />
+          }
+        />
+        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
               
               {/* Admin routes */}
               <Route path="users" element={<Users />} />
