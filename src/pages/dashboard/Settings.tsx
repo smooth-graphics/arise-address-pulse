@@ -1,6 +1,5 @@
 
-import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useState } from "react";
 import { Bell, UserRoundSearch, Rocket, CreditCard } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -85,13 +84,13 @@ function Toggle({ checked, onChange, disabled = false }: ToggleProps) {
       className={cn(
         "flex h-6 w-12 items-center rounded-full p-0.5 transition-colors duration-200",
         checked ? "bg-orange-primary" : "bg-gray-200",
-        disabled && "opacity-50 cursor-not-allowed"
+        disabled && "opacity-50 cursor-not-allowed",
       )}
     >
       <div
         className={cn(
           "h-5 w-5 rounded-full bg-white shadow-sm transition-transform duration-200",
-          checked ? "translate-x-6" : "translate-x-0"
+          checked ? "translate-x-6" : "translate-x-0",
         )}
       />
     </button>
@@ -99,9 +98,7 @@ function Toggle({ checked, onChange, disabled = false }: ToggleProps) {
 }
 
 export default function Settings() {
-  const [searchParams] = useSearchParams();
-  const tabFromUrl = searchParams.get('tab');
-  const [activeTab, setActiveTab] = useState(tabFromUrl || "notifications");
+  const [activeTab, setActiveTab] = useState("notifications");
   const [formData, setFormData] = useState({
     firstName: "Joseph",
     lastName: "Oladepo",
@@ -119,15 +116,11 @@ export default function Settings() {
     documentUpdates: true,
   });
 
-  // Update active tab when URL changes
-  useEffect(() => {
-    if (tabFromUrl && ['account', 'billing', 'notifications'].includes(tabFromUrl)) {
-      setActiveTab(tabFromUrl);
-    }
-  }, [tabFromUrl]);
-
-  const updateNotification = (key: keyof typeof notifications, value: boolean) => {
-    setNotifications(prev => ({ ...prev, [key]: value }));
+  const updateNotification = (
+    key: keyof typeof notifications,
+    value: boolean,
+  ) => {
+    setNotifications((prev) => ({ ...prev, [key]: value }));
   };
 
   const updateField = (field: keyof typeof formData, value: string) => {
@@ -245,7 +238,9 @@ export default function Settings() {
           <div className="space-y-4">
             {/* Header with Upgrade Plan button */}
             <div className="flex justify-between items-center">
-              <h2 className="text-lg font-medium text-foreground">Plan & Billings</h2>
+              <h2 className="text-lg font-medium text-foreground">
+                Plan & Billings
+              </h2>
               <button className="flex items-center gap-1.5 h-9 px-3 border border-orange-primary text-orange-primary bg-white rounded-lg shadow-lg shadow-orange-primary/25 hover:bg-orange-primary/5 transition-colors text-sm font-medium">
                 Upgrade Plan
                 <Rocket className="w-4 h-4" strokeWidth={1.2} />
@@ -259,7 +254,9 @@ export default function Settings() {
               <div className="flex justify-between items-center mb-3">
                 <span className="text-base text-text-70">Basic Plan</span>
                 <div className="flex items-baseline gap-2">
-                  <span className="text-base text-text-70">Subscription end date:</span>
+                  <span className="text-base text-text-70">
+                    Subscription end date:
+                  </span>
                   <div className="px-1.5 py-0.5 bg-orange-primary/10 text-orange-primary text-sm font-medium rounded">
                     26 Sep 2025
                   </div>
@@ -269,7 +266,10 @@ export default function Settings() {
               {/* Usage Indicator */}
               <div className="flex items-center gap-3">
                 <div className="relative w-16 h-16">
-                  <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 64 64">
+                  <svg
+                    className="w-16 h-16 transform -rotate-90"
+                    viewBox="0 0 64 64"
+                  >
                     {/* Background circle */}
                     <circle
                       cx="32"
@@ -287,14 +287,18 @@ export default function Settings() {
                       stroke="#F89111"
                       strokeWidth="6.4"
                       fill="none"
-                      strokeDasharray={`${(37/50) * 180.95} 180.95`}
+                      strokeDasharray={`${(37 / 50) * 180.95} 180.95`}
                       strokeLinecap="round"
                     />
                   </svg>
                 </div>
                 <div>
-                  <div className="text-2xl font-medium text-foreground leading-7">37 searches left</div>
-                  <div className="text-sm text-text-70">13/50 searches used.</div>
+                  <div className="text-2xl font-medium text-foreground leading-7">
+                    37 searches left
+                  </div>
+                  <div className="text-sm text-text-70">
+                    13/50 searches used.
+                  </div>
                 </div>
               </div>
             </div>
@@ -303,15 +307,24 @@ export default function Settings() {
 
             {/* Payment Information */}
             <div className="space-y-4">
-              <h3 className="text-base font-medium text-text-70">Payment Information</h3>
+              <h3 className="text-base font-medium text-text-70">
+                Payment Information
+              </h3>
 
               <div className="p-3 border border-gray-200 rounded-2xl space-y-3">
                 {/* Payment Method */}
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-                  <span className="text-sm font-medium text-text-70">Payment Method</span>
+                  <span className="text-sm font-medium text-text-70">
+                    Payment Method
+                  </span>
                   <div className="flex items-center gap-2">
-                    <CreditCard className="w-5 h-5 text-muted-foreground" strokeWidth={1.2} />
-                    <span className="text-sm text-text-50">MasterCard (**** **** **** 5988)</span>
+                    <CreditCard
+                      className="w-5 h-5 text-muted-foreground"
+                      strokeWidth={1.2}
+                    />
+                    <span className="text-sm text-text-50">
+                      MasterCard (**** **** **** 5988)
+                    </span>
                   </div>
                 </div>
 
@@ -319,16 +332,24 @@ export default function Settings() {
 
                 {/* Billing Email */}
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-                  <span className="text-sm font-medium text-text-70">Billing email</span>
-                  <span className="text-sm text-text-50">josephola@gmail.com</span>
+                  <span className="text-sm font-medium text-text-70">
+                    Billing email
+                  </span>
+                  <span className="text-sm text-text-50">
+                    josephola@gmail.com
+                  </span>
                 </div>
 
                 <div className="w-full h-px bg-gray-200" />
 
                 {/* Billing Address */}
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
-                  <span className="text-sm font-medium text-text-70">Billing Address</span>
-                  <span className="text-sm text-text-50 text-right sm:text-left max-w-64">24, Allen Avenue, Ikeja, Lagos 101233, Lagos.</span>
+                  <span className="text-sm font-medium text-text-70">
+                    Billing Address
+                  </span>
+                  <span className="text-sm text-text-50 text-right sm:text-left max-w-64">
+                    24, Allen Avenue, Ikeja, Lagos 101233, Lagos.
+                  </span>
                 </div>
               </div>
             </div>
@@ -337,14 +358,22 @@ export default function Settings() {
 
             {/* Billing History */}
             <div className="space-y-4 pb-6">
-              <h3 className="text-base font-medium text-text-70">Billing History</h3>
+              <h3 className="text-base font-medium text-text-70">
+                Billing History
+              </h3>
 
               <div className="border border-gray-200 rounded-2xl overflow-hidden">
                 {/* Table Header */}
                 <div className="hidden sm:flex bg-gray-100 px-3 py-2 items-center">
-                  <div className="flex-1 text-xs font-medium text-gray-600 px-3">Invoice</div>
-                  <div className="w-64 text-xs font-medium text-gray-600 px-3">Date Initiated</div>
-                  <div className="w-36 text-xs font-medium text-gray-600 px-3">Status</div>
+                  <div className="flex-1 text-xs font-medium text-gray-600 px-3">
+                    Invoice
+                  </div>
+                  <div className="w-64 text-xs font-medium text-gray-600 px-3">
+                    Date Initiated
+                  </div>
+                  <div className="w-36 text-xs font-medium text-gray-600 px-3">
+                    Status
+                  </div>
                 </div>
 
                 {/* Table Rows */}
@@ -352,8 +381,12 @@ export default function Settings() {
                   {/* Row 1 */}
                   <div className="px-3 py-3 border-b border-gray-100">
                     <div className="hidden sm:flex items-center">
-                      <div className="flex-1 text-sm text-foreground px-3">Basic Plan</div>
-                      <div className="w-64 text-sm text-foreground px-3">26 Aug 2025 - 09:41 AM</div>
+                      <div className="flex-1 text-sm text-foreground px-3">
+                        Basic Plan
+                      </div>
+                      <div className="w-64 text-sm text-foreground px-3">
+                        26 Aug 2025 - 09:41 AM
+                      </div>
                       <div className="w-36 px-3">
                         <span className="inline-flex px-2 py-0.5 bg-green-100 text-green-700 text-xs font-medium rounded-full border border-green-200">
                           Paid
@@ -363,20 +396,28 @@ export default function Settings() {
                     {/* Mobile layout */}
                     <div className="sm:hidden space-y-2">
                       <div className="flex justify-between">
-                        <span className="text-sm font-medium text-foreground">Basic Plan</span>
+                        <span className="text-sm font-medium text-foreground">
+                          Basic Plan
+                        </span>
                         <span className="inline-flex px-2 py-0.5 bg-green-100 text-green-700 text-xs font-medium rounded-full border border-green-200">
                           Paid
                         </span>
                       </div>
-                      <div className="text-sm text-text-50">26 Aug 2025 - 09:41 AM</div>
+                      <div className="text-sm text-text-50">
+                        26 Aug 2025 - 09:41 AM
+                      </div>
                     </div>
                   </div>
 
                   {/* Row 2 */}
                   <div className="px-3 py-3">
                     <div className="hidden sm:flex items-center">
-                      <div className="flex-1 text-sm text-foreground px-3">Basic Plan</div>
-                      <div className="w-64 text-sm text-foreground px-3">26 Jul 2025 - 10:12 AM</div>
+                      <div className="flex-1 text-sm text-foreground px-3">
+                        Basic Plan
+                      </div>
+                      <div className="w-64 text-sm text-foreground px-3">
+                        26 Jul 2025 - 10:12 AM
+                      </div>
                       <div className="w-36 px-3">
                         <span className="inline-flex px-2 py-0.5 bg-green-100 text-green-700 text-xs font-medium rounded-full border border-green-200">
                           Paid
@@ -386,12 +427,16 @@ export default function Settings() {
                     {/* Mobile layout */}
                     <div className="sm:hidden space-y-2">
                       <div className="flex justify-between">
-                        <span className="text-sm font-medium text-foreground">Basic Plan</span>
+                        <span className="text-sm font-medium text-foreground">
+                          Basic Plan
+                        </span>
                         <span className="inline-flex px-2 py-0.5 bg-green-100 text-green-700 text-xs font-medium rounded-full border border-green-200">
                           Paid
                         </span>
                       </div>
-                      <div className="text-sm text-text-50">26 Jul 2025 - 10:12 AM</div>
+                      <div className="text-sm text-text-50">
+                        26 Jul 2025 - 10:12 AM
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -405,7 +450,9 @@ export default function Settings() {
           <div className="space-y-4">
             {/* Header */}
             <div>
-              <h2 className="text-lg font-medium text-foreground">Notifications</h2>
+              <h2 className="text-lg font-medium text-foreground">
+                Notifications
+              </h2>
             </div>
 
             <div className="w-full h-px bg-gray-200" />
@@ -414,8 +461,12 @@ export default function Settings() {
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 py-6">
               {/* Left column - Section title and description */}
               <div className="lg:col-span-2 space-y-1">
-                <h3 className="text-base font-medium text-text-70">Email Notifications</h3>
-                <p className="text-sm text-text-50">Get emails to find out what's going on when you're not online.</p>
+                <h3 className="text-base font-medium text-text-70">
+                  Email Notifications
+                </h3>
+                <p className="text-sm text-text-50">
+                  Get emails to find out what's going on when you're not online.
+                </p>
               </div>
 
               {/* Right column - Toggle options */}
@@ -424,11 +475,18 @@ export default function Settings() {
                 <div className="flex items-start gap-4">
                   <Toggle
                     checked={notifications.walletAlerts}
-                    onChange={(checked) => updateNotification('walletAlerts', checked)}
+                    onChange={(checked) =>
+                      updateNotification("walletAlerts", checked)
+                    }
                   />
                   <div className="flex-1 space-y-0.5">
-                    <h4 className="text-base font-medium text-text-70">Wallet Alerts</h4>
-                    <p className="text-sm text-text-50">Stay updated on your wallet balance and payment activities.</p>
+                    <h4 className="text-base font-medium text-text-70">
+                      Wallet Alerts
+                    </h4>
+                    <p className="text-sm text-text-50">
+                      Stay updated on your wallet balance and payment
+                      activities.
+                    </p>
                   </div>
                 </div>
 
@@ -436,11 +494,18 @@ export default function Settings() {
                 <div className="flex items-start gap-4">
                   <Toggle
                     checked={notifications.subscriptionUpdates}
-                    onChange={(checked) => updateNotification('subscriptionUpdates', checked)}
+                    onChange={(checked) =>
+                      updateNotification("subscriptionUpdates", checked)
+                    }
                   />
                   <div className="flex-1 space-y-0.5">
-                    <h4 className="text-base font-medium text-text-70">Subscription & Billing Updates</h4>
-                    <p className="text-sm text-text-50">Get reminders about your subscription status and upcoming charges.</p>
+                    <h4 className="text-base font-medium text-text-70">
+                      Subscription & Billing Updates
+                    </h4>
+                    <p className="text-sm text-text-50">
+                      Get reminders about your subscription status and upcoming
+                      charges.
+                    </p>
                   </div>
                 </div>
 
@@ -448,11 +513,17 @@ export default function Settings() {
                 <div className="flex items-start gap-4">
                   <Toggle
                     checked={notifications.newsUpdates}
-                    onChange={(checked) => updateNotification('newsUpdates', checked)}
+                    onChange={(checked) =>
+                      updateNotification("newsUpdates", checked)
+                    }
                   />
                   <div className="flex-1 space-y-0.5">
-                    <h4 className="text-base font-medium text-text-70">News and updates</h4>
-                    <p className="text-sm text-text-50">News about products and features updates.</p>
+                    <h4 className="text-base font-medium text-text-70">
+                      News and updates
+                    </h4>
+                    <p className="text-sm text-text-50">
+                      News about products and features updates.
+                    </p>
                   </div>
                 </div>
               </div>
@@ -464,8 +535,13 @@ export default function Settings() {
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 py-6">
               {/* Left column - Section title and description */}
               <div className="lg:col-span-2 space-y-1">
-                <h3 className="text-base font-medium text-text-70">Push Notifications</h3>
-                <p className="text-sm text-text-50">Get notifications in-app to find out what's going on when you're online.</p>
+                <h3 className="text-base font-medium text-text-70">
+                  Push Notifications
+                </h3>
+                <p className="text-sm text-text-50">
+                  Get notifications in-app to find out what's going on when
+                  you're online.
+                </p>
               </div>
 
               {/* Right column - Toggle options */}
@@ -474,11 +550,17 @@ export default function Settings() {
                 <div className="flex items-start gap-4">
                   <Toggle
                     checked={notifications.verificationResults}
-                    onChange={(checked) => updateNotification('verificationResults', checked)}
+                    onChange={(checked) =>
+                      updateNotification("verificationResults", checked)
+                    }
                   />
                   <div className="flex-1 space-y-0.5">
-                    <h4 className="text-base font-medium text-text-70">Verification Results</h4>
-                    <p className="text-sm text-text-50">Get notified about your the status of your verifications.</p>
+                    <h4 className="text-base font-medium text-text-70">
+                      Verification Results
+                    </h4>
+                    <p className="text-sm text-text-50">
+                      Get notified about your the status of your verifications.
+                    </p>
                   </div>
                 </div>
 
@@ -486,11 +568,18 @@ export default function Settings() {
                 <div className="flex items-start gap-4">
                   <Toggle
                     checked={notifications.documentUpdates}
-                    onChange={(checked) => updateNotification('documentUpdates', checked)}
+                    onChange={(checked) =>
+                      updateNotification("documentUpdates", checked)
+                    }
                   />
                   <div className="flex-1 space-y-0.5">
-                    <h4 className="text-base font-medium text-text-70">Document Status Updates</h4>
-                    <p className="text-sm text-text-50">Know when your uploaded documents are approved or need changes.</p>
+                    <h4 className="text-base font-medium text-text-70">
+                      Document Status Updates
+                    </h4>
+                    <p className="text-sm text-text-50">
+                      Know when your uploaded documents are approved or need
+                      changes.
+                    </p>
                   </div>
                 </div>
               </div>
@@ -518,7 +607,7 @@ export default function Settings() {
               <button
                 onClick={() => {
                   // Here you would typically save to backend
-                  console.log('Saving notifications:', notifications);
+                  console.log("Saving notifications:", notifications);
                 }}
                 className="h-9 px-4 bg-orange-primary text-white text-sm font-semibold rounded-lg shadow-lg shadow-orange-primary/25 hover:bg-orange-primary/90 transition-colors"
               >
