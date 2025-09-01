@@ -128,7 +128,7 @@ const SidebarContent = ({ navigationItems, user, onLogout }: any) => {
       {/* Logo */}
       <div className="px-8 py-8">
         <div className="flex items-center">
-          <div className="w-10 h-10 bg-genital-orange rounded-full flex items-center justify-center">
+          <div className="w-10 h-10 bg-orange-primary rounded-full flex items-center justify-center">
             <Shield className="w-5 h-5 text-white" />
           </div>
           <div className="ml-3">
@@ -151,13 +151,13 @@ const SidebarContent = ({ navigationItems, user, onLogout }: any) => {
                 to={item.href}
                 className={`group flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-colors ${
                   isActive
-                    ? 'bg-genital-orange text-white'
-                    : 'text-gray-700 hover:bg-genital-orange-light hover:text-genital-orange'
+                    ? 'bg-orange-primary text-white'
+                    : 'text-gray-700 hover:bg-orange-primary/10 hover:text-orange-primary'
                 }`}
               >
                 <item.icon
                   className={`mr-3 h-4 w-4 ${
-                    isActive ? 'text-white' : 'text-gray-500 group-hover:text-genital-orange'
+                    isActive ? 'text-white' : 'text-gray-500 group-hover:text-orange-primary'
                   }`}
                 />
                 {item.name}
@@ -175,9 +175,9 @@ const SidebarContent = ({ navigationItems, user, onLogout }: any) => {
                 <button
                   key={item.name}
                   onClick={item.onClick}
-                  className="group flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-colors text-gray-700 hover:bg-genital-orange-light hover:text-genital-orange w-full text-left"
+                  className="group flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-colors text-gray-700 hover:bg-orange-primary/10 hover:text-orange-primary w-full text-left"
                 >
-                  <item.icon className="mr-3 h-4 w-4 text-gray-500 group-hover:text-genital-orange" />
+                  <item.icon className="mr-3 h-4 w-4 text-gray-500 group-hover:text-orange-primary" />
                   {item.name}
                 </button>
               );
@@ -188,13 +188,13 @@ const SidebarContent = ({ navigationItems, user, onLogout }: any) => {
                 to={item.href}
                 className={`group flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-colors ${
                   isActive
-                    ? 'bg-genital-orange text-white'
-                    : 'text-gray-700 hover:bg-genital-orange-light hover:text-genital-orange'
+                    ? 'bg-orange-primary text-white'
+                    : 'text-gray-700 hover:bg-orange-primary/10 hover:text-orange-primary'
                 }`}
               >
                 <item.icon
                   className={`mr-3 h-4 w-4 ${
-                    isActive ? 'text-white' : 'text-gray-500 group-hover:text-genital-orange'
+                    isActive ? 'text-white' : 'text-gray-500 group-hover:text-orange-primary'
                   }`}
                 />
                 {item.name}
