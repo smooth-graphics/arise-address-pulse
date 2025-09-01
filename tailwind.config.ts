@@ -20,10 +20,10 @@ export default {
 		},
 		extend: {
 			colors: {
-				// GenIEtal Brand Colors
-				'genital-orange': 'hsl(var(--genital-orange))',
-				'genital-orange-light': 'hsl(var(--genital-orange-light))',
-				'genital-orange-dark': 'hsl(var(--genital-orange-dark))',
+				// GenIEtal Brand Colors - properly mapped to CSS variables
+				'orange-primary': 'hsl(var(--orange-primary))',
+				'orange-secondary': 'hsl(var(--orange-secondary))',
+				'orange-tertiary': 'hsl(var(--orange-tertiary))',
 				
 				// Legacy colors for backward compatibility
 				'dark-charcoal': '#606060',
@@ -37,6 +37,7 @@ export default {
 				ring: 'hsl(var(--ring))',
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
+				sidebar: 'hsl(var(--sidebar-background))',
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
 					foreground: 'hsl(var(--primary-foreground))'
