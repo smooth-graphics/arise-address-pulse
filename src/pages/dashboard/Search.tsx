@@ -1,9 +1,10 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Bell, UserRoundSearch, Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export default function Verify() {
+export default function Search() {
   const [fullName, setFullName] = useState("");
   const [fullAddress, setFullAddress] = useState("");
   const [isLoading, setIsLoading] = useState(false);
