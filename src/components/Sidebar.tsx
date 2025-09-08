@@ -13,6 +13,8 @@ import {
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { useState } from "react";
+import PlanUpgradeModal from "@/components/billing/PlanUpgradeModal";
 
 interface SidebarProps {
   currentPath?: string;
@@ -28,7 +30,7 @@ const mainNavItems = [
 
 const accountNavItems = [
   { icon: SettingsIcon, label: "Settings", path: "/settings" },
-  { icon: Rocket, label: "Upgrade Plan", path: "/upgrade" },
+  { icon: Rocket, label: "Upgrade Plan", path: "/upgrade", isAction: true },
   { icon: LogOut, label: "Logout", path: "/logout", isAction: true },
 ];
 
@@ -38,10 +40,21 @@ export default function Sidebar({
 }: SidebarProps) {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [upgradeModalOpen, setUpgradeModalOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
     navigate('/auth/login');
+  };
+
+  const handleUpgrade = () => {
+    setUpgradeModalOpen(true);
+  };
+
+  const handleUpgradeComplete = (planName: string) => {
+    console.log('Upgrading to:', planName);
+    setUpgradeModalOpen(false);
+    // Handle the upgrade logic here
   };
 
   const NavItem = ({
@@ -68,9 +81,11 @@ export default function Sidebar({
                       path;
 
     if (isAction || path === '/logout') {
+      const actionHandler = path === '/upgrade' ? handleUpgrade : (onClick || handleLogout);
+      
       return (
         <button
-          onClick={onClick || handleLogout}
+          onClick={actionHandler}
           className={cn(
             "flex h-10 pl-2 pr-4 items-center gap-2 rounded-r-lg transition-colors cursor-pointer relative w-full text-left",
             "bg-sidebar text-muted-foreground hover:bg-white/50",
@@ -201,6 +216,15 @@ export default function Sidebar({
           </div>
         </div>
       </div>
+
+      {/* Upgrade Plan Modal */}
+      <PlanUpgradeModal
+        isOpen={upgradeModalOpen}
+        onClose={() => setUpgradeModalOpen(false)}
+        currentPlan="basic"
+        lockedFeature=""
+        onUpgrade={handleUpgradeComplete}
+      />
     </div>
   );
 }
