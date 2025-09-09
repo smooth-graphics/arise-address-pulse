@@ -86,7 +86,7 @@ const Index = () => {
         <div className="container mx-auto text-center relative max-w-6xl">
           <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <div className="inline-block px-4 py-2 bg-gradient-to-r from-bold-red/10 to-vibrant-orange/10 rounded-full border border-bold-red/20 mb-6">
-              <span className="text-bold-red font-semibold text-sm">✨ Trusted across Nigeria and 240+ countries</span>
+              <span className="text-bold-red font-semibold text-sm">✨ Trusted across Nigeria and 195+ countries</span>
             </div>
             
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-gray-900 leading-tight">
