@@ -2,8 +2,8 @@ export interface PricingPlan {
   id: string;
   name: string;
   description: string;
-  monthlyPrice: number;
-  yearlyPrice: number;
+  monthlyPrice: number | null; // null for "Contact Sales" plans
+  yearlyPrice: number | null;  // null for "Contact Sales" plans
   features: string[];
   notIncluded?: string[];
   popular?: boolean;
