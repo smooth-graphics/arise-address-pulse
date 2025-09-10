@@ -41,24 +41,7 @@ const result = await arise.validate({
 });`
       }
     },
-    {
-      id: 'geocoding',
-      icon: MapPin,
-      title: 'Geocoding & Postal Lookup',
-      description: 'Cross-reference with global postal databases',
-      content: {
-        description: 'Our engine validates addresses against multiple authoritative data sources.',
-        features: [
-          'Access to 8,000+ postal regions',
-          'Real-time geocoding with lat/lng',
-          'Postal code validation',
-          'Administrative boundary checking',
-          'Address component parsing',
-          'Multi-language support'
-        ],
-        details: 'Arise pings multiple postal databases, returns latitude/longitude coordinates, and validates postal codes against official government records.'
-      }
-    },
+    
     {
       id: 'standardization',
       icon: CheckCircle,
