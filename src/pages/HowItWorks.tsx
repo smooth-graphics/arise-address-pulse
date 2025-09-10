@@ -182,11 +182,6 @@ const result = await arise.validate({
                         <div className="flex items-center justify-center h-48 bg-gray-50 rounded-lg">
                           <step.icon className="w-16 h-16 text-gray-400" />
                         </div>
-                        {step.content.details && (
-                          <p className="mt-4 text-sm text-gray-600 text-center">
-                            {step.content.details}
-                          </p>
-                        )}
                       </CardContent>
                     </Card>
                   )}
