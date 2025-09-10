@@ -8,7 +8,7 @@ const Pricing = () => {
   const plans = [
     {
       name: "Basic",
-      price: "₦5,000",
+      price: "$5",
       period: "/month",
       description: "Perfect for small businesses just getting started with address verification",
       features: [
@@ -29,7 +29,7 @@ const Pricing = () => {
     },
     {
       name: "Professional",
-      price: "₦25,000",
+      price: "$15",
       period: "/month",
       description: "Ideal for growing businesses with moderate verification needs",
       features: [
@@ -53,7 +53,7 @@ const Pricing = () => {
     },
     {
       name: "Enterprise",
-      price: "Custom",
+      price: "$25",
       period: "",
       description: "For large organizations with high-volume verification requirements",
       features: [
@@ -80,19 +80,19 @@ const Pricing = () => {
     {
       icon: MapPin,
       title: "Enhanced Address Matching",
-      price: "₦2,000/month",
+      price: "$2,000/month",
       description: "Advanced fuzzy matching for incomplete or misspelled addresses"
     },
     {
       icon: Shield,
       title: "Advanced Identity Checks",
-      price: "₦5,000/month", 
+      price: "$5,000/month", 
       description: "Biometric verification and enhanced document authentication"
     },
     {
       icon: Zap,
       title: "Real-time Webhooks",
-      price: "₦1,500/month",
+      price: "$1,500/month",
       description: "Instant notifications for verification results and status updates"
     }
   ];
