@@ -10,6 +10,10 @@ import {
   LogOut,
   MapPin,
   X,
+  Shield,
+  Users,
+  Wallet,
+  CircleHelp,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -21,18 +25,39 @@ interface SidebarProps {
   onClose?: () => void;
 }
 
-const mainNavItems = [
-  { icon: UserRoundSearch, label: "Verify", path: "/verify" },
-  { icon: House, label: "Overview", path: "/" },
-  { icon: File, label: "My Documents", path: "/documents" },
-  { icon: History, label: "History", path: "/history" },
-];
+const getMainNavItems = (isOrgAdmin: boolean) => {
+  if (isOrgAdmin) {
+    return [
+      { icon: House, label: "Overview", path: "/" },
+      { icon: UserRoundSearch, label: "Verify", path: "/verify" },
+      { icon: Shield, label: "Escalation Center", path: "/escalation" },
+      { icon: Users, label: "Team Management", path: "/team" },
+      { icon: History, label: "History", path: "/history" },
+    ];
+  }
+  return [
+    { icon: UserRoundSearch, label: "Verify", path: "/verify" },
+    { icon: House, label: "Overview", path: "/" },
+    { icon: File, label: "My Documents", path: "/documents" },
+    { icon: History, label: "History", path: "/history" },
+  ];
+};
 
-const accountNavItems = [
-  { icon: SettingsIcon, label: "Settings", path: "/settings" },
-  { icon: Rocket, label: "Upgrade Plan", path: "/upgrade", isAction: true },
-  { icon: LogOut, label: "Logout", path: "/logout", isAction: true },
-];
+const getAccountNavItems = (isOrgAdmin: boolean) => {
+  if (isOrgAdmin) {
+    return [
+      { icon: SettingsIcon, label: "Settings", path: "/settings" },
+      { icon: Wallet, label: "Wallet & Billing", path: "/billing" },
+      { icon: CircleHelp, label: "Help & Support", path: "/help-support" },
+      { icon: LogOut, label: "Logout", path: "/logout", isAction: true },
+    ];
+  }
+  return [
+    { icon: SettingsIcon, label: "Settings", path: "/settings" },
+    { icon: Rocket, label: "Upgrade Plan", path: "/upgrade", isAction: true },
+    { icon: LogOut, label: "Logout", path: "/logout", isAction: true },
+  ];
+};
 
 export default function Sidebar({
   currentPath = "/settings",
@@ -41,6 +66,10 @@ export default function Sidebar({
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [upgradeModalOpen, setUpgradeModalOpen] = useState(false);
+  
+  const isOrgAdmin = user?.role === 'organization-admin';
+  const mainNavItems = getMainNavItems(isOrgAdmin);
+  const accountNavItems = getAccountNavItems(isOrgAdmin);
 
   const handleLogout = () => {
     logout();
@@ -78,6 +107,10 @@ export default function Sidebar({
                       path === '/history' ? '/dashboard/history' :
                       path === '/settings' ? '/dashboard/settings' :
                       path === '/upgrade' ? '/dashboard/billing' :
+                      path === '/escalation' ? '/dashboard/escalation' :
+                      path === '/team' ? '/dashboard/team' :
+                      path === '/billing' ? '/dashboard/billing' :
+                      path === '/help-support' ? '/dashboard/help-support' :
                       path;
 
     if (isAction || path === '/logout') {
