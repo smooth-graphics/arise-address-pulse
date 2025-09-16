@@ -1,404 +1,266 @@
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Users, UserPlus, Mail, Phone, Shield, Edit, Trash2, Search } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import {
+  Search,
+  ListFilter,
+  Send,
+  Pencil,
+  Trash2,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 
 interface TeamMember {
   id: string;
-  firstName: string;
-  lastName: string;
+  name: string;
   email: string;
-  phone?: string;
-  role: 'organization-admin' | 'organization-member';
-  status: 'active' | 'pending' | 'inactive';
-  joinDate: string;
-  lastActive: string;
-  permissions: string[];
+  avatar: string;
+  dateAdded: string;
+  status: "active" | "inactive";
 }
 
-const mockTeamMembers: TeamMember[] = [
+const teamMembers: TeamMember[] = [
   {
     id: "1",
-    firstName: "James",
-    lastName: "Malomo",
-    email: "james.malomo@company.com",
-    phone: "+1-234-567-8900",
-    role: "organization-admin",
+    name: "Steve Johnson",
+    email: "stevieson239@gmail.com",
+    avatar: "https://api.builder.io/api/v1/image/assets/TEMP/0daf656e2958fd63d7fc63ce08fb48fed8267ae4?width=80",
+    dateAdded: "24/07/2025 - 09:41 AM",
     status: "active",
-    joinDate: "2024-01-01T00:00:00Z",
-    lastActive: "2024-01-15T14:30:00Z",
-    permissions: ["manage_team", "view_reports", "manage_billing", "escalate_cases"]
   },
   {
     id: "2",
-    firstName: "Sarah",
-    lastName: "Johnson",
-    email: "sarah.johnson@company.com",
-    phone: "+1-234-567-8901",
-    role: "organization-member",
+    name: "Olamide Coker",
+    email: "cokerhola@gmail.com",
+    avatar: "https://api.builder.io/api/v1/image/assets/TEMP/80c63fcf970df44a3b4a227466aeb2d918d268af?width=80",
+    dateAdded: "24/07/2025 - 09:41 AM",
     status: "active",
-    joinDate: "2024-01-05T00:00:00Z",
-    lastActive: "2024-01-15T12:15:00Z",
-    permissions: ["verify_addresses", "view_history"]
   },
   {
     id: "3",
-    firstName: "Michael",
-    lastName: "Chen",
-    email: "michael.chen@company.com",
-    role: "organization-member",
-    status: "pending",
-    joinDate: "2024-01-14T00:00:00Z",
-    lastActive: "2024-01-14T09:00:00Z",
-    permissions: ["verify_addresses"]
-  }
+    name: "Lisa Kay",
+    email: "kayalisaaa@gmail.com",
+    avatar: "https://api.builder.io/api/v1/image/assets/TEMP/7616138e88321fa9e95fe33d079a5138acb44f42?width=80",
+    dateAdded: "24/07/2025 - 09:41 AM",
+    status: "active",
+  },
 ];
 
-const TeamManagement = () => {
-  const [teamMembers, setTeamMembers] = useState(mockTeamMembers);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [roleFilter, setRoleFilter] = useState("all");
-  const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
-  const { toast } = useToast();
+export default function TeamManagement() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showInviteModal, setShowInviteModal] = useState(false);
+  const [inviteEmail, setInviteEmail] = useState("");
+  const [inviteType, setInviteType] = useState<"single" | "bulk">("single");
 
-  // New member form state
-  const [newMember, setNewMember] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    role: "organization-member" as const,
-  });
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'active': return 'bg-green-100 text-green-800';
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'inactive': return 'bg-gray-100 text-gray-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  const getRoleColor = (role: string) => {
-    switch (role) {
-      case 'organization-admin': return 'bg-purple-100 text-purple-800';
-      case 'organization-member': return 'bg-blue-100 text-blue-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  const filteredMembers = teamMembers.filter(member => {
-    const matchesSearch = 
-      member.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      member.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      member.email.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === "all" || member.status === statusFilter;
-    const matchesRole = roleFilter === "all" || member.role === roleFilter;
-    
-    return matchesSearch && matchesStatus && matchesRole;
-  });
-
-  const handleInviteMember = () => {
-    if (!newMember.firstName || !newMember.lastName || !newMember.email) {
-      toast({
-        title: "Missing Information",
-        description: "Please fill in all required fields.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    const member: TeamMember = {
-      id: String(teamMembers.length + 1),
-      firstName: newMember.firstName,
-      lastName: newMember.lastName,
-      email: newMember.email,
-      role: newMember.role,
-      status: "pending",
-      joinDate: new Date().toISOString(),
-      lastActive: new Date().toISOString(),
-      permissions: (newMember.role as string) === "organization-admin" 
-        ? ["manage_team", "view_reports", "manage_billing", "escalate_cases"]
-        : ["verify_addresses"]
-    };
-
-    setTeamMembers([...teamMembers, member]);
-    setNewMember({ firstName: "", lastName: "", email: "", role: "organization-member" });
-    setIsInviteModalOpen(false);
-
-    toast({
-      title: "Invitation Sent",
-      description: `Invitation sent to ${member.email}`,
-    });
-  };
-
-  const handleRemoveMember = (memberId: string) => {
-    setTeamMembers(teamMembers.filter(member => member.id !== memberId));
-    toast({
-      title: "Member Removed",
-      description: "Team member has been removed successfully.",
-    });
-  };
-
-  const handleUpdateMemberStatus = (memberId: string, newStatus: TeamMember['status']) => {
-    setTeamMembers(teamMembers.map(member =>
-      member.id === memberId ? { ...member, status: newStatus } : member
-    ));
-    toast({
-      title: "Status Updated",
-      description: "Member status has been updated successfully.",
-    });
-  };
+  const filteredMembers = teamMembers.filter(
+    (member) =>
+      member.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      member.email.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Team Management</h1>
-          <p className="text-gray-600">Manage your organization's team members and permissions</p>
+    <div className="h-full flex flex-col">
+      {/* Header */}
+      <div className="px-4 py-4 border-b border-black/5">
+        <h1 className="text-2xl font-bold text-gray-700 tracking-tight">Team Management</h1>
+      </div>
+
+      {/* Controls */}
+      <div className="flex items-center justify-between px-4 py-6">
+        {/* Search */}
+        <div className="flex items-center gap-2 w-[465px] h-9 px-3 bg-white border border-gray-400 rounded-lg">
+          <Search className="w-6 h-6 text-gray-600" />
+          <input
+            type="text"
+            placeholder="Search by name or email"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="flex-1 text-sm text-gray-600 placeholder:text-gray-600 border-none outline-none bg-transparent"
+          />
         </div>
-        <Dialog open={isInviteModalOpen} onOpenChange={setIsInviteModalOpen}>
-          <DialogTrigger asChild>
-            <Button>
-              <UserPlus className="w-4 h-4 mr-2" />
-              Invite Member
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Invite Team Member</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="firstName">First Name</Label>
-                  <Input
-                    id="firstName"
-                    value={newMember.firstName}
-                    onChange={(e) => setNewMember({ ...newMember, firstName: e.target.value })}
-                    placeholder="Enter first name"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="lastName">Last Name</Label>
-                  <Input
-                    id="lastName"
-                    value={newMember.lastName}
-                    onChange={(e) => setNewMember({ ...newMember, lastName: e.target.value })}
-                    placeholder="Enter last name"
-                  />
-                </div>
-              </div>
-              <div>
-                <Label htmlFor="email">Email Address</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={newMember.email}
-                  onChange={(e) => setNewMember({ ...newMember, email: e.target.value })}
-                  placeholder="Enter email address"
-                />
-              </div>
-              <div>
-                <Label htmlFor="role">Role</Label>
-                <Select 
-                  value={newMember.role} 
-                  onValueChange={(value) => setNewMember({ ...newMember, role: value as any })}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="organization-member">Team Member</SelectItem>
-                    <SelectItem value="organization-admin">Admin</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="flex justify-end space-x-2">
-                <Button variant="outline" onClick={() => setIsInviteModalOpen(false)}>
-                  Cancel
-                </Button>
-                <Button onClick={handleInviteMember}>
-                  Send Invitation
-                </Button>
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
+
+        {/* Filter and Invite */}
+        <div className="flex items-start gap-2">
+          {/* Filter Button */}
+          <button className="flex items-center gap-2 h-9 px-3 bg-white border border-gray-400 rounded-lg text-sm text-gray-600">
+            <ListFilter className="w-4 h-4" />
+            <span>Filter</span>
+          </button>
+
+          {/* Invite Button */}
+          <button
+            onClick={() => setShowInviteModal(true)}
+            className="flex items-center gap-1.5 h-9 px-3 bg-white border border-orange-500 text-orange-500 rounded-lg text-sm font-medium shadow-orange-500/25 shadow-md"
+          >
+            <span>Invite new member</span>
+            <Send className="w-4 h-4" />
+          </button>
+        </div>
       </div>
 
-      {/* Filters */}
-      <Card>
-        <CardContent className="pt-6">
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex-1">
-              <div className="relative">
-                <Search className="w-4 h-4 absolute left-3 top-3 text-gray-400" />
-                <Input
-                  placeholder="Search team members..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                />
-              </div>
+      {/* Table */}
+      <div className="flex-1 mx-4 mb-6">
+        <div className="bg-white rounded-t-2xl overflow-hidden border border-gray-300">
+          {/* Table Header */}
+          <div className="flex items-center bg-gray-300 h-9">
+            <div className="flex items-center gap-2 px-3 h-full">
+              <div className="w-4 h-4 border border-gray-500 rounded-md"></div>
             </div>
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-40">
-                <SelectValue placeholder="Status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="active">Active</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="inactive">Inactive</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select value={roleFilter} onValueChange={setRoleFilter}>
-              <SelectTrigger className="w-40">
-                <SelectValue placeholder="Role" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Roles</SelectItem>
-                <SelectItem value="organization-admin">Admin</SelectItem>
-                <SelectItem value="organization-member">Member</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="flex-1 flex items-center px-3 h-full">
+              <span className="text-xs font-medium text-gray-950">Name</span>
+            </div>
+            <div className="w-[300px] flex items-center px-3 h-full">
+              <span className="text-xs font-medium text-gray-950">Date added</span>
+            </div>
+            <div className="w-[180px] flex items-center px-3 h-full">
+              <span className="text-xs font-medium text-gray-950">Status</span>
+            </div>
+            <div className="w-[150px] flex items-center justify-end px-3 h-full">
+              <span className="text-xs font-medium text-gray-950">Actions</span>
+            </div>
           </div>
-        </CardContent>
-      </Card>
 
-      {/* Team Statistics */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center">
-              <Users className="w-8 h-8 text-blue-600" />
-              <div className="ml-3">
-                <p className="text-sm font-medium text-gray-600">Total Members</p>
-                <p className="text-2xl font-bold text-gray-900">{teamMembers.length}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center">
-              <Shield className="w-8 h-8 text-purple-600" />
-              <div className="ml-3">
-                <p className="text-sm font-medium text-gray-600">Admins</p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {teamMembers.filter(m => m.role === 'organization-admin').length}
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center">
-              <Mail className="w-8 h-8 text-yellow-600" />
-              <div className="ml-3">
-                <p className="text-sm font-medium text-gray-600">Pending Invites</p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {teamMembers.filter(m => m.status === 'pending').length}
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center">
-              <Users className="w-8 h-8 text-green-600" />
-              <div className="ml-3">
-                <p className="text-sm font-medium text-gray-600">Active Members</p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {teamMembers.filter(m => m.status === 'active').length}
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Team Members List */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Team Members ({filteredMembers.length})</CardTitle>
-          <CardDescription>Manage your team members, roles, and permissions</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
+          {/* Table Rows */}
+          <div className="divide-y divide-black/10">
             {filteredMembers.map((member) => (
-              <div
-                key={member.id}
-                className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50"
-              >
-                <div className="flex items-center space-x-4">
-                  <Avatar>
-                    <AvatarImage src={`https://api.dicebear.com/7.x/initials/svg?seed=${member.firstName} ${member.lastName}`} />
-                    <AvatarFallback>{member.firstName.charAt(0)}{member.lastName.charAt(0)}</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <h3 className="font-medium text-gray-900">
-                      {member.firstName} {member.lastName}
-                    </h3>
-                    <p className="text-sm text-gray-600">{member.email}</p>
-                    {member.phone && (
-                      <p className="text-sm text-gray-500">{member.phone}</p>
-                    )}
+              <div key={member.id} className="flex items-center bg-white pt-2 h-16">
+                <div className="flex items-center gap-2 px-3 h-full">
+                  <div className="w-4 h-4 border border-gray-500 rounded-md"></div>
+                </div>
+                <div className="flex-1 flex items-center gap-2 px-3 h-full">
+                  <img
+                    src={member.avatar}
+                    alt={member.name}
+                    className="w-10 h-10 rounded-full"
+                  />
+                  <div className="flex flex-col justify-center gap-0.5">
+                    <div className="text-sm font-normal text-black leading-5">
+                      {member.name}
+                    </div>
+                    <div className="text-xs font-normal text-gray-600 leading-4.5">
+                      {member.email}
+                    </div>
                   </div>
                 </div>
-                
-                <div className="flex items-center space-x-3">
-                  <Badge className={getStatusColor(member.status)}>
-                    {member.status.charAt(0).toUpperCase() + member.status.slice(1)}
-                  </Badge>
-                  <Badge className={getRoleColor(member.role)}>
-                    {member.role === 'organization-admin' ? 'Admin' : 'Member'}
-                  </Badge>
-                  
-                  <div className="flex space-x-1">
-                    {member.status === 'pending' && (
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleUpdateMemberStatus(member.id, 'active')}
-                      >
-                        Activate
-                      </Button>
-                    )}
-                    <Button size="sm" variant="outline">
-                      <Edit className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => handleRemoveMember(member.id)}
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
+                <div className="w-[300px] flex items-center px-3 h-full">
+                  <div className="text-sm font-normal text-black leading-5 truncate">
+                    {member.dateAdded}
                   </div>
+                </div>
+                <div className="w-[180px] flex items-center px-3 h-full">
+                  <div className="flex items-center justify-center gap-2 px-2 py-0.5 rounded-full border-0.5 border-green-500 bg-green-50">
+                    <span className="text-xs font-medium text-green-600 leading-4.5">
+                      Active
+                    </span>
+                  </div>
+                </div>
+                <div className="w-[150px] flex items-center justify-end gap-3 px-3 h-full">
+                  <button className="text-gray-800 hover:text-orange-500 transition-colors">
+                    <Pencil className="w-4 h-4" />
+                  </button>
+                  <button className="text-gray-800 hover:text-red-500 transition-colors">
+                    <Trash2 className="w-4 h-4" />
+                  </button>
                 </div>
               </div>
             ))}
-            {filteredMembers.length === 0 && (
-              <div className="text-center py-8 text-gray-500">
-                No team members found matching your filters.
-              </div>
-            )}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
+
+      {/* Pagination */}
+      <div className="flex items-center justify-between px-4 h-8 mb-6">
+        <div className="text-sm font-normal text-gray-900">
+          Showing 1 - 3 of 3 items
+        </div>
+        <div className="flex items-center border border-gray-400 rounded-lg bg-white">
+          <button className="flex items-center gap-2 h-8 px-3 text-sm text-gray-600">
+            <ChevronLeft className="w-4 h-4" />
+            <span>Previous</span>
+          </button>
+          <div className="w-px h-8 bg-gray-400"></div>
+          <div className="flex items-center justify-center w-8 h-8 text-sm text-gray-800">
+            1
+          </div>
+          <div className="w-px h-8 bg-gray-400"></div>
+          <button className="flex items-center gap-2 h-8 px-3 text-sm text-gray-600">
+            <span>Next</span>
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+
+      {/* Invite Modal */}
+      {showInviteModal && (
+        <div className="fixed inset-0 bg-black/10 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="w-80 bg-white rounded-xl border border-black/5 shadow-sm">
+            {/* Modal Header */}
+            <div className="px-3 pt-4 pb-2">
+              <h3 className="text-xs font-medium text-gray-600">
+                Invite new member
+              </h3>
+              <div className="w-full h-px bg-gray-400 mt-3"></div>
+            </div>
+
+            {/* Tabs */}
+            <div className="px-3 mb-2">
+              <div className="flex p-0.5 bg-gray-300 rounded-lg">
+                <button
+                  onClick={() => setInviteType("single")}
+                  className={`flex-1 h-8 px-3 text-sm font-medium rounded-lg transition-colors ${
+                    inviteType === "single"
+                      ? "bg-white text-gray-600 shadow-sm"
+                      : "text-gray-600"
+                  }`}
+                >
+                  Single Invite
+                </button>
+                <button
+                  onClick={() => setInviteType("bulk")}
+                  className={`flex-1 h-8 px-3 text-sm font-medium rounded-lg transition-colors ${
+                    inviteType === "bulk"
+                      ? "bg-white text-gray-600 shadow-sm"
+                      : "text-gray-600"
+                  }`}
+                >
+                  Bulk Invite
+                </button>
+              </div>
+            </div>
+
+            {/* Email Input */}
+            <div className="px-3 mb-6">
+              <label className="text-xs font-normal text-gray-600">Email</label>
+              <input
+                type="email"
+                value={inviteEmail}
+                onChange={(e) => setInviteEmail(e.target.value)}
+                placeholder="josephola@gmail.com"
+                className="w-full h-9 px-3 mt-1.5 border border-gray-400 rounded-lg text-sm text-gray-600 placeholder:text-gray-600 outline-none focus:border-orange-500"
+              />
+              <p className="text-xs text-gray-700 mt-1.5 leading-4">
+                Enter single email or multiple emails as comma separated values.
+              </p>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="px-3 pb-3 flex flex-col items-end gap-2">
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setShowInviteModal(false)}
+                  className="px-3 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded transition-colors"
+                >
+                  Cancel
+                </button>
+                <button className="flex items-center gap-1.5 h-8 px-3 bg-white border border-orange-500 text-orange-500 rounded-lg text-sm font-medium shadow-orange-500/25 shadow-md">
+                  <span>Send invite</span>
+                  <Send className="w-4 h-4" />
+                </button>
+              </div>
+              <div className="w-full h-px bg-gray-400"></div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
-};
-
-export default TeamManagement;
+}
