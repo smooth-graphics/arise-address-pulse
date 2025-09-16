@@ -47,6 +47,14 @@
     --orange-primary: 24 93% 52%; /* #F89111 */
     --orange-secondary: 20 94% 50%; /* #FE7B02 */
     --orange-tertiary: 20 88% 54%; /* #F47920 */
+    
+    /* Additional genital-* colors for the new design */
+    --genital-orange: 24 93% 52%; /* #F89111 same as primary */
+    --genital-gray-100: 0 0% 96%; /* #F5F5F5 light gray */
+    --genital-gray-400: 0 0% 64%; /* #A4A4A4 medium gray */
+    --genital-gray-500: 0 0% 54%; /* #8A8A8A darker gray */
+    --genital-gray-700: 0 0% 32%; /* #525252 dark gray */
+    --genital-stroke: 0 0% 88%; /* #E0E0E0 stroke color */
 
     --sidebar-background: 0 0% 97%; /* #F8F8F8 */
     --sidebar-foreground: 0 0% 0%;
@@ -94,6 +102,13 @@
     --orange-primary: 24 93% 52%;
     --orange-secondary: 20 94% 50%;
     --orange-tertiary: 20 88% 54%;
+    
+    --genital-orange: 24 93% 52%;
+    --genital-gray-100: 0 0% 14%; /* Darker for dark mode */
+    --genital-gray-400: 0 0% 56%; /* Adjusted for dark mode */
+    --genital-gray-500: 0 0% 46%; /* Adjusted for dark mode */
+    --genital-gray-700: 0 0% 85%; /* Light in dark mode */
+    --genital-stroke: 0 0% 24%; /* Darker stroke for dark mode */
 
     --sidebar-background: 0 0% 8%;
     --sidebar-foreground: 0 0% 98%;

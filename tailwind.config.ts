@@ -25,6 +25,14 @@ export default {
 				'orange-secondary': 'hsl(var(--orange-secondary))',
 				'orange-tertiary': 'hsl(var(--orange-tertiary))',
 				
+				// New genital-* colors for updated designs
+				'genital-orange': 'hsl(var(--genital-orange))',
+				'genital-gray-100': 'hsl(var(--genital-gray-100))',
+				'genital-gray-400': 'hsl(var(--genital-gray-400))',
+				'genital-gray-500': 'hsl(var(--genital-gray-500))',
+				'genital-gray-700': 'hsl(var(--genital-gray-700))',
+				'genital-stroke': 'hsl(var(--genital-stroke))',
+				
 				// Legacy colors for backward compatibility
 				'dark-charcoal': '#606060',
 				'bold-red': '#ee3224',
