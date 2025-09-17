@@ -365,7 +365,7 @@ export function HistoryPage() {
                 <div key={record.id} className="flex items-center hover:bg-gray-50 transition-colors">
                   <div className="flex w-32 xl:w-40 px-3 py-3 items-center">
                     <span className="text-sm text-gray-900 font-mono">
-                      <span className="text-gray-500">#</span>
+                      <span className="text-gray-500">#VER-</span>
                       {record.refId.split('-')[1]}
                     </span>
                   </div>
