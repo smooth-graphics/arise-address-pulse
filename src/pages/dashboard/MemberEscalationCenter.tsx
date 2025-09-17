@@ -1,8 +1,10 @@
 import { Search, Bell, Send, CircleCheck, Flag } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import * as ReactRouterDOM from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+
+const { Link } = ReactRouterDOM;
 
 interface ChatMessage {
   id: string;
