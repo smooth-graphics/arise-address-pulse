@@ -177,10 +177,10 @@ export default function Sidebar({
     return current.startsWith(target + "/");
   };
 
-  // Special styling for organization members
+  // Special layout for organization members
   if (userRole === 'organization-member') {
     return (
-      <div className="w-60 h-screen bg-genital-gray-50 flex flex-col justify-between pr-4 sticky top-0 overflow-hidden">
+      <div className="w-[237px] h-screen bg-sidebar border-r flex flex-col relative overflow-hidden">
         {/* Close button for mobile */}
         {onClose && (
           <div className="lg:hidden absolute top-4 right-4 z-20">
@@ -194,132 +194,78 @@ export default function Sidebar({
         )}
 
         {/* Logo Section */}
-        <div className="pt-6 pl-4">
+        <div className="p-6 pb-2">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-r from-genital-red-orange to-genital-orange-light rounded-xl flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-destructive to-orange-tertiary flex items-center justify-center flex-shrink-0">
               <MapPin className="w-6 h-6 text-white" strokeWidth={2} />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 leading-8">GenIEtal</h1>
-              <p className="text-xs text-genital-orange-light font-medium">Verification</p>
+              <h1 className="text-2xl font-bold text-foreground leading-8">
+                GenIEtal
+              </h1>
+              <p className="text-xs text-orange-tertiary font-medium">
+                Verification
+              </p>
             </div>
           </div>
         </div>
 
-        {/* Navigation Sections */}
-        <div className="flex-1 flex flex-col justify-between mt-6">
-          {/* Main Navigation */}
-          <div className="space-y-3">
-            <div className="pl-4">
-              <span className="text-xs font-normal text-genital-gray-500 tracking-wider">MAIN</span>
-            </div>
-            <div className="space-y-0">
-              {mainNavItems.map((item) => {
-                const mappedPath = item.path === '/' ? '/dashboard' : 
-                                  item.path === '/verify' ? '/dashboard/search' :
-                                  item.path === '/escalation' ? '/dashboard/escalation' :
-                                  item.path === '/history' ? '/dashboard/history' :
-                                  item.path;
-                const isActive = isPathActive(currentPath, item.path);
-                
-                return (
-                  <Link
+        {/* Navigation */}
+        <div className="flex-1 px-4 py-2">
+          <div className="space-y-1">
+            {/* Main Section */}
+            <div>
+              <h3 className="px-4 mb-2 text-xs font-normal text-text-50 tracking-wide uppercase">
+                Main
+              </h3>
+              <div className="space-y-1">
+                {mainNavItems.map((item) => (
+                  <NavItem
                     key={item.path}
-                    to={mappedPath}
+                    icon={item.icon}
+                    label={item.label}
+                    path={item.path}
+                    isActive={isPathActive(currentPath, item.path)}
                     onClick={onClose}
-                    className={`flex h-10 items-center gap-2 px-4 py-2 rounded-r-md transition-colors ${
-                      isActive
-                        ? "bg-white text-genital-orange font-medium"
-                        : "bg-genital-gray-50 text-genital-gray-500 hover:bg-white hover:text-genital-gray-700"
-                    }`}
-                  >
-                    <item.icon
-                      className={`w-5 h-5 ${isActive ? "text-genital-orange" : "text-genital-gray-400"}`}
-                      strokeWidth={1.2}
-                    />
-                    <span className="text-sm">{item.label}</span>
-                    {isActive && (
-                      <div className="w-1.5 h-8 bg-genital-orange rounded-l-full ml-auto -mr-4"></div>
-                    )}
-                  </Link>
-                );
-              })}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
 
-          {/* Account Navigation */}
-          <div className="space-y-3">
-            <div className="pl-4">
-              <span className="text-xs font-normal text-genital-gray-500 tracking-wider">ACCOUNT</span>
-            </div>
-            <div className="space-y-0">
-              {accountNavItems.map((item) => {
-                const mappedPath = item.path === '/settings' ? '/dashboard/settings' :
-                                  item.path === '/help-support' ? '/dashboard/help-support' :
-                                  item.path;
-                const isActive = isPathActive(currentPath, item.path);
-
-                if (item.isAction || item.path === '/logout') {
-                  const actionHandler = item.path === '/logout' ? handleLogout : undefined;
-                  
-                  return (
-                    <button
-                      key={item.path}
-                      onClick={actionHandler}
-                      className={`flex h-10 items-center gap-2 px-4 py-2 rounded-r-md transition-colors w-full text-left ${
-                        isActive
-                          ? "bg-white text-genital-orange font-medium"
-                          : "bg-genital-gray-50 text-genital-gray-500 hover:bg-white hover:text-genital-gray-700"
-                      }`}
-                    >
-                      <item.icon
-                        className={`w-5 h-5 ${isActive ? "text-genital-orange" : "text-genital-gray-400"}`}
-                        strokeWidth={1.2}
-                      />
-                      <span className="text-sm">{item.label}</span>
-                      {isActive && (
-                        <div className="w-1.5 h-8 bg-genital-orange rounded-l-full ml-auto -mr-4"></div>
-                      )}
-                    </button>
-                  );
-                }
-
-                return (
-                  <Link
+            {/* Account Section */}
+            <div className="pt-2">
+              <h3 className="px-4 mb-2 text-xs font-normal text-text-50 tracking-wide uppercase">
+                Account
+              </h3>
+              <div className="space-y-1">
+                {accountNavItems.map((item) => (
+                  <NavItem
                     key={item.path}
-                    to={mappedPath}
+                    icon={item.icon}
+                    label={item.label}
+                    path={item.path}
+                    isActive={isPathActive(currentPath, item.path)}
+                    isAction={item.isAction}
                     onClick={onClose}
-                    className={`flex h-10 items-center gap-2 px-4 py-2 rounded-r-md transition-colors ${
-                      isActive
-                        ? "bg-white text-genital-orange font-medium"
-                        : "bg-genital-gray-50 text-genital-gray-500 hover:bg-white hover:text-genital-gray-700"
-                    }`}
-                  >
-                    <item.icon
-                      className={`w-5 h-5 ${isActive ? "text-genital-orange" : "text-genital-gray-400"}`}
-                      strokeWidth={1.2}
-                    />
-                    <span className="text-sm">{item.label}</span>
-                    {isActive && (
-                      <div className="w-1.5 h-8 bg-genital-orange rounded-l-full ml-auto -mr-4"></div>
-                    )}
-                  </Link>
-                );
-              })}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>
 
-        {/* User Profile */}
-        <div className="p-3 pl-4 flex items-center gap-3.5">
-          <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 text-sm font-medium">
-            {user?.firstName?.charAt(0)}{user?.lastName?.charAt(0)}
-          </div>
-          <div className="flex-1">
-            <p className="text-base font-normal text-black leading-6">
-              {user?.firstName} {user?.lastName}
-            </p>
-            <p className="text-xs font-normal text-genital-gray-500 leading-4.5">Member</p>
+        {/* Profile Section */}
+        <div className="p-4 border-t border-sidebar-border">
+          <div className="flex items-center gap-3.5">
+            <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 text-sm font-medium">
+              {user?.firstName?.charAt(0)}{user?.lastName?.charAt(0)}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-base font-normal text-foreground truncate">
+                {user?.firstName} {user?.lastName}
+              </p>
+              <p className="text-xs text-text-50 capitalize">Member</p>
+            </div>
           </div>
         </div>
 
