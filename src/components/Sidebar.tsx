@@ -163,7 +163,7 @@ export default function Sidebar({
   };
 
   return (
-    <div className="w-[237px] h-full bg-sidebar border-r flex flex-col relative">
+    <div className="w-[237px] h-screen bg-sidebar border-r flex flex-col relative overflow-hidden">
       {/* Close button for mobile */}
       {onClose && (
         <div className="lg:hidden absolute top-4 right-4 z-20">
