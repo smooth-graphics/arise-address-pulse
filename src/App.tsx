@@ -53,7 +53,7 @@ import Verifications from "./pages/dashboard/Verifications";
 import ApiAccess from "./pages/dashboard/ApiAccess";
 import Activity from "./pages/dashboard/Activity";
 import Billing from "./pages/dashboard/Billing";
-import EscalationCenter from "./pages/dashboard/EscalationCenter";
+import ConditionalEscalationCenter from "@/components/dashboard/ConditionalEscalationCenter";
 import TeamManagement from "./pages/dashboard/TeamManagement";
 import HelpSupport from "./pages/dashboard/HelpSupport";
 
@@ -197,7 +197,7 @@ const App = () => (
               <Route path="api" element={<ApiAccess />} />
               <Route path="activity" element={<Activity />} />
               <Route path="billing" element={<Billing />} />
-              <Route path="escalation" element={<EscalationCenter />} />
+              <Route path="escalation" element={<ConditionalEscalationCenter />} />
               <Route path="team" element={<TeamManagement />} />
               <Route path="help-support" element={<HelpSupport />} />
               
