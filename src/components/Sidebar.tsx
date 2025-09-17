@@ -215,7 +215,7 @@ export default function Sidebar({
           </div>
 
           {/* Account Section */}
-          <div className="pt-4">
+          <div className="pt-2">
             <h3 className="px-4 mb-2 text-xs font-normal text-text-50 tracking-wide uppercase">
               Account
             </h3>
