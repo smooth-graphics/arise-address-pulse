@@ -195,10 +195,10 @@ export default function Sidebar({
 
       {/* Navigation */}
       <div className="flex-1 px-4 py-2">
-        <div className="space-y-3">
+        <div className="space-y-1">
           {/* Main Section */}
           <div>
-            <h3 className="px-4 mb-3 text-xs font-normal text-text-50 tracking-wide uppercase">
+            <h3 className="px-4 mb-2 text-xs font-normal text-text-50 tracking-wide uppercase">
               Main
             </h3>
             <div className="space-y-1">
@@ -215,8 +215,8 @@ export default function Sidebar({
           </div>
 
           {/* Account Section */}
-          <div className="pt-16">
-            <h3 className="px-4 mb-3 text-xs font-normal text-text-50 tracking-wide uppercase">
+          <div className="pt-4">
+            <h3 className="px-4 mb-2 text-xs font-normal text-text-50 tracking-wide uppercase">
               Account
             </h3>
             <div className="space-y-1">
