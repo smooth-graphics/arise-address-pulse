@@ -1,4 +1,3 @@
-
 import { cn } from "@/lib/utils";
 import {
   UserRoundSearch,
@@ -25,54 +24,56 @@ interface SidebarProps {
   onClose?: () => void;
 }
 
+// ... (getMainNavItems and getAccountNavItems functions remain unchanged)
 const getMainNavItems = (userRole: string) => {
-  if (userRole === 'organization-admin') {
-    return [
-      { icon: House, label: "Overview", path: "/" },
-      { icon: UserRoundSearch, label: "Verify", path: "/verify" },
-      { icon: Shield, label: "Escalation Center", path: "/escalation" },
-      { icon: Users, label: "Team Management", path: "/team" },
-      { icon: History, label: "History", path: "/history" },
-    ];
-  }
-  if (userRole === 'organization-member') {
-    return [
-      { icon: UserRoundSearch, label: "Verify", path: "/verify" },
-      { icon: House, label: "Overview", path: "/" },
-      { icon: Shield, label: "Escalation Center", path: "/escalation" },
-      { icon: History, label: "History", path: "/history" },
-    ];
-  }
-  return [
-    { icon: UserRoundSearch, label: "Verify", path: "/verify" },
-    { icon: House, label: "Overview", path: "/" },
-    { icon: File, label: "My Documents", path: "/documents" },
-    { icon: History, label: "History", path: "/history" },
-  ];
+  if (userRole === 'organization-admin') {
+    return [
+      { icon: House, label: "Overview", path: "/" },
+      { icon: UserRoundSearch, label: "Verify", path: "/verify" },
+      { icon: Shield, label: "Escalation Center", path: "/escalation" },
+      { icon: Users, label: "Team Management", path: "/team" },
+      { icon: History, label: "History", path: "/history" },
+    ];
+  }
+  if (userRole === 'organization-member') {
+    return [
+      { icon: UserRoundSearch, label: "Verify", path: "/verify" },
+      { icon: House, label: "Overview", path: "/" },
+      { icon: Shield, label: "Escalation Center", path: "/escalation" },
+      { icon: History, label: "History", path: "/history" },
+    ];
+  }
+  return [
+    { icon: UserRoundSearch, label: "Verify", path: "/verify" },
+    { icon: House, label: "Overview", path: "/" },
+    { icon: File, label: "My Documents", path: "/documents" },
+    { icon: History, label: "History", path: "/history" },
+  ];
 };
 
 const getAccountNavItems = (userRole: string) => {
-  if (userRole === 'organization-admin') {
-    return [
-      { icon: SettingsIcon, label: "Settings", path: "/settings" },
-      { icon: Wallet, label: "Wallet & Billing", path: "/billing" },
-      { icon: CircleHelp, label: "Help & Support", path: "/help-support" },
-      { icon: LogOut, label: "Logout", path: "/logout", isAction: true },
-    ];
-  }
-  if (userRole === 'organization-member') {
-    return [
-      { icon: SettingsIcon, label: "Settings", path: "/settings" },
-      { icon: CircleHelp, label: "Help & Support", path: "/help-support" },
-      { icon: LogOut, label: "Logout", path: "/logout", isAction: true },
-    ];
-  }
-  return [
-    { icon: SettingsIcon, label: "Settings", path: "/settings" },
-    { icon: Rocket, label: "Upgrade Plan", path: "/upgrade", isAction: true },
-    { icon: LogOut, label: "Logout", path: "/logout", isAction: true },
-  ];
+  if (userRole === 'organization-admin') {
+    return [
+      { icon: SettingsIcon, label: "Settings", path: "/settings" },
+      { icon: Wallet, label: "Wallet & Billing", path: "/billing" },
+      { icon: CircleHelp, label: "Help & Support", path: "/help-support" },
+      { icon: LogOut, label: "Logout", path: "/logout", isAction: true },
+    ];
+  }
+  if (userRole === 'organization-member') {
+    return [
+      { icon: SettingsIcon, label: "Settings", path: "/settings" },
+      { icon: CircleHelp, label: "Help & Support", path: "/help-support" },
+      { icon: LogOut, label: "Logout", path: "/logout", isAction: true },
+    ];
+  }
+  return [
+    { icon: SettingsIcon, label: "Settings", path: "/settings" },
+    { icon: Rocket, label: "Upgrade Plan", path: "/upgrade", isAction: true },
+    { icon: LogOut, label: "Logout", path: "/logout", isAction: true },
+  ];
 };
+
 
 export default function Sidebar({
   currentPath = "/settings",
@@ -81,14 +82,14 @@ export default function Sidebar({
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [upgradeModalOpen, setUpgradeModalOpen] = useState(false);
-  
-  const userRole = user?.role || 'individual';
+
+  const userRole = user?.role || "individual";
   const mainNavItems = getMainNavItems(userRole);
   const accountNavItems = getAccountNavItems(userRole);
 
   const handleLogout = () => {
     logout();
-    navigate('/auth/login');
+    navigate("/auth/login");
   };
 
   const handleUpgrade = () => {
@@ -96,9 +97,8 @@ export default function Sidebar({
   };
 
   const handleUpgradeComplete = (planName: string) => {
-    console.log('Upgrading to:', planName);
+    console.log("Upgrading to:", planName);
     setUpgradeModalOpen(false);
-    // Handle the upgrade logic here
   };
 
   const NavItem = ({
@@ -116,21 +116,20 @@ export default function Sidebar({
     onClick?: () => void;
     isAction?: boolean;
   }) => {
+    // ... (NavItem component logic remains unchanged)
     const mappedPath = path === '/' ? '/dashboard' : 
-                      path === '/verify' ? '/dashboard/search' :
-                      path === '/documents' ? '/dashboard/documents' :
-                      path === '/history' ? '/dashboard/history' :
-                      path === '/settings' ? '/dashboard/settings' :
-                      path === '/upgrade' ? '/dashboard/billing' :
-                      path === '/escalation' ? '/dashboard/escalation' :
-                      path === '/team' ? '/dashboard/team' :
-                      path === '/billing' ? '/dashboard/billing' :
-                      path === '/help-support' ? '/dashboard/help-support' :
-                      path;
-
+           path === '/verify' ? '/dashboard/search' :
+           path === '/documents' ? '/dashboard/documents' :
+           path === '/history' ? '/dashboard/history' :
+           path === '/settings' ? '/dashboard/settings' :
+           path === '/upgrade' ? '/dashboard/billing' :
+           path === '/escalation' ? '/dashboard/escalation' :
+           path === '/team' ? '/dashboard/team' :
+           path === '/billing' ? '/dashboard/billing' :
+           path === '/help-support' ? '/dashboard/help-support' :
+           path;
     if (isAction || path === '/logout') {
       const actionHandler = path === '/upgrade' ? handleUpgrade : (onClick || handleLogout);
-      
       return (
         <button
           onClick={actionHandler}
@@ -145,7 +144,6 @@ export default function Sidebar({
         </button>
       );
     }
-
     return (
       <Link
         to={mappedPath}
@@ -173,116 +171,20 @@ export default function Sidebar({
   const isPathActive = (current: string | undefined, target: string) => {
     if (!current) return false;
     if (current === target) return true;
-    // Consider sub-routes active (e.g., /history/123)
     return current.startsWith(target + "/");
   };
 
-  // Special layout for organization members
-  if (userRole === 'organization-member') {
-    return (
-      <div className="w-[237px] h-screen bg-sidebar border-r flex flex-col relative overflow-hidden">
-        {/* Close button for mobile */}
-        {onClose && (
-          <div className="lg:hidden absolute top-4 right-4 z-20">
-            <button
-              onClick={onClose}
-              className="p-2 rounded-lg hover:bg-white/10 text-muted-foreground"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
-        )}
-
-        {/* Logo Section */}
-        <div className="p-6 pb-2">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-destructive to-orange-tertiary flex items-center justify-center flex-shrink-0">
-              <MapPin className="w-6 h-6 text-white" strokeWidth={2} />
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold text-foreground leading-8">
-                GenIEtal
-              </h1>
-              <p className="text-xs text-orange-tertiary font-medium">
-                Verification
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Navigation */}
-        <div className="flex-1 px-4 py-2">
-          <div className="space-y-1">
-            {/* Main Section */}
-            <div>
-              <h3 className="px-4 mb-2 text-xs font-normal text-text-50 tracking-wide uppercase">
-                Main
-              </h3>
-              <div className="space-y-1">
-                {mainNavItems.map((item) => (
-                  <NavItem
-                    key={item.path}
-                    icon={item.icon}
-                    label={item.label}
-                    path={item.path}
-                    isActive={isPathActive(currentPath, item.path)}
-                    onClick={onClose}
-                  />
-                ))}
-              </div>
-            </div>
-
-            {/* Account Section */}
-            <div className="pt-2">
-              <h3 className="px-4 mb-2 text-xs font-normal text-text-50 tracking-wide uppercase">
-                Account
-              </h3>
-              <div className="space-y-1">
-                {accountNavItems.map((item) => (
-                  <NavItem
-                    key={item.path}
-                    icon={item.icon}
-                    label={item.label}
-                    path={item.path}
-                    isActive={isPathActive(currentPath, item.path)}
-                    isAction={item.isAction}
-                    onClick={onClose}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Profile Section */}
-        <div className="p-4 border-t border-sidebar-border">
-          <div className="flex items-center gap-3.5">
-            <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 text-sm font-medium">
-              {user?.firstName?.charAt(0)}{user?.lastName?.charAt(0)}
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-base font-normal text-foreground truncate">
-                {user?.firstName} {user?.lastName}
-              </p>
-              <p className="text-xs text-text-50 capitalize">Member</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Upgrade Plan Modal */}
-        <PlanUpgradeModal
-          isOpen={upgradeModalOpen}
-          onClose={() => setUpgradeModalOpen(false)}
-          currentPlan="basic"
-          lockedFeature=""
-          onUpgrade={handleUpgradeComplete}
-        />
-      </div>
-    );
-  }
+  // The main return logic for the sidebar component.
+  // Note that we no longer need the separate return for 'organization-member'
+  // as the logic can be unified.
 
   return (
-    <div className="w-[237px] h-screen bg-sidebar border-r flex flex-col relative overflow-hidden">
+    // CHANGE 1: These classes make the sidebar fixed on desktop and positioned
+    // correctly as a drawer on mobile.
+    <div className={cn(
+        "w-[237px] h-screen bg-sidebar border-r flex flex-col",
+        "fixed inset-y-0 left-0 z-40 lg:z-10" // This positions the sidebar
+    )}>
       {/* Close button for mobile */}
       {onClose && (
         <div className="lg:hidden absolute top-4 right-4 z-20">
@@ -312,8 +214,9 @@ export default function Sidebar({
         </div>
       </div>
 
-      {/* Navigation */}
-      <div className="flex-1 px-4 py-2">
+      {/* CHANGE 2: Added `overflow-y-auto` to make this navigation area scrollable */}
+      {/* if the content inside it is too tall. */}
+      <div className="flex-1 px-4 py-2 overflow-y-auto">
         <div className="space-y-1">
           {/* Main Section */}
           <div>
@@ -328,6 +231,7 @@ export default function Sidebar({
                   label={item.label}
                   path={item.path}
                   isActive={isPathActive(currentPath, item.path)}
+                  onClick={onClose}
                 />
               ))}
             </div>
@@ -347,6 +251,7 @@ export default function Sidebar({
                   path={item.path}
                   isActive={isPathActive(currentPath, item.path)}
                   isAction={item.isAction}
+                  onClick={onClose}
                 />
               ))}
             </div>
@@ -358,13 +263,18 @@ export default function Sidebar({
       <div className="p-4 border-t border-sidebar-border">
         <div className="flex items-center gap-3.5">
           <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 text-sm font-medium">
-            {user?.firstName?.charAt(0)}{user?.lastName?.charAt(0)}
+            {user?.firstName?.charAt(0)}
+            {user?.lastName?.charAt(0)}
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-base font-normal text-foreground truncate">
               {user?.firstName} {user?.lastName}
             </p>
-            <p className="text-xs text-text-50 capitalize">{user?.role || 'Individual'}</p>
+            <p className="text-xs text-text-50 capitalize">
+              {user?.role === 'organization-admin' && 'Admin'}
+              {user?.role === 'organization-member' && 'Member'}
+              {user?.role !== 'organization-admin' && user?.role !== 'organization-member' && (user?.role || 'Individual')}
+            </p>
           </div>
         </div>
       </div>
