@@ -45,12 +45,12 @@ const DashboardLayout = () => {
       )}
 
       {/* Desktop sidebar */}
-      <div className="hidden lg:flex lg:flex-shrink-0">
+      <div className="hidden lg:flex lg:flex-shrink-0 lg:w-[237px]">
         <Sidebar currentPath={currentPath} />
       </div>
       
       {/* Main content */}
-      <div className="flex-1 flex flex-col overflow-hidden lg:ml-[237px]">
+      <div className="flex-1 flex flex-col min-w-0">
         {/* Mobile menu button - only show on mobile */}
         <div className="lg:hidden bg-white border-b border-gray-100">
           <div className="px-4 py-3">
@@ -64,7 +64,7 @@ const DashboardLayout = () => {
         </div>
 
         {/* Page content */}
-        <main className="flex-1 relative overflow-y-auto focus:outline-none bg-white">
+        <main className="flex-1 bg-white min-h-0">
           <div className="h-full">
             <Outlet />
           </div>

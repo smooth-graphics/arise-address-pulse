@@ -116,8 +116,8 @@ export default function EscalationCenter() {
       {/* Divider */}
       <div className="w-full h-px bg-black/5 absolute top-0 left-0 right-0"></div>
 
-      {/* Left Sidebar - Chat List */}
-      <div className="w-[340px] h-full border-r border-neutral-400 bg-white">
+        {/* Left Sidebar - Chat List */}
+        <div className="w-[340px] flex-shrink-0 border-r border-neutral-400 bg-white flex flex-col">
         {/* Search */}
         <div className="p-4">
           <div className="flex items-center gap-2 w-full h-9 px-3 bg-white border border-neutral-400 rounded-lg">
@@ -151,9 +151,9 @@ export default function EscalationCenter() {
           </div>
         </div>
 
-        {/* Chat List */}
-        <div className="px-4 space-y-3">
-          {conversations.map((conversation) => (
+          {/* Chat List */}
+          <div className="flex-1 px-4 space-y-3 overflow-y-auto">
+            {conversations.map((conversation) => (
             <div
               key={conversation.id}
               onClick={() => setSelectedConversation(conversation)}
@@ -191,8 +191,8 @@ export default function EscalationCenter() {
         </div>
       </div>
 
-      {/* Middle - Chat Interface */}
-      <div className="w-[573px] h-full border-r border-neutral-400 bg-neutral-100">
+        {/* Middle - Chat Interface */}
+        <div className="flex-1 min-w-0 border-r border-neutral-400 bg-neutral-100 flex flex-col">
         {/* Chat Header */}
         <div className="h-18 px-4 py-4 bg-white border-b border-neutral-400 flex items-center gap-2">
           <div className="w-10 h-10 rounded-lg bg-blue-400 flex items-center justify-center text-white font-medium">
@@ -209,8 +209,8 @@ export default function EscalationCenter() {
           </div>
         </div>
 
-        {/* Messages */}
-        <div className="flex-1 p-3 space-y-4 h-[calc(100%-18rem)]">
+          {/* Messages */}
+          <div className="flex-1 p-3 space-y-4 overflow-y-auto min-h-0">
           {messages.map((message) => (
             <div
               key={message.id}
@@ -234,8 +234,8 @@ export default function EscalationCenter() {
           ))}
         </div>
 
-        {/* Message Input */}
-        <div className="h-20 p-3 bg-white border-t border-neutral-400">
+          {/* Message Input */}
+          <div className="flex-shrink-0 p-3 bg-white border-t border-neutral-400">
           <div className="relative h-14 border border-neutral-400 rounded-lg">
             <input
               type="text"
@@ -251,45 +251,45 @@ export default function EscalationCenter() {
         </div>
       </div>
 
-      {/* Right Sidebar - Issues & Actions */}
-      <div className="flex-1 h-full bg-white">
-        <div className="p-4 space-y-6">
-          {/* Issues */}
-          <div className="space-y-2">
-            <h3 className="text-sm font-medium text-text-secondary">Issues</h3>
-            <div className="space-y-3">
-              {issues.map((issue) => (
-                <div key={issue.id} className="flex items-center justify-between py-3 border-b border-neutral-400">
-                  <span className="text-sm font-medium text-black">
-                    {issue.ticketNumber}
-                  </span>
-                  <div className="flex items-center justify-center gap-2 px-2 py-0.5 rounded-full border-0.5 border-status-active bg-status-active-bg">
-                    <span className="text-xs font-medium text-status-active">
-                      Resolved
+        {/* Right Sidebar - Issues & Actions */}
+        <div className="w-[290px] flex-shrink-0 bg-white flex flex-col">
+          <div className="flex-1 p-4 space-y-6 overflow-y-auto">
+            {/* Issues */}
+            <div className="space-y-2">
+              <h3 className="text-sm font-medium text-text-secondary">Issues</h3>
+              <div className="space-y-3">
+                {issues.map((issue) => (
+                  <div key={issue.id} className="flex items-center justify-between py-3 border-b border-neutral-400">
+                    <span className="text-sm font-medium text-black">
+                      {issue.ticketNumber}
                     </span>
+                    <div className="flex items-center justify-center gap-2 px-2 py-0.5 rounded-full border-0.5 border-status-active bg-status-active-bg">
+                      <span className="text-xs font-medium text-status-active">
+                        Resolved
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Quick Actions */}
-        <div className="absolute bottom-0 right-0 w-[290px] p-4 border-t border-neutral-400 bg-white">
-          <div className="space-y-2">
-            <h3 className="text-sm font-medium text-text-secondary">Quick actions</h3>
-            <div className="flex gap-3">
-              <button className="flex-1 flex items-center justify-center gap-1.5 h-9 px-3 bg-status-active-bg rounded-lg">
-                <CircleCheck className="w-4 h-4 text-status-active fill-status-active" />
-                <span className="text-sm font-medium text-status-active">Resolve</span>
-              </button>
-              <button className="flex-1 flex items-center justify-center gap-1.5 h-9 px-3 bg-red-50 rounded-lg">
-                <Flag className="w-4 h-4 text-red-500 fill-red-500" />
-                <span className="text-sm font-medium text-red-500">Flag</span>
-              </button>
+          {/* Quick Actions */}
+          <div className="flex-shrink-0 p-4 border-t border-neutral-400 bg-white">
+            <div className="space-y-2">
+              <h3 className="text-sm font-medium text-text-secondary">Quick actions</h3>
+              <div className="flex gap-3">
+                <button className="flex-1 flex items-center justify-center gap-1.5 h-9 px-3 bg-status-active-bg rounded-lg">
+                  <CircleCheck className="w-4 h-4 text-status-active fill-status-active" />
+                  <span className="text-sm font-medium text-status-active">Resolve</span>
+                </button>
+                <button className="flex-1 flex items-center justify-center gap-1.5 h-9 px-3 bg-red-50 rounded-lg">
+                  <Flag className="w-4 h-4 text-red-500 fill-red-500" />
+                  <span className="text-sm font-medium text-red-500">Flag</span>
+                </button>
+              </div>
             </div>
           </div>
-        </div>
       </div>
     </div>
   );

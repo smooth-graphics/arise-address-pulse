@@ -25,13 +25,21 @@ export default {
 				'orange-secondary': 'hsl(var(--orange-secondary))',
 				'orange-tertiary': 'hsl(var(--orange-tertiary))',
 				
-				// New genital-* colors for updated designs
-				'genital-orange': 'hsl(var(--genital-orange))',
-				'genital-gray-100': 'hsl(var(--genital-gray-100))',
-				'genital-gray-400': 'hsl(var(--genital-gray-400))',
-				'genital-gray-500': 'hsl(var(--genital-gray-500))',
-				'genital-gray-700': 'hsl(var(--genital-gray-700))',
-				'genital-stroke': 'hsl(var(--genital-stroke))',
+/* Design system colors for layout components */
+'brand-orange': 'hsl(var(--brand-orange))',
+'brand-orange-bg': 'hsl(var(--brand-orange-bg))',
+
+'text-primary': 'hsl(var(--text-primary))',
+'text-secondary': 'hsl(var(--text-secondary))',
+'text-tertiary': 'hsl(var(--text-tertiary))',
+
+'status-active': 'hsl(var(--status-active))',
+'status-active-bg': 'hsl(var(--status-active-bg))',
+
+'neutral-100': 'hsl(var(--neutral-100))',
+'neutral-300': 'hsl(var(--neutral-300))',
+'neutral-400': 'hsl(var(--neutral-400))',
+'neutral-600': 'hsl(var(--neutral-600))',
 				
 				// Legacy colors for backward compatibility
 				'dark-charcoal': '#606060',

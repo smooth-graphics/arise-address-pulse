@@ -58,11 +58,14 @@ export default function TeamManagement() {
   );
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-screen flex flex-col bg-white">
       {/* Header */}
-      <div className="px-4 py-4 border-b border-black/5">
-        <h1 className="text-2xl font-bold text-gray-700 tracking-tight">Team Management</h1>
+      <div className="flex justify-between items-center px-4 py-4 border-b border-black/5 bg-white">
+        <h1 className="text-xl font-semibold text-foreground">Team Management</h1>
       </div>
+      
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col min-h-0 p-4 space-y-6">
 
       {/* Controls */}
       <div className="flex items-center justify-between px-4 py-6">
@@ -119,8 +122,8 @@ export default function TeamManagement() {
             </div>
           </div>
 
-          {/* Table Rows */}
-          <div className="divide-y divide-black/10">
+            {/* Table Rows */}
+            <div className="flex-1 divide-y divide-black/10 overflow-y-auto">
             {filteredMembers.map((member) => (
               <div key={member.id} className="flex items-center bg-white pt-2 h-16">
                 <div className="flex items-center gap-2 px-3 h-full">
@@ -167,8 +170,8 @@ export default function TeamManagement() {
         </div>
       </div>
 
-      {/* Pagination */}
-      <div className="flex items-center justify-between px-4 h-8 mb-6">
+        {/* Pagination */}
+        <div className="flex items-center justify-between flex-shrink-0 h-12">
         <div className="text-sm font-normal text-gray-900">
           Showing 1 - 3 of 3 items
         </div>
@@ -186,6 +189,7 @@ export default function TeamManagement() {
             <span>Next</span>
             <ChevronRight className="w-4 h-4" />
           </button>
+        </div>
         </div>
       </div>
 
