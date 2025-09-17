@@ -1,5 +1,6 @@
 import { Search, Bell, Send, CircleCheck, Flag } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -58,15 +59,19 @@ export default function MemberEscalationCenter() {
       <div className="flex justify-between items-center px-4 py-4.5 border-b border-black/5">
         <h1 className="text-2xl font-bold text-genital-gray-700 tracking-tight">Escalation Center</h1>
         <div className="flex items-center gap-4">
-          <Button className="h-8 px-3 bg-genital-orange hover:bg-genital-orange/90 text-white text-sm font-medium shadow-[0_0_6px_1px_rgba(248,145,17,0.25)]">
-            <span>Verify</span>
-            <Search className="w-4 h-4 ml-1.5" strokeWidth={1.2} />
-          </Button>
-          <div className="flex items-center">
-            <div className="w-8 h-8 bg-genital-gray-100 rounded-lg flex items-center justify-center">
-              <Bell className="w-5 h-5 text-genital-gray-400" strokeWidth={1.5} />
+          <Link to="/dashboard/search">
+            <Button className="h-8 px-3 bg-genital-orange hover:bg-genital-orange/90 text-white text-sm font-medium shadow-[0_0_6px_1px_rgba(248,145,17,0.25)]">
+              <span>Verify</span>
+              <Search className="w-4 h-4 ml-1.5" strokeWidth={1.2} />
+            </Button>
+          </Link>
+          <Link to="/dashboard/notifications">
+            <div className="flex items-center">
+              <div className="w-8 h-8 bg-genital-gray-100 rounded-lg flex items-center justify-center hover:bg-genital-gray-200 transition-colors cursor-pointer">
+                <Bell className="w-5 h-5 text-genital-gray-400" strokeWidth={1.5} />
+              </div>
             </div>
-          </div>
+          </Link>
         </div>
       </div>
 
@@ -145,11 +150,17 @@ export default function MemberEscalationCenter() {
           <div className="p-4 border-t border-genital-stroke">
             <h3 className="text-sm font-medium text-genital-gray-700 mb-2">Quick actions</h3>
             <div className="flex gap-3">
-              <Button className="flex-1 h-9 bg-green-100 hover:bg-green-100/80 text-green-600 border-0">
+              <Button 
+                onClick={() => console.log('Resolving issue...')}
+                className="flex-1 h-9 bg-green-100 hover:bg-green-100/80 text-green-600 border-0"
+              >
                 <CircleCheck className="w-4 h-4 mr-1.5 fill-green-600 text-white" strokeWidth={1.2} />
                 Resolve
               </Button>
-              <Button className="flex-1 h-9 bg-red-100 hover:bg-red-100/80 text-red-600 border-0">
+              <Button 
+                onClick={() => console.log('Flagging issue...')}
+                className="flex-1 h-9 bg-red-100 hover:bg-red-100/80 text-red-600 border-0"
+              >
                 <Flag className="w-4 h-4 mr-1.5 fill-red-600 text-red-600" strokeWidth={1.2} />
                 Flag
               </Button>

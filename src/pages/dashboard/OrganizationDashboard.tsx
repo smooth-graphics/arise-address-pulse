@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -148,19 +149,22 @@ const OrganizationDashboard = () => {
         </div>
         <div className="flex gap-2">
           {isAdmin && (
-            <Button 
-              onClick={() => setShowUserManagement(!showUserManagement)}
-              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white"
-            >
-              <Users className="mr-2 h-4 w-4" />
-              Manage Team
-            </Button>
+            <Link to="/dashboard/team">
+              <Button 
+                className="bg-gradient-to-r from-blue-600 to-purple-600 text-white"
+              >
+                <Users className="mr-2 h-4 w-4" />
+                Manage Team
+              </Button>
+            </Link>
           )}
-          <Button className="bg-gradient-to-r from-bold-red to-vibrant-orange text-white">
-            <Upload className="mr-2 h-4 w-4" />
-            Bulk Upload
-          </Button>
-          <Button variant="outline">
+          <Link to="/dashboard/bulk-upload">
+            <Button className="bg-gradient-to-r from-bold-red to-vibrant-orange text-white">
+              <Upload className="mr-2 h-4 w-4" />
+              Bulk Upload
+            </Button>
+          </Link>
+          <Button variant="outline" onClick={() => console.log('Exporting data...')}>
             <Download className="mr-2 h-4 w-4" />
             Export Data
           </Button>
@@ -279,36 +283,47 @@ const OrganizationDashboard = () => {
           </CardHeader>
           <CardContent className="space-y-4">
             {isAdmin && (
-              <Button 
-                className="w-full justify-start bg-gradient-to-r from-blue-600 to-purple-600 text-white" 
-                onClick={() => setShowUserManagement(!showUserManagement)}
-              >
-                <Users className="mr-2 h-4 w-4" />
-                Manage Team Members
-              </Button>
+              <Link to="/dashboard/team">
+                <Button 
+                  className="w-full justify-start bg-gradient-to-r from-blue-600 to-purple-600 text-white" 
+                >
+                  <Users className="mr-2 h-4 w-4" />
+                  Manage Team Members
+                </Button>
+              </Link>
             )}
-            <Button className="w-full justify-start bg-gradient-to-r from-bold-red to-vibrant-orange text-white" variant="default">
-              <Upload className="mr-2 h-4 w-4" />
-              {isAdmin ? 'Bulk Staff Upload' : 'Upload Documents'}
-            </Button>
-            <Button className="w-full justify-start" variant="outline">
-              <Building className="mr-2 h-4 w-4" />
-              {isAdmin ? 'Update Organization Profile' : 'View Organization'}
-            </Button>
-            {isAdmin && (
+            <Link to="/dashboard/bulk-upload">
+              <Button className="w-full justify-start bg-gradient-to-r from-bold-red to-vibrant-orange text-white" variant="default">
+                <Upload className="mr-2 h-4 w-4" />
+                {isAdmin ? 'Bulk Staff Upload' : 'Upload Documents'}
+              </Button>
+            </Link>
+            <Link to="/dashboard/settings">
               <Button className="w-full justify-start" variant="outline">
-                <Key className="mr-2 h-4 w-4" />
-                API Management
+                <Building className="mr-2 h-4 w-4" />
+                {isAdmin ? 'Update Organization Profile' : 'View Organization'}
               </Button>
+            </Link>
+            {isAdmin && (
+              <Link to="/dashboard/api">
+                <Button className="w-full justify-start" variant="outline">
+                  <Key className="mr-2 h-4 w-4" />
+                  API Management
+                </Button>
+              </Link>
             )}
-            <Button className="w-full justify-start" variant="outline">
-              <FileText className="mr-2 h-4 w-4" />
-              {isAdmin ? 'Document Templates' : 'My Documents'}
-            </Button>
-            <Button className="w-full justify-start" variant="outline">
-              <BarChart3 className="mr-2 h-4 w-4" />
-              Analytics Dashboard
-            </Button>
+            <Link to="/dashboard/documents">
+              <Button className="w-full justify-start" variant="outline">
+                <FileText className="mr-2 h-4 w-4" />
+                {isAdmin ? 'Document Templates' : 'My Documents'}
+              </Button>
+            </Link>
+            <Link to="/dashboard/activity">
+              <Button className="w-full justify-start" variant="outline">
+                <BarChart3 className="mr-2 h-4 w-4" />
+                Analytics Dashboard
+              </Button>
+            </Link>
           </CardContent>
         </Card>
 
@@ -433,10 +448,12 @@ const OrganizationDashboard = () => {
               <span className="font-semibold">Feb 15, 2024</span>
             </div>
             {isAdmin && (
-              <Button className="w-full mt-4" variant="outline">
-                <CreditCard className="mr-2 h-4 w-4" />
-                Manage Billing
-              </Button>
+              <Link to="/dashboard/billing">
+                <Button className="w-full mt-4" variant="outline">
+                  <CreditCard className="mr-2 h-4 w-4" />
+                  Manage Billing
+                </Button>
+              </Link>
             )}
           </CardContent>
         </Card>

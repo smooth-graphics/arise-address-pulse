@@ -57,6 +57,25 @@ export default function TeamManagement() {
       member.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const handleSendInvite = () => {
+    if (inviteEmail.trim()) {
+      console.log('Sending invite to:', inviteEmail);
+      // TODO: Implement actual invite functionality
+      setInviteEmail("");
+      setShowInviteModal(false);
+    }
+  };
+
+  const handleEditMember = (memberId: string) => {
+    console.log('Editing member:', memberId);
+    // TODO: Implement edit functionality
+  };
+
+  const handleDeleteMember = (memberId: string) => {
+    console.log('Deleting member:', memberId);
+    // TODO: Implement delete functionality with confirmation
+  };
+
   return (
     <div className="h-screen flex flex-col bg-white">
       {/* Header */}
@@ -157,10 +176,16 @@ export default function TeamManagement() {
                   </div>
                 </div>
                 <div className="w-[150px] flex items-center justify-end gap-3 px-3 h-full">
-                  <button className="text-gray-800 hover:text-orange-500 transition-colors">
+                  <button 
+                    onClick={() => handleEditMember(member.id)}
+                    className="text-gray-800 hover:text-orange-500 transition-colors"
+                  >
                     <Pencil className="w-4 h-4" />
                   </button>
-                  <button className="text-gray-800 hover:text-red-500 transition-colors">
+                  <button 
+                    onClick={() => handleDeleteMember(member.id)}
+                    className="text-gray-800 hover:text-red-500 transition-colors"
+                  >
                     <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
@@ -255,7 +280,10 @@ export default function TeamManagement() {
                 >
                   Cancel
                 </button>
-                <button className="flex items-center gap-1.5 h-8 px-3 bg-white border border-orange-500 text-orange-500 rounded-lg text-sm font-medium shadow-orange-500/25 shadow-md">
+                <button
+                  onClick={handleSendInvite}
+                  className="flex items-center gap-1.5 h-8 px-3 bg-white border border-orange-500 text-orange-500 rounded-lg text-sm font-medium shadow-orange-500/25 shadow-md"
+                >
                   <span>Send invite</span>
                   <Send className="w-4 h-4" />
                 </button>

@@ -1,207 +1,129 @@
-
-import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import SystemHealthCheck from '@/components/testing/SystemHealthCheck';
-import PerformanceMetrics from '@/components/testing/PerformanceMetrics';
-import UserJourneyTester from '@/components/testing/UserJourneyTester';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { 
   TestTube, 
-  Activity, 
-  Users, 
-  Shield,
-  AlertTriangle,
-  CheckCircle,
-  Settings,
-  Download
-} from 'lucide-react';
+  CheckCircle, 
+  AlertTriangle, 
+  Clock,
+  Play,
+  RefreshCw
+} from "lucide-react";
 
-const SystemTesting: React.FC = () => {
-  const [testSummary] = useState({
-    totalTests: 45,
-    passedTests: 42,
-    failedTests: 2,
-    pendingTests: 1,
-    coverage: 94.2,
-    lastRun: '2 minutes ago'
-  });
-
-  const generateReport = () => {
-    console.log('Generating comprehensive test report...');
-    // In a real app, this would generate and download a PDF report
+const SystemTesting = () => {
+  const handleRunTest = (testType: string) => {
+    console.log(`Running ${testType} test...`);
   };
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex justify-between items-start">
+      <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-            <TestTube className="h-6 w-6" />
-            System Testing & Monitoring
-          </h2>
-          <p className="text-gray-600">Comprehensive testing suite and system monitoring</p>
+          <h2 className="text-2xl font-bold text-gray-900">System Testing</h2>
+          <p className="text-gray-600">Monitor and test system performance and reliability</p>
         </div>
-        <div className="flex gap-2">
-          <Button variant="outline" onClick={generateReport}>
-            <Download className="h-4 w-4 mr-2" />
-            Export Report
-          </Button>
-          <Button>
-            <Settings className="h-4 w-4 mr-2" />
-            Configure Tests
-          </Button>
-        </div>
+        <Button className="bg-gradient-to-r from-bold-red to-vibrant-orange text-white">
+          <RefreshCw className="mr-2 h-4 w-4" />
+          Run All Tests
+        </Button>
       </div>
 
-      {/* Test Summary */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Tests</CardTitle>
-            <TestTube className="h-4 w-4 text-muted-foreground" />
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <TestTube className="h-5 w-5 text-blue-600" />
+              API Performance Test
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{testSummary.totalTests}</div>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Last Run</span>
+                <span className="text-xs text-gray-500">2 hours ago</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Status</span>
+                <div className="flex items-center gap-1">
+                  <CheckCircle className="h-4 w-4 text-green-600" />
+                  <span className="text-sm text-green-600">Passed</span>
+                </div>
+              </div>
+              <Button 
+                onClick={() => handleRunTest('API Performance')}
+                variant="outline" 
+                className="w-full"
+              >
+                <Play className="mr-2 h-4 w-4" />
+                Run Test
+              </Button>
+            </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Passed</CardTitle>
-            <CheckCircle className="h-4 w-4 text-green-600" />
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Clock className="h-5 w-5 text-orange-600" />
+              Load Testing
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">{testSummary.passedTests}</div>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Last Run</span>
+                <span className="text-xs text-gray-500">1 day ago</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Status</span>
+                <div className="flex items-center gap-1">
+                  <AlertTriangle className="h-4 w-4 text-yellow-600" />
+                  <span className="text-sm text-yellow-600">Warning</span>
+                </div>
+              </div>
+              <Button 
+                onClick={() => handleRunTest('Load Testing')}
+                variant="outline" 
+                className="w-full"
+              >
+                <Play className="mr-2 h-4 w-4" />
+                Run Test
+              </Button>
+            </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Failed</CardTitle>
-            <AlertTriangle className="h-4 w-4 text-red-600" />
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <CheckCircle className="h-5 w-5 text-green-600" />
+              Security Scan
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-600">{testSummary.failedTests}</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Pending</CardTitle>
-            <Activity className="h-4 w-4 text-yellow-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-yellow-600">{testSummary.pendingTests}</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Coverage</CardTitle>
-            <Shield className="h-4 w-4 text-blue-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-blue-600">{testSummary.coverage}%</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Last Run</CardTitle>
-            <Activity className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-sm font-medium">{testSummary.lastRun}</div>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Last Run</span>
+                <span className="text-xs text-gray-500">30 minutes ago</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Status</span>
+                <div className="flex items-center gap-1">
+                  <CheckCircle className="h-4 w-4 text-green-600" />
+                  <span className="text-sm text-green-600">Passed</span>
+                </div>
+              </div>
+              <Button 
+                onClick={() => handleRunTest('Security Scan')}
+                variant="outline" 
+                className="w-full"
+              >
+                <Play className="mr-2 h-4 w-4" />
+                Run Test
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </div>
-
-      {/* Test Tabs */}
-      <Tabs defaultValue="health" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="health" className="flex items-center gap-2">
-            <Shield className="h-4 w-4" />
-            Health Check
-          </TabsTrigger>
-          <TabsTrigger value="performance" className="flex items-center gap-2">
-            <Activity className="h-4 w-4" />
-            Performance
-          </TabsTrigger>
-          <TabsTrigger value="journeys" className="flex items-center gap-2">
-            <Users className="h-4 w-4" />
-            User Journeys
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="health" className="space-y-4">
-          <SystemHealthCheck />
-        </TabsContent>
-
-        <TabsContent value="performance" className="space-y-4">
-          <PerformanceMetrics />
-        </TabsContent>
-
-        <TabsContent value="journeys" className="space-y-4">
-          <UserJourneyTester />
-        </TabsContent>
-      </Tabs>
-
-      {/* Test Status Summary */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Recent Test Results</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between p-3 border rounded-lg">
-              <div className="flex items-center gap-3">
-                <CheckCircle className="h-5 w-5 text-green-600" />
-                <div>
-                  <h4 className="font-medium">API Integration Tests</h4>
-                  <p className="text-sm text-gray-600">All endpoints responding correctly</p>
-                </div>
-              </div>
-              <Badge className="bg-green-100 text-green-800">PASSED</Badge>
-            </div>
-
-            <div className="flex items-center justify-between p-3 border rounded-lg">
-              <div className="flex items-center gap-3">
-                <CheckCircle className="h-5 w-5 text-green-600" />
-                <div>
-                  <h4 className="font-medium">Authentication Flow</h4>
-                  <p className="text-sm text-gray-600">Login, signup, and password reset working</p>
-                </div>
-              </div>
-              <Badge className="bg-green-100 text-green-800">PASSED</Badge>
-            </div>
-
-            <div className="flex items-center justify-between p-3 border rounded-lg">
-              <div className="flex items-center gap-3">
-                <AlertTriangle className="h-5 w-5 text-yellow-600" />
-                <div>
-                  <h4 className="font-medium">Payment Processing</h4>
-                  <p className="text-sm text-gray-600">Some timeout issues detected</p>
-                </div>
-              </div>
-              <Badge className="bg-yellow-100 text-yellow-800">WARNING</Badge>
-            </div>
-
-            <div className="flex items-center justify-between p-3 border rounded-lg">
-              <div className="flex items-center gap-3">
-                <AlertTriangle className="h-5 w-5 text-red-600" />
-                <div>
-                  <h4 className="font-medium">Email Notifications</h4>
-                  <p className="text-sm text-gray-600">Delivery delays in production environment</p>
-                </div>
-              </div>
-              <Badge className="bg-red-100 text-red-800">FAILED</Badge>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 };

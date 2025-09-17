@@ -279,11 +279,17 @@ export default function EscalationCenter() {
             <div className="space-y-2">
               <h3 className="text-sm font-medium text-text-secondary">Quick actions</h3>
               <div className="flex gap-3">
-                <button className="flex-1 flex items-center justify-center gap-1.5 h-9 px-3 bg-status-active-bg rounded-lg">
+                <button 
+                  onClick={() => console.log('Resolving issue...')}
+                  className="flex-1 flex items-center justify-center gap-1.5 h-9 px-3 bg-status-active-bg rounded-lg"
+                >
                   <CircleCheck className="w-4 h-4 text-status-active fill-status-active" />
                   <span className="text-sm font-medium text-status-active">Resolve</span>
                 </button>
-                <button className="flex-1 flex items-center justify-center gap-1.5 h-9 px-3 bg-red-50 rounded-lg">
+                <button 
+                  onClick={() => console.log('Flagging issue...')}
+                  className="flex-1 flex items-center justify-center gap-1.5 h-9 px-3 bg-red-50 rounded-lg"
+                >
                   <Flag className="w-4 h-4 text-red-500 fill-red-500" />
                   <span className="text-sm font-medium text-red-500">Flag</span>
                 </button>

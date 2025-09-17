@@ -55,6 +55,7 @@ import Activity from "./pages/dashboard/Activity";
 import Billing from "./pages/dashboard/Billing";
 import ConditionalEscalationCenter from "@/components/dashboard/ConditionalEscalationCenter";
 import TeamManagement from "./pages/dashboard/TeamManagement";
+import SystemTesting from "./pages/dashboard/SystemTesting";
 import HelpSupport from "./pages/dashboard/HelpSupport";
 
 const queryClient = new QueryClient();
@@ -200,6 +201,7 @@ const App = () => (
               <Route path="escalation" element={<ConditionalEscalationCenter />} />
               <Route path="team" element={<TeamManagement />} />
               <Route path="help-support" element={<HelpSupport />} />
+              <Route path="system-testing" element={<SystemTesting />} />
               
               {/* Placeholder routes */}
               <Route path="upgrade" element={

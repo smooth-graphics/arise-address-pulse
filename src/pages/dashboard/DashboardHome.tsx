@@ -235,15 +235,19 @@ function Overview() {
 
         <div className="flex items-center gap-4">
           {/* Verify Button */}
-          <button className="flex items-center gap-1.5 px-3 py-1 bg-orange-primary text-white text-sm font-medium rounded-lg shadow-lg shadow-orange-primary/25 hover:bg-orange-primary/90 transition-colors">
-            Verify
-            <Search className="w-4 h-4" strokeWidth={1.2} />
-          </button>
+          <Link to="/dashboard/search">
+            <button className="flex items-center gap-1.5 px-3 py-1 bg-orange-primary text-white text-sm font-medium rounded-lg shadow-lg shadow-orange-primary/25 hover:bg-orange-primary/90 transition-colors">
+              Verify
+              <Search className="w-4 h-4" strokeWidth={1.2} />
+            </button>
+          </Link>
 
           {/* Notifications */}
-          <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
-            <Bell className="w-5 h-5 text-gray-400" strokeWidth={1.5} />
-          </div>
+          <Link to="/dashboard/notifications">
+            <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center hover:bg-gray-200 transition-colors cursor-pointer">
+              <Bell className="w-5 h-5 text-gray-400" strokeWidth={1.5} />
+            </div>
+          </Link>
         </div>
       </div>
 
@@ -316,7 +320,7 @@ function Overview() {
                   {recentSearches.map((record) => (
                     <tr
                       key={record.id}
-                      className="hover:bg-gray-50 transition-colors"
+                      className="hover:bg-gray-50 transition-colors cursor-pointer"
                     >
                       <td className="px-3 py-2.5 pt-4 text-sm text-black h-11">
                         {record.name}
