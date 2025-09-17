@@ -33,19 +33,19 @@ const DashboardLayout = () => {
   const currentPath = mapPathForSidebar(location.pathname);
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-screen bg-gray-50 flex max-w-full overflow-x-hidden">
       {/* Mobile sidebar overlay */}
       {sidebarOpen && (
         <div className="fixed inset-0 z-40 lg:hidden">
           <div className="fixed inset-0 bg-gray-600 bg-opacity-75" onClick={() => setSidebarOpen(false)} />
-          <div className="relative flex-1 flex flex-col max-w-xs w-full">
+          <div className="fixed left-0 top-0 h-full w-[237px] z-50">
             <Sidebar currentPath={currentPath} onClose={() => setSidebarOpen(false)} />
           </div>
         </div>
       )}
 
       {/* Desktop sidebar */}
-      <div className="hidden lg:flex lg:flex-shrink-0 lg:w-[237px]">
+      <div className="hidden lg:flex lg:flex-shrink-0 lg:w-[237px] h-screen">
         <Sidebar currentPath={currentPath} />
       </div>
       
