@@ -25,13 +25,21 @@ interface SidebarProps {
   onClose?: () => void;
 }
 
-const getMainNavItems = (isOrgAdmin: boolean) => {
-  if (isOrgAdmin) {
+const getMainNavItems = (userRole: string) => {
+  if (userRole === 'organization-admin') {
     return [
       { icon: House, label: "Overview", path: "/" },
       { icon: UserRoundSearch, label: "Verify", path: "/verify" },
       { icon: Shield, label: "Escalation Center", path: "/escalation" },
       { icon: Users, label: "Team Management", path: "/team" },
+      { icon: History, label: "History", path: "/history" },
+    ];
+  }
+  if (userRole === 'organization-member') {
+    return [
+      { icon: UserRoundSearch, label: "Verify", path: "/verify" },
+      { icon: House, label: "Overview", path: "/" },
+      { icon: Shield, label: "Escalation Center", path: "/escalation" },
       { icon: History, label: "History", path: "/history" },
     ];
   }
@@ -43,11 +51,18 @@ const getMainNavItems = (isOrgAdmin: boolean) => {
   ];
 };
 
-const getAccountNavItems = (isOrgAdmin: boolean) => {
-  if (isOrgAdmin) {
+const getAccountNavItems = (userRole: string) => {
+  if (userRole === 'organization-admin') {
     return [
       { icon: SettingsIcon, label: "Settings", path: "/settings" },
       { icon: Wallet, label: "Wallet & Billing", path: "/billing" },
+      { icon: CircleHelp, label: "Help & Support", path: "/help-support" },
+      { icon: LogOut, label: "Logout", path: "/logout", isAction: true },
+    ];
+  }
+  if (userRole === 'organization-member') {
+    return [
+      { icon: SettingsIcon, label: "Settings", path: "/settings" },
       { icon: CircleHelp, label: "Help & Support", path: "/help-support" },
       { icon: LogOut, label: "Logout", path: "/logout", isAction: true },
     ];
@@ -67,9 +82,9 @@ export default function Sidebar({
   const navigate = useNavigate();
   const [upgradeModalOpen, setUpgradeModalOpen] = useState(false);
   
-  const isOrgAdmin = user?.role === 'organization-admin';
-  const mainNavItems = getMainNavItems(isOrgAdmin);
-  const accountNavItems = getAccountNavItems(isOrgAdmin);
+  const userRole = user?.role || 'individual';
+  const mainNavItems = getMainNavItems(userRole);
+  const accountNavItems = getAccountNavItems(userRole);
 
   const handleLogout = () => {
     logout();
@@ -161,6 +176,164 @@ export default function Sidebar({
     // Consider sub-routes active (e.g., /history/123)
     return current.startsWith(target + "/");
   };
+
+  // Special styling for organization members
+  if (userRole === 'organization-member') {
+    return (
+      <div className="w-60 h-screen bg-genital-gray-50 flex flex-col justify-between pr-4 sticky top-0 overflow-hidden">
+        {/* Close button for mobile */}
+        {onClose && (
+          <div className="lg:hidden absolute top-4 right-4 z-20">
+            <button
+              onClick={onClose}
+              className="p-2 rounded-lg hover:bg-white/10 text-muted-foreground"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+        )}
+
+        {/* Logo Section */}
+        <div className="pt-6 pl-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-r from-genital-red-orange to-genital-orange-light rounded-xl flex items-center justify-center">
+              <MapPin className="w-6 h-6 text-white" strokeWidth={2} />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900 leading-8">GenIEtal</h1>
+              <p className="text-xs text-genital-orange-light font-medium">Verification</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Navigation Sections */}
+        <div className="flex-1 flex flex-col justify-between mt-6">
+          {/* Main Navigation */}
+          <div className="space-y-3">
+            <div className="pl-4">
+              <span className="text-xs font-normal text-genital-gray-500 tracking-wider">MAIN</span>
+            </div>
+            <div className="space-y-0">
+              {mainNavItems.map((item) => {
+                const mappedPath = item.path === '/' ? '/dashboard' : 
+                                  item.path === '/verify' ? '/dashboard/search' :
+                                  item.path === '/escalation' ? '/dashboard/escalation' :
+                                  item.path === '/history' ? '/dashboard/history' :
+                                  item.path;
+                const isActive = isPathActive(currentPath, item.path);
+                
+                return (
+                  <Link
+                    key={item.path}
+                    to={mappedPath}
+                    onClick={onClose}
+                    className={`flex h-10 items-center gap-2 px-4 py-2 rounded-r-md transition-colors ${
+                      isActive
+                        ? "bg-white text-genital-orange font-medium"
+                        : "bg-genital-gray-50 text-genital-gray-500 hover:bg-white hover:text-genital-gray-700"
+                    }`}
+                  >
+                    <item.icon
+                      className={`w-5 h-5 ${isActive ? "text-genital-orange" : "text-genital-gray-400"}`}
+                      strokeWidth={1.2}
+                    />
+                    <span className="text-sm">{item.label}</span>
+                    {isActive && (
+                      <div className="w-1.5 h-8 bg-genital-orange rounded-l-full ml-auto -mr-4"></div>
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Account Navigation */}
+          <div className="space-y-3">
+            <div className="pl-4">
+              <span className="text-xs font-normal text-genital-gray-500 tracking-wider">ACCOUNT</span>
+            </div>
+            <div className="space-y-0">
+              {accountNavItems.map((item) => {
+                const mappedPath = item.path === '/settings' ? '/dashboard/settings' :
+                                  item.path === '/help-support' ? '/dashboard/help-support' :
+                                  item.path;
+                const isActive = isPathActive(currentPath, item.path);
+
+                if (item.isAction || item.path === '/logout') {
+                  const actionHandler = item.path === '/logout' ? handleLogout : undefined;
+                  
+                  return (
+                    <button
+                      key={item.path}
+                      onClick={actionHandler}
+                      className={`flex h-10 items-center gap-2 px-4 py-2 rounded-r-md transition-colors w-full text-left ${
+                        isActive
+                          ? "bg-white text-genital-orange font-medium"
+                          : "bg-genital-gray-50 text-genital-gray-500 hover:bg-white hover:text-genital-gray-700"
+                      }`}
+                    >
+                      <item.icon
+                        className={`w-5 h-5 ${isActive ? "text-genital-orange" : "text-genital-gray-400"}`}
+                        strokeWidth={1.2}
+                      />
+                      <span className="text-sm">{item.label}</span>
+                      {isActive && (
+                        <div className="w-1.5 h-8 bg-genital-orange rounded-l-full ml-auto -mr-4"></div>
+                      )}
+                    </button>
+                  );
+                }
+
+                return (
+                  <Link
+                    key={item.path}
+                    to={mappedPath}
+                    onClick={onClose}
+                    className={`flex h-10 items-center gap-2 px-4 py-2 rounded-r-md transition-colors ${
+                      isActive
+                        ? "bg-white text-genital-orange font-medium"
+                        : "bg-genital-gray-50 text-genital-gray-500 hover:bg-white hover:text-genital-gray-700"
+                    }`}
+                  >
+                    <item.icon
+                      className={`w-5 h-5 ${isActive ? "text-genital-orange" : "text-genital-gray-400"}`}
+                      strokeWidth={1.2}
+                    />
+                    <span className="text-sm">{item.label}</span>
+                    {isActive && (
+                      <div className="w-1.5 h-8 bg-genital-orange rounded-l-full ml-auto -mr-4"></div>
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* User Profile */}
+        <div className="p-3 pl-4 flex items-center gap-3.5">
+          <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 text-sm font-medium">
+            {user?.firstName?.charAt(0)}{user?.lastName?.charAt(0)}
+          </div>
+          <div className="flex-1">
+            <p className="text-base font-normal text-black leading-6">
+              {user?.firstName} {user?.lastName}
+            </p>
+            <p className="text-xs font-normal text-genital-gray-500 leading-4.5">Member</p>
+          </div>
+        </div>
+
+        {/* Upgrade Plan Modal */}
+        <PlanUpgradeModal
+          isOpen={upgradeModalOpen}
+          onClose={() => setUpgradeModalOpen(false)}
+          currentPlan="basic"
+          lockedFeature=""
+          onUpgrade={handleUpgradeComplete}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="w-[237px] h-screen bg-sidebar border-r flex flex-col relative overflow-hidden">
