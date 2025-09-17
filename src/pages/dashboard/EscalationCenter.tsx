@@ -1,264 +1,296 @@
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { AlertTriangle, Clock, CheckCircle, XCircle, Search, Filter } from "lucide-react";
-import EscalationModal from "@/components/verification/EscalationModal";
+import {
+  Search,
+  Send,
+  CircleCheck,
+  Flag,
+} from "lucide-react";
 
-interface EscalatedCase {
+interface ChatConversation {
   id: string;
-  address: string;
-  requester: string;
-  reason: string;
-  priority: 'high' | 'medium' | 'low';
-  status: 'pending' | 'in-progress' | 'resolved' | 'rejected';
-  createdAt: string;
-  assignedTo?: string;
+  name: string;
+  initials: string;
+  message: string;
+  status: "active" | "flagged" | "resolved";
+  time: string;
+  avatarColor: string;
+  isSelected?: boolean;
 }
 
-const mockEscalatedCases: EscalatedCase[] = [
+interface Issue {
+  id: string;
+  ticketNumber: string;
+  status: "resolved";
+}
+
+interface Message {
+  id: string;
+  content: string;
+  time: string;
+  isFromUser: boolean;
+}
+
+const conversations: ChatConversation[] = [
   {
-    id: "ESC-001",
-    address: "123 Complex Address Lane, Downtown District",
-    requester: "John Smith",
-    reason: "Address validation failed - property exists but not in database",
-    priority: "high",
-    status: "pending",
-    createdAt: "2024-01-15T10:30:00Z",
+    id: "1",
+    name: "Steve Johnson",
+    initials: "SJ",
+    message: "I'm having trouble connect...",
+    status: "active",
+    time: "Just now",
+    avatarColor: "bg-blue-400",
+    isSelected: true,
   },
   {
-    id: "ESC-002", 
-    address: "456 New Development St, Suburb Area",
-    requester: "Sarah Johnson",
-    reason: "Conflicting address information from multiple sources",
-    priority: "medium",
-    status: "in-progress",
-    createdAt: "2024-01-14T14:20:00Z",
-    assignedTo: "Admin User",
+    id: "2",
+    name: "Olamide Coker",
+    initials: "OC",
+    message: "I'm having trouble connect...",
+    status: "flagged",
+    time: "4hr ago",
+    avatarColor: "bg-red-400",
   },
   {
-    id: "ESC-003",
-    address: "789 Rural Route Road, County District",
-    requester: "Mike Wilson",
-    reason: "GPS coordinates don't match postal address",
-    priority: "low",
+    id: "3",
+    name: "Lisa Kay",
+    initials: "LK",
+    message: "I'm having trouble connect...",
     status: "resolved",
-    createdAt: "2024-01-13T09:15:00Z",
-    assignedTo: "Admin User",
+    time: "Just now",
+    avatarColor: "bg-yellow-400",
   },
 ];
 
-const EscalationCenter = () => {
-  const [cases, setCases] = useState(mockEscalatedCases);
-  const [selectedCase, setSelectedCase] = useState<EscalatedCase | null>(null);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [priorityFilter, setPriorityFilter] = useState("all");
-  const [modalOpen, setModalOpen] = useState(false);
+const issues: Issue[] = [
+  { id: "1", ticketNumber: "#2378", status: "resolved" },
+  { id: "2", ticketNumber: "#2378", status: "resolved" },
+];
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'pending': return <Clock className="w-4 h-4" />;
-      case 'in-progress': return <AlertTriangle className="w-4 h-4" />;
-      case 'resolved': return <CheckCircle className="w-4 h-4" />;
-      case 'rejected': return <XCircle className="w-4 h-4" />;
-      default: return <Clock className="w-4 h-4" />;
-    }
-  };
+const messages: Message[] = [
+  {
+    id: "1",
+    content: "Hi James, I just completed a verification for a loan applicant, John Adeyemi. The system flagged his address with a confidence score of 83%. It mapped to 40 Awolowo Road, VI instead of the 14 Awolowo Road, Ikoyi he provided.\n\nSince our policy requires 90% or above for auto-approval, I've escalated this case for your review.",
+    time: "9:17 AM",
+    isFromUser: false,
+  },
+  {
+    id: "2",
+    content: "Ok, mark the data as solved.",
+    time: "9:17 AM",
+    isFromUser: true,
+  },
+];
+
+export default function EscalationCenter() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeFilter, setActiveFilter] = useState<"all" | "active" | "flagged" | "resolved">("all");
+  const [messageInput, setMessageInput] = useState("");
+  const [selectedConversation, setSelectedConversation] = useState(conversations[0]);
+
+  const filters = [
+    { key: "all" as const, label: "All" },
+    { key: "active" as const, label: "Active" },
+    { key: "flagged" as const, label: "Flagged" },
+    { key: "resolved" as const, label: "Resolved" },
+  ];
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'in-progress': return 'bg-blue-100 text-blue-800';
-      case 'resolved': return 'bg-green-100 text-green-800';
-      case 'rejected': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case "active":
+        return "text-blue-500";
+      case "flagged":
+        return "text-red-500 bg-red-50 px-1 rounded";
+      case "resolved":
+        return "text-status-active bg-status-active-bg px-1 rounded";
+      default:
+        return "text-text-secondary";
     }
   };
 
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'high': return 'bg-red-100 text-red-800';
-      case 'medium': return 'bg-orange-100 text-orange-800';
-      case 'low': return 'bg-green-100 text-green-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  const filteredCases = cases.filter(case_ => {
-    const matchesSearch = case_.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         case_.requester.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         case_.id.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === "all" || case_.status === statusFilter;
-    const matchesPriority = priorityFilter === "all" || case_.priority === priorityFilter;
-    
-    return matchesSearch && matchesStatus && matchesPriority;
-  });
-
-  const handleCaseAction = (caseId: string, action: string) => {
-    setCases(prevCases =>
-      prevCases.map(case_ =>
-        case_.id === caseId
-          ? { ...case_, status: action as any, assignedTo: action === 'in-progress' ? 'Admin User' : case_.assignedTo }
-          : case_
-      )
-    );
+  const getStatusText = (status: string) => {
+    return status.charAt(0).toUpperCase() + status.slice(1);
   };
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">Escalation Center</h1>
-        <p className="text-gray-600">Manage and resolve escalated address verification cases</p>
-      </div>
+    <div className="h-full flex">
+      {/* Divider */}
+      <div className="w-full h-px bg-black/5 absolute top-0 left-0 right-0"></div>
 
-      {/* Filters */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Filter className="w-5 h-5" />
-            Filters & Search
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex-1">
-              <div className="relative">
-                <Search className="w-4 h-4 absolute left-3 top-3 text-gray-400" />
-                <Input
-                  placeholder="Search by address, requester, or case ID..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                />
-              </div>
-            </div>
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-40">
-                <SelectValue placeholder="Status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="in-progress">In Progress</SelectItem>
-                <SelectItem value="resolved">Resolved</SelectItem>
-                <SelectItem value="rejected">Rejected</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select value={priorityFilter} onValueChange={setPriorityFilter}>
-              <SelectTrigger className="w-40">
-                <SelectValue placeholder="Priority" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Priority</SelectItem>
-                <SelectItem value="high">High</SelectItem>
-                <SelectItem value="medium">Medium</SelectItem>
-                <SelectItem value="low">Low</SelectItem>
-              </SelectContent>
-            </Select>
+      {/* Left Sidebar - Chat List */}
+      <div className="w-[340px] h-full border-r border-neutral-400 bg-white">
+        {/* Search */}
+        <div className="p-4">
+          <div className="flex items-center gap-2 w-full h-9 px-3 bg-white border border-neutral-400 rounded-lg">
+            <Search className="w-6 h-6 text-neutral-600" />
+            <input
+              type="text"
+              placeholder="Search by name or email"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="flex-1 text-sm text-text-tertiary placeholder:text-text-tertiary border-none outline-none bg-transparent"
+            />
           </div>
-        </CardContent>
-      </Card>
+        </div>
 
-      {/* Cases List */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Escalated Cases ({filteredCases.length})</CardTitle>
-          <CardDescription>Review and manage cases that require manual intervention</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {filteredCases.map((case_) => (
-              <div
-                key={case_.id}
-                className="border rounded-lg p-4 hover:bg-gray-50 transition-colors"
+        {/* Filters */}
+        <div className="px-4 pb-4">
+          <div className="flex items-center gap-2">
+            {filters.map((filter) => (
+              <button
+                key={filter.key}
+                onClick={() => setActiveFilter(filter.key)}
+                className={`h-6 px-2 text-xs font-medium rounded transition-colors ${
+                  activeFilter === filter.key
+                    ? "bg-brand-orange/20 text-brand-orange"
+                    : "text-text-tertiary hover:text-text-secondary"
+                }`}
               >
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="font-medium text-sm">{case_.id}</span>
-                      <Badge className={getPriorityColor(case_.priority)}>
-                        {case_.priority.toUpperCase()}
-                      </Badge>
-                      <Badge className={getStatusColor(case_.status)}>
-                        {getStatusIcon(case_.status)}
-                        <span className="ml-1 capitalize">{case_.status.replace('-', ' ')}</span>
-                      </Badge>
+                {filter.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Chat List */}
+        <div className="px-4 space-y-3">
+          {conversations.map((conversation) => (
+            <div
+              key={conversation.id}
+              onClick={() => setSelectedConversation(conversation)}
+              className={`p-2 rounded-xl cursor-pointer transition-colors ${
+                selectedConversation.id === conversation.id
+                  ? "bg-brand-orange/10"
+                  : "hover:bg-neutral-100"
+              }`}
+            >
+              <div className="flex items-center gap-6">
+                <div className="flex items-center gap-2 flex-1">
+                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-white font-medium ${conversation.avatarColor}`}>
+                    {conversation.initials}
+                  </div>
+                  <div className="w-40">
+                    <div className="text-sm font-medium text-text-secondary truncate">
+                      {conversation.name}
                     </div>
-                    <h3 className="font-medium text-gray-900 mb-1">{case_.address}</h3>
-                    <p className="text-sm text-gray-600 mb-2">Requested by: {case_.requester}</p>
-                    <p className="text-sm text-gray-700 mb-2">{case_.reason}</p>
-                    <div className="text-xs text-gray-500">
-                      Created: {new Date(case_.createdAt).toLocaleDateString()}
-                      {case_.assignedTo && ` • Assigned to: ${case_.assignedTo}`}
+                    <div className="text-xs text-text-tertiary truncate">
+                      {conversation.message}
                     </div>
                   </div>
-                  <div className="flex gap-2 ml-4">
-                    {case_.status === 'pending' && (
-                      <Button
-                        size="sm"
-                        onClick={() => handleCaseAction(case_.id, 'in-progress')}
-                      >
-                        Take Case
-                      </Button>
-                    )}
-                    {case_.status === 'in-progress' && (
-                      <>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleCaseAction(case_.id, 'resolved')}
-                        >
-                          Mark Resolved
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleCaseAction(case_.id, 'rejected')}
-                        >
-                          Reject
-                        </Button>
-                      </>
-                    )}
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => {
-                        setSelectedCase(case_);
-                        setModalOpen(true);
-                      }}
-                    >
-                      View Details
-                    </Button>
+                </div>
+                <div className="w-13 text-right">
+                  <div className={`text-sm font-medium mb-1 ${getStatusColor(conversation.status)}`}>
+                    {getStatusText(conversation.status)}
+                  </div>
+                  <div className="text-xs text-text-tertiary">
+                    {conversation.time}
                   </div>
                 </div>
               </div>
-            ))}
-            {filteredCases.length === 0 && (
-              <div className="text-center py-8 text-gray-500">
-                No escalated cases found matching your filters.
-              </div>
-            )}
-          </div>
-        </CardContent>
-      </Card>
+            </div>
+          ))}
+        </div>
+      </div>
 
-      {/* Escalation Modal */}
-      {selectedCase && (
-        <EscalationModal
-          isOpen={modalOpen}
-          onClose={() => {
-            setModalOpen(false);
-            setSelectedCase(null);
-          }}
-          verificationId={selectedCase.id}
-          currentStatus={selectedCase.status}
-        />
-      )}
+      {/* Middle - Chat Interface */}
+      <div className="w-[573px] h-full border-r border-neutral-400 bg-neutral-100">
+        {/* Chat Header */}
+        <div className="h-18 px-4 py-4 bg-white border-b border-neutral-400 flex items-center gap-2">
+          <div className="w-10 h-10 rounded-lg bg-blue-400 flex items-center justify-center text-white font-medium">
+            EA
+          </div>
+          <div>
+            <div className="text-sm font-medium text-text-secondary">
+              Steve Johnson
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-status-active"></div>
+              <span className="text-xs text-text-tertiary">Online</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Messages */}
+        <div className="flex-1 p-3 space-y-4 h-[calc(100%-18rem)]">
+          {messages.map((message) => (
+            <div
+              key={message.id}
+              className={`flex flex-col gap-1 max-w-96 ${
+                message.isFromUser ? "ml-auto items-end" : "items-start"
+              }`}
+            >
+              <div
+                className={`p-3 rounded-lg text-xs leading-4.5 ${
+                  message.isFromUser
+                    ? "bg-white border border-black/5 text-text-secondary"
+                    : "bg-yellow-600 text-white"
+                }`}
+              >
+                {message.content}
+              </div>
+              <div className="text-xs text-neutral-600 font-medium">
+                {message.time}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Message Input */}
+        <div className="h-20 p-3 bg-white border-t border-neutral-400">
+          <div className="relative h-14 border border-neutral-400 rounded-lg">
+            <input
+              type="text"
+              placeholder="Type a message..."
+              value={messageInput}
+              onChange={(e) => setMessageInput(e.target.value)}
+              className="w-full h-full px-4 pr-12 text-base italic text-neutral-600 placeholder:text-neutral-600 border-none outline-none bg-transparent rounded-lg"
+            />
+            <button className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-brand-orange rounded-full flex items-center justify-center">
+              <Send className="w-4 h-4 text-white" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Right Sidebar - Issues & Actions */}
+      <div className="flex-1 h-full bg-white">
+        <div className="p-4 space-y-6">
+          {/* Issues */}
+          <div className="space-y-2">
+            <h3 className="text-sm font-medium text-text-secondary">Issues</h3>
+            <div className="space-y-3">
+              {issues.map((issue) => (
+                <div key={issue.id} className="flex items-center justify-between py-3 border-b border-neutral-400">
+                  <span className="text-sm font-medium text-black">
+                    {issue.ticketNumber}
+                  </span>
+                  <div className="flex items-center justify-center gap-2 px-2 py-0.5 rounded-full border-0.5 border-status-active bg-status-active-bg">
+                    <span className="text-xs font-medium text-status-active">
+                      Resolved
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="absolute bottom-0 right-0 w-[290px] p-4 border-t border-neutral-400 bg-white">
+          <div className="space-y-2">
+            <h3 className="text-sm font-medium text-text-secondary">Quick actions</h3>
+            <div className="flex gap-3">
+              <button className="flex-1 flex items-center justify-center gap-1.5 h-9 px-3 bg-status-active-bg rounded-lg">
+                <CircleCheck className="w-4 h-4 text-status-active fill-status-active" />
+                <span className="text-sm font-medium text-status-active">Resolve</span>
+              </button>
+              <button className="flex-1 flex items-center justify-center gap-1.5 h-9 px-3 bg-red-50 rounded-lg">
+                <Flag className="w-4 h-4 text-red-500 fill-red-500" />
+                <span className="text-sm font-medium text-red-500">Flag</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
-};
-
-export default EscalationCenter;
+}
