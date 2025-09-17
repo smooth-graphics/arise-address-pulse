@@ -174,16 +174,10 @@ export default function Sidebar({
     return current.startsWith(target + "/");
   };
 
-  // The main return logic for the sidebar component.
-  // Note that we no longer need the separate return for 'organization-member'
-  // as the logic can be unified.
-
   return (
-    // CHANGE 1: These classes make the sidebar fixed on desktop and positioned
-    // correctly as a drawer on mobile.
     <div className={cn(
         "w-[237px] h-screen bg-sidebar border-r flex flex-col",
-        "fixed inset-y-0 left-0 z-40 lg:z-10" // This positions the sidebar
+        "fixed inset-y-0 left-0 z-40 lg:z-10"
     )}>
       {/* Close button for mobile */}
       {onClose && (
@@ -214,8 +208,7 @@ export default function Sidebar({
         </div>
       </div>
 
-      {/* CHANGE 2: Added `overflow-y-auto` to make this navigation area scrollable */}
-      {/* if the content inside it is too tall. */}
+      {/* Main navigation container. It will grow to fill available space */}
       <div className="flex-1 px-4 py-2 overflow-y-auto">
         <div className="space-y-1">
           {/* Main Section */}
@@ -236,45 +229,49 @@ export default function Sidebar({
               ))}
             </div>
           </div>
-
-          {/* Account Section */}
-          <div className="pt-2">
-            <h3 className="px-4 mb-2 text-xs font-normal text-text-50 tracking-wide uppercase">
-              Account
-            </h3>
-            <div className="space-y-1">
-              {accountNavItems.map((item) => (
-                <NavItem
-                  key={item.path}
-                  icon={item.icon}
-                  label={item.label}
-                  path={item.path}
-                  isActive={isPathActive(currentPath, item.path)}
-                  isAction={item.isAction}
-                  onClick={onClose}
-                />
-              ))}
-            </div>
-          </div>
+          {/* NOTE: The Account Section was here, but has been moved down */}
         </div>
       </div>
 
-      {/* Profile Section */}
-      <div className="p-4 border-t border-sidebar-border">
-        <div className="flex items-center gap-3.5">
-          <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 text-sm font-medium">
-            {user?.firstName?.charAt(0)}
-            {user?.lastName?.charAt(0)}
+      {/* This new div groups the Account and Profile sections at the bottom */}
+      <div>
+        {/* Account Section */}
+        <div className="px-4 pt-4 pb-2"> {/* Added more top padding for spacing */}
+          <h3 className="px-4 mb-2 text-xs font-normal text-text-50 tracking-wide uppercase">
+            Account
+          </h3>
+          <div className="space-y-1">
+            {accountNavItems.map((item) => (
+              <NavItem
+                key={item.path}
+                icon={item.icon}
+                label={item.label}
+                path={item.path}
+                isActive={isPathActive(currentPath, item.path)}
+                isAction={item.isAction}
+                onClick={onClose}
+              />
+            ))}
           </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-base font-normal text-foreground truncate">
-              {user?.firstName} {user?.lastName}
-            </p>
-            <p className="text-xs text-text-50 capitalize">
-              {user?.role === 'organization-admin' && 'Admin'}
-              {user?.role === 'organization-member' && 'Member'}
-              {user?.role !== 'organization-admin' && user?.role !== 'organization-member' && (user?.role || 'Individual')}
-            </p>
+        </div>
+
+        {/* Profile Section */}
+        <div className="p-4 border-t border-sidebar-border">
+          <div className="flex items-center gap-3.5">
+            <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 text-sm font-medium">
+              {user?.firstName?.charAt(0)}
+              {user?.lastName?.charAt(0)}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-base font-normal text-foreground truncate">
+                {user?.firstName} {user?.lastName}
+              </p>
+              <p className="text-xs text-text-50 capitalize">
+                {user?.role === 'organization-admin' && 'Admin'}
+                {user?.role === 'organization-member' && 'Member'}
+                {user?.role !== 'organization-admin' && user?.role !== 'organization-member' && (user?.role || 'Individual')}
+              </p>
+            </div>
           </div>
         </div>
       </div>
