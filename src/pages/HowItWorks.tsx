@@ -121,11 +121,11 @@ const result = await arise.validate({
 
       {/* Process Steps */}
       <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-16">
+        <div className="container mx-auto px-3">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
             {steps.map((step, index) => (
               <Card key={step.id} className="hover-lift border-0 shadow-lg">
-                <CardContent className="p-6 text-center space-y-4">
+                <CardContent className="p-6 text-center space-y-3">
                   <div className="w-16 h-16 mx-auto bg-bold-red/10 rounded-full flex items-center justify-center">
                     <step.icon className="w-8 h-8 text-bold-red" />
                   </div>
