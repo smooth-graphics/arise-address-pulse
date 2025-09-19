@@ -20,7 +20,7 @@ const Index = () => {
     {
       icon: MapPin,
       title: "Global Address Verification",
-      description: "Verify addresses in 184+ countries with real-time validation and auto-correction",
+      description: "Verify addresses in 195+ countries with real-time validation and auto-correction",
       color: "from-bold-red to-vibrant-orange"
     },
     {
@@ -45,7 +45,7 @@ const Index = () => {
 
   const stats = [
     { label: "Addresses Verified", value: "50M+", icon: MapPin },
-    { label: "Countries Supported", value: "240+", icon: Globe },
+    { label: "Countries Supported", value: "195+", icon: Globe },
     { label: "API Response Time", value: "<200ms", icon: Zap },
     { label: "Accuracy Rate", value: "99.9%", icon: CheckCircle }
   ];
@@ -312,7 +312,7 @@ const Index = () => {
             </div>
             <div className="flex items-center">
               <CheckCircle className="w-4 h-4 mr-2" />
-              14-day free trial
+              7-day free trial
             </div>
             <div className="flex items-center">
               <CheckCircle className="w-4 h-4 mr-2" />
