@@ -196,9 +196,9 @@ const result = await arise.validate({
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto">
-            <h2 className="h2-desktop lg:h2-mobile text-dark-charcoal text-center mb-12">
-              Frequently Asked Questions
-            </h2>
+            <h1 className="h1-desktop lg:h1-mobile text-dark-charcoal text-center mb-12">
+              FAQs
+            </h1>
 
             <Accordion type="single" collapsible className="space-y-4">
               {faqs.map((faq, index) => (
