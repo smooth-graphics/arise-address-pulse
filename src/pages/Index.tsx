@@ -20,7 +20,7 @@ const Index = () => {
     {
       icon: MapPin,
       title: "Global Address Verification",
-      description: "Verify addresses in 240+ countries with real-time validation and auto-correction",
+      description: "Verify addresses in 184+ countries with real-time validation and auto-correction",
       color: "from-bold-red to-vibrant-orange"
     },
     {
