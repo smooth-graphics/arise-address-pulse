@@ -56,6 +56,12 @@ export const Navbar = () => {
             >
               Docs
             </Link>
+            <Link 
+              to="/faq" 
+              className="text-gray-600 hover:text-bold-red font-medium transition-colors duration-200"
+            >
+              FAQ
+            </Link>
           </div>
 
           {/* Auth Buttons */}
@@ -122,6 +128,13 @@ export const Navbar = () => {
                 onClick={() => setIsOpen(false)}
               >
                 Docs
+              </Link>
+              <Link 
+                to="/faq" 
+                className="text-gray-600 hover:text-bold-red font-medium transition-colors duration-200"
+                onClick={() => setIsOpen(false)}
+              >
+                FAQ
               </Link>
               
               <div className="pt-4 space-y-2">
