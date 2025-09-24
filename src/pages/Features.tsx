@@ -9,8 +9,8 @@ const Features = () => {
     {
       icon: MapPin,
       title: "Global Address Verification",
-      description: "Verify and standardize addresses in 240+ countries including comprehensive Nigerian postal code validation",
-      benefits: ["Real-time verification", "Auto-correction", "Postal code validation", "Nigerian area codes"],
+      description: "Verify and standardize addresses in 195+ countries including comprehensive Nigerian postal code validation",
+      benefits: ["Real-time verification", "Auto-correction", "Geo tagged validation parameters", "Comprehensive results in standardized formats"],
       color: "from-bold-red to-vibrant-orange"
     },
     {
@@ -108,19 +108,19 @@ const Features = () => {
       <section className="pt-24 pb-16 bg-gradient-to-br from-white via-gray-50 to-white">
         <div className="container mx-auto text-center max-w-6xl">
           <div className="inline-block px-4 py-2 bg-gradient-to-r from-bold-red/10 to-vibrant-orange/10 rounded-full border border-bold-red/20 mb-6">
-            <span className="text-bold-red font-semibold text-sm">✨ Comprehensive Verification Suite</span>
+            <span className="text-bold-red font-semibold text-sm">✨ First indigenous ratings based verification and validation application.</span>
           </div>
           
           <h1 className="text-3xl md:text-5xl font-bold mb-6 text-gray-900 leading-tight">
-            Complete Address & Identity
+            Innovate &
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-bold-red via-vibrant-orange to-bright-yellow">
-              Verification Platform
+              data-driven
             </span>
           </h1>
           
           <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-8 leading-relaxed">
             Everything you need to verify addresses and identities across Nigeria and globally. 
-            From postal code validation to government ID verification.
+            From corporate validation to government ID verification.
           </p>
           
           <Button className="group bg-gradient-to-r from-bold-red to-vibrant-orange hover:from-vibrant-orange hover:to-bright-yellow text-white px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
