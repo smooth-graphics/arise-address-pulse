@@ -72,7 +72,7 @@ export const pricingPlans: PlanSet = {
       id: 'business-basic',
       name: 'Business Basic',
       description: 'Essential features for growing businesses',
-      monthlyPrice: 9900.99, // $99.99 in cents
+      monthlyPrice: 9999, // $99.99 in cents
       yearlyPrice: 191040, // $1910.40 in cents (20% discount)
       features: [
         '50,000 address verifications/month',
