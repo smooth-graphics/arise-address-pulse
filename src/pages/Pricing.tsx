@@ -21,19 +21,19 @@ const Pricing = () => {
     {
       icon: Shield,
       title: 'Enhanced Security',
-      price: '₦5,000/month',
+      price: '$5/month',
       description: 'Advanced encryption and security features for sensitive data',
     },
     {
       icon: Zap,
       title: 'Priority Processing',
-      price: '₦8,000/month',
+      price: '$8/month',
       description: 'Faster processing times with dedicated server resources',
     },
     {
       icon: Star,
       title: 'Custom Integration',
-      price: '₦15,000/month',
+      price: '$5/month',
       description: 'Tailored API endpoints and custom workflow integrations',
     },
   ];
@@ -119,7 +119,7 @@ const Pricing = () => {
               >
                 Yearly
                 <span className="absolute -top-2 -right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
-                  20% off
+                  15% off
                 </span>
               </Button>
             </div>
