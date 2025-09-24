@@ -7,7 +7,7 @@ export const pricingPlans: PlanSet = {
       name: 'Basic',
       description: 'Perfect for personal use and small projects',
       monthlyPrice: 500, // $5.00 in cents
-      yearlyPrice: 4800, // $48.00 in cents (20% discount)
+      yearlyPrice: 5100, // $51.00 in cents (51% discount)
       features: [
         '1,000 address verifications/month',
         'Basic API access',
@@ -28,7 +28,7 @@ export const pricingPlans: PlanSet = {
       name: 'Pro',
       description: 'For growing businesses and developers',
       monthlyPrice: 1500, // $15.00 in cents
-      yearlyPrice: 14400, // $144.00 in cents (20% discount)
+      yearlyPrice: 15300, // $153.00 in cents (15% discount)
       popular: true,
       features: [
         '10,000 address verifications/month',
@@ -51,7 +51,7 @@ export const pricingPlans: PlanSet = {
       name: 'Enterprise',
       description: 'For large-scale operations and teams',
       monthlyPrice: 2500, // $25.00 in cents
-      yearlyPrice: 24000, // $240.00 in cents (20% discount)
+      yearlyPrice: 25500, // $255.00 in cents (15% discount)
       features: [
         'Unlimited address verifications',
         'Full API access',
@@ -95,8 +95,8 @@ export const pricingPlans: PlanSet = {
       id: 'business-pro',
       name: 'Business Pro',
       description: 'Advanced features for established businesses',
-      monthlyPrice: 29900, // $299.00 in cents
-      yearlyPrice: 287040, // $2870.40 in cents (20% discount)
+      monthlyPrice: 12999, // $129.99 in cents
+      yearlyPrice: 132590, // $1325.90 in cents (15% discount)
       popular: true,
       features: [
         '250,000 address verifications/month',
@@ -120,8 +120,8 @@ export const pricingPlans: PlanSet = {
       id: 'business-enterprise',
       name: 'Business Enterprise',
       description: 'Complete solution for enterprise organizations',
-      monthlyPrice: null, // Contact Sales - no fixed price
-      yearlyPrice: null,  // Contact Sales - no fixed price
+      monthlyPrice: 19999, // $199.99 in cents
+      yearlyPrice: 203990,  // 2,039.90 in cent (15% discount)
       features: [
         'Unlimited address verifications',
         'Enterprise API access',
