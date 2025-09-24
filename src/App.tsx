@@ -20,6 +20,7 @@ import Contact from "./pages/Contact";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import Docs from "./pages/Docs";
+import FAQ from "./pages/FAQ";
 import NotFound from "./pages/NotFound";
 
 // Auth pages
@@ -156,6 +157,15 @@ const App = () => (
                 <Navbar />
                 <main className="flex-1">
                   <Docs />
+                </main>
+                <Footer />
+              </div>
+            } />
+            <Route path="/faq" element={
+              <div className="min-h-screen flex flex-col w-full">
+                <Navbar />
+                <main className="flex-1">
+                  <FAQ />
                 </main>
                 <Footer />
               </div>
