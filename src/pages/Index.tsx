@@ -296,7 +296,7 @@ const Index = () => {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/auth">
-              <Button className="bg-white text-bold-red hover:bg-gray-100 px-6 py-3 text-lg font-semibold rounded-xl shadow-lg">
+              <Button className="bg-white text-bold-red hover:bg-white/90 px-6 py-3 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
                 Start Free Trial
               </Button>
             </Link>
