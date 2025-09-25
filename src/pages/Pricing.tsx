@@ -71,7 +71,7 @@ const Pricing = () => {
   ];
 
   return (
-    <div className="min-h-screen pt-16">
+    <div className="min-h-screen">
       {/* Hero Section */}
       <section className="bg-white py-16">
         <div className="container mx-auto px-4 text-center space-y-8">
