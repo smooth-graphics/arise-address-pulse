@@ -105,7 +105,7 @@ const Features = () => {
   return (
     <div className="min-h-screen bg-white px-4 md:px-8 lg:px-12">
       {/* Hero Section */}
-      <section className="pt-24 pb-8 bg-gradient-to-br from-white via-gray-50 to-white">
+      <section className="pt-16 pb-8 bg-gradient-to-br from-white via-gray-50 to-white">
         <div className="container mx-auto text-center max-w-6xl">
           <div className="inline-block px-4 py-2 bg-gradient-to-r from-bold-red/10 to-vibrant-orange/10 rounded-full border border-bold-red/20 mb-6">
             <span className="text-bold-red font-semibold text-sm">✨ First indigenous ratings based verification and validation application.</span>
