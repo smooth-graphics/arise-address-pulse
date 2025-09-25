@@ -50,12 +50,7 @@ export const Navbar = () => {
             >
               About
             </Link>
-            <Link 
-              to="/docs" 
-              className="text-gray-600 hover:text-bold-red font-medium transition-colors duration-200"
-            >
-              Docs
-            </Link>
+            
             <Link 
               to="/faq" 
               className="text-gray-600 hover:text-bold-red font-medium transition-colors duration-200"
