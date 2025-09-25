@@ -69,7 +69,7 @@ export const Navbar = () => {
                 Sign In
               </Button>
             </Link>
-            <Link to="/auth/register">
+            <Link to="/auth/signup">
               <Button className="bg-gradient-to-r from-bold-red to-vibrant-orange hover:from-vibrant-orange hover:to-bright-yellow text-white font-semibold transition-all duration-300 transform hover:scale-105">
                 Start Free Trial
               </Button>
