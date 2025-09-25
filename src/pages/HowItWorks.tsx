@@ -106,13 +106,17 @@ const result = await arise.validate({
   ];
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen pt-16">
       {/* Hero Section */}
       <section className="bg-white py-16">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="h1-desktop lg:h1-mobile text-dark-charcoal mb-6">
-            How Arise Verifies & Validates Addresses
+          <h1 className="text-3xl md:text-5xl font-bold mb-6 text-gray-900 leading-tight">
+            How Arise Verifies &
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-bold-red via-vibrant-orange to-bright-yellow">
+              Validates Addresses
+            </span>
           </h1>
+          
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Step-by-Step Process for Pixel-Perfect Accuracy
           </p>
