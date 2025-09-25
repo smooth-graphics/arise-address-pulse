@@ -43,7 +43,7 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-white flex items-center justify-center px-4">
       <div className="w-full max-w-md">
-        <Link to="/auth/welcome" className="inline-flex items-center text-gray-600 hover:text-bold-red mb-6 transition-colors duration-200">
+        <Link to="" className="inline-flex items-center text-gray-600 hover:text-bold-red mb-6 transition-colors duration-200">
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back
         </Link>
