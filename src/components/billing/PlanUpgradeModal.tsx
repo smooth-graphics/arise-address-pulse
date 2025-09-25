@@ -129,7 +129,7 @@ const PlanUpgradeModal: React.FC<PlanUpgradeModalProps> = ({
               <h4 className="font-semibold text-gray-900">Need a custom solution?</h4>
               <p className="text-sm text-gray-600">Contact our sales team for enterprise pricing and custom features.</p>
             </div>
-            <Button variant="outline" className="border-vibrant-orange text-vibrant-orange hover:bg-orange-50">
+            <Button variant="outline" className="bg-transparent border-vibrant-orange text-vibrant-orange hover:bg-vibrant-orange hover:text-white transition-all duration-300">
               Contact Sales
             </Button>
           </div>

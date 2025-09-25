@@ -202,7 +202,7 @@ const About = () => {
               Start Free Trial
               <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
-            <Button variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-bold-red px-8 py-4 text-lg font-semibold rounded-xl">
+            <Button variant="outline" className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-bold-red px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-300">
               Contact Us
             </Button>
           </div>

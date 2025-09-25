@@ -29,24 +29,28 @@ export const Navbar = () => {
             <Link 
               to="/features" 
               className="text-gray-600 hover:text-bold-red font-medium transition-colors duration-200"
+              onClick={() => window.scrollTo(0, 0)}
             >
               Features
             </Link>
             <Link 
               to="/how-it-works" 
               className="text-gray-600 hover:text-bold-red font-medium transition-colors duration-200"
+              onClick={() => window.scrollTo(0, 0)}
             >
               How It Works
             </Link>
             <Link 
               to="/pricing" 
               className="text-gray-600 hover:text-bold-red font-medium transition-colors duration-200"
+              onClick={() => window.scrollTo(0, 0)}
             >
               Pricing
             </Link>
             <Link 
               to="/about" 
               className="text-gray-600 hover:text-bold-red font-medium transition-colors duration-200"
+              onClick={() => window.scrollTo(0, 0)}
             >
               About
             </Link>
@@ -54,6 +58,7 @@ export const Navbar = () => {
             <Link 
               to="/faq" 
               className="text-gray-600 hover:text-bold-red font-medium transition-colors duration-200"
+              onClick={() => window.scrollTo(0, 0)}
             >
               FAQ
             </Link>
@@ -92,56 +97,56 @@ export const Navbar = () => {
               <Link 
                 to="/features" 
                 className="text-gray-600 hover:text-bold-red font-medium transition-colors duration-200"
-                onClick={() => setIsOpen(false)}
+                onClick={() => {setIsOpen(false); window.scrollTo(0, 0);}}
               >
                 Features
               </Link>
               <Link 
                 to="/how-it-works" 
                 className="text-gray-600 hover:text-bold-red font-medium transition-colors duration-200"
-                onClick={() => setIsOpen(false)}
+                onClick={() => {setIsOpen(false); window.scrollTo(0, 0);}}
               >
                 How It Works
               </Link>
               <Link 
                 to="/pricing" 
                 className="text-gray-600 hover:text-bold-red font-medium transition-colors duration-200"
-                onClick={() => setIsOpen(false)}
+                onClick={() => {setIsOpen(false); window.scrollTo(0, 0);}}
               >
                 Pricing
               </Link>
               <Link 
                 to="/about" 
                 className="text-gray-600 hover:text-bold-red font-medium transition-colors duration-200"
-                onClick={() => setIsOpen(false)}
+                onClick={() => {setIsOpen(false); window.scrollTo(0, 0);}}
               >
                 About
               </Link>
               <Link 
                 to="/docs" 
                 className="text-gray-600 hover:text-bold-red font-medium transition-colors duration-200"
-                onClick={() => setIsOpen(false)}
+                onClick={() => {setIsOpen(false); window.scrollTo(0, 0);}}
               >
                 Docs
               </Link>
               <Link 
                 to="/faq" 
                 className="text-gray-600 hover:text-bold-red font-medium transition-colors duration-200"
-                onClick={() => setIsOpen(false)}
+                onClick={() => {setIsOpen(false); window.scrollTo(0, 0);}}
               >
                 FAQ
               </Link>
               
               <div className="pt-4 space-y-2">
-                <Link to="/auth" onClick={() => setIsOpen(false)}>
+                <Link to="/auth" onClick={() => {setIsOpen(false); window.scrollTo(0, 0);}}>
                   <Button 
                     variant="outline" 
-                    className="w-full border-gray-200 text-gray-600 hover:border-bold-red hover:text-bold-red"
+                    className="w-full bg-transparent border-gray-200 text-gray-600 hover:bg-bold-red hover:text-white hover:border-bold-red transition-all duration-300"
                   >
                     Sign In
                   </Button>
                 </Link>
-                <Link to="/auth" onClick={() => setIsOpen(false)}>
+                <Link to="/auth" onClick={() => {setIsOpen(false); window.scrollTo(0, 0);}}>
                   <Button className="w-full bg-gradient-to-r from-bold-red to-vibrant-orange hover:from-vibrant-orange hover:to-bright-yellow text-white font-semibold">
                     Start Free Trial
                   </Button>

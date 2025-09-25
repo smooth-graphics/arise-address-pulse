@@ -108,7 +108,7 @@ const Index = () => {
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
-              <Button variant="outline" className="border-2 border-bold-red text-bold-red hover:bg-bold-red hover:text-white px-6 py-3 text-lg font-semibold rounded-xl transition-all duration-300">
+              <Button variant="outline" className="bg-transparent border-2 border-bold-red text-bold-red hover:bg-bold-red hover:text-white px-6 py-3 text-lg font-semibold rounded-xl transition-all duration-300">
                 View Demo
               </Button>
             </div>
