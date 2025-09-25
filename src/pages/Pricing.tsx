@@ -75,9 +75,10 @@ const Pricing = () => {
       {/* Hero Section */}
       <section className="bg-white py-16">
         <div className="container mx-auto px-4 text-center space-y-8">
-          <h1 className="h1-desktop lg:h1-mobile text-dark-charcoal mb-6">
-            Simple, Transparent Pricing
-          </h1>
+          <div className="inline-block px-4 py-2 bg-gradient-to-r from-bold-red/10 to-vibrant-orange/10 rounded-full border border-bold-red/20 mb-6">
+            <span className="text-bold-red font-semibold text-sm">Simple, Transparent Pricing</span>
+          </div>
+         
           <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
             Choose the perfect plan for your address verification needs. All plans include our core verification features with no hidden fees.
           </p>
