@@ -61,7 +61,7 @@ export const Navbar = () => {
 
           {/* Auth Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link to="/auth/register">
+            <Link to="/auth">
               <Button 
                 variant="ghost" 
                 className="text-gray-600 hover:text-bold-red hover:bg-bold-red/5 transition-all duration-200"
@@ -69,7 +69,7 @@ export const Navbar = () => {
                 Sign In
               </Button>
             </Link>
-            <Link to="/auth">
+            <Link to="/auth/register">
               <Button className="bg-gradient-to-r from-bold-red to-vibrant-orange hover:from-vibrant-orange hover:to-bright-yellow text-white font-semibold transition-all duration-300 transform hover:scale-105">
                 Start Free Trial
               </Button>
