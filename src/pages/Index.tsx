@@ -300,7 +300,7 @@ const Index = () => {
                 Start Free Trial
               </Button>
             </Link>
-            <Button variant="outline" className="border-2 border-white text-white hover:bg-transparent hover:border-white/80 px-6 py-3 text-lg font-semibold rounded-xl transition-all duration-300">
+            <Button variant="outline" className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-vibrant-orange px-6 py-3 text-lg font-semibold rounded-xl transition-all duration-300">
               Contact Sales
             </Button>
           </div>
