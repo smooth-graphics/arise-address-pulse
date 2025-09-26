@@ -33,12 +33,12 @@ const LiveChatPopup: React.FC<LiveChatPopupProps> = ({ isOpen, onClose }) => {
     {
       id: '1',
       sender: 'bot',
-      content: 'Hello! I\'m here to help you with any questions about our address validation platform. Would you like to chat with me or connect with a live agent?',
+      content: 'Hi there! 👋 I\'m your AI assistant. I can help you with:\n\n• Pricing and plans information\n• Address verification process\n• API integration questions\n• Account setup and features\n• Technical troubleshooting\n\nWhat can I help you with today? Or would you prefer to speak with a live agent?',
       timestamp: new Date()
     }
   ]);
   const [messageInput, setMessageInput] = useState('');
-  const [chatMode, setChatMode] = useState<'bot' | 'staff' | null>(null);
+  const [chatMode, setChatMode] = useState<'bot' | 'staff' | null>('bot');
   const [isMinimized, setIsMinimized] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -80,12 +80,27 @@ const LiveChatPopup: React.FC<LiveChatPopupProps> = ({ isOpen, onClose }) => {
   const getBotResponse = (userInput: string): string => {
     const input = userInput.toLowerCase();
     
+    if (input.includes('agent') || input.includes('human') || input.includes('staff') || input.includes('customer service') || input.includes('live support')) {
+      // Transfer to staff mode
+      setTimeout(() => {
+        setChatMode('staff');
+        const transferMessage: Message = {
+          id: Date.now().toString() + '_transfer',
+          sender: 'staff',
+          content: 'Hello! I\'m a live support agent. I see you were transferred from our AI assistant. How can I help you today?',
+          timestamp: new Date()
+        };
+        setMessages(prev => [...prev, transferMessage]);
+      }, 1500);
+      return 'I understand you\'d like to speak with a live agent. Let me transfer you to our customer support team right away. Please hold on...';
+    }
+    
     if (input.includes('price') || input.includes('cost') || input.includes('plan')) {
-      return 'Our pricing starts at ₦2,500/month for individuals and ₦15,000/month for businesses. We also offer a free trial with 50 verifications. Would you like to learn more about our plans?';
+      return 'Our pricing starts at ₦2,500/month for individuals and ₦15,000/month for businesses. We also offer a free trial with 50 verifications. Would you like to learn more about our plans or speak with an agent about custom pricing?';
     }
     
     if (input.includes('api') || input.includes('integration')) {
-      return 'Yes! We provide REST APIs for seamless integration. Business and Enterprise users get full API access with comprehensive documentation. Would you like me to connect you with our technical team?';
+      return 'Yes! We provide REST APIs for seamless integration. Business and Enterprise users get full API access with comprehensive documentation. Would you like me to connect you with our technical team for detailed integration support?';
     }
     
     if (input.includes('verify') || input.includes('address')) {
@@ -93,10 +108,14 @@ const LiveChatPopup: React.FC<LiveChatPopupProps> = ({ isOpen, onClose }) => {
     }
     
     if (input.includes('support') || input.includes('help')) {
-      return 'I\'m here to help! You can also reach our support team via email or phone. For technical issues, would you prefer to speak with a live agent?';
+      return 'I\'m here to help! You can also reach our support team via email or phone. For complex technical issues, would you prefer to speak with a live agent?';
     }
     
-    return 'That\'s a great question! I can help with information about our platform, pricing, features, and more. If you need detailed assistance, I can connect you with our support team. What would you like to know?';
+    if (input.includes('transfer') || input.includes('connect')) {
+      return 'Would you like me to transfer you to a live agent? Just say "yes" or "connect me to an agent" and I\'ll get you connected right away!';
+    }
+    
+    return 'That\'s a great question! I can help with information about our platform, pricing, features, and more. If you need personalized assistance, I can connect you with our support team. What would you like to know?';
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -127,11 +146,11 @@ const LiveChatPopup: React.FC<LiveChatPopupProps> = ({ isOpen, onClose }) => {
     <div className="fixed inset-0 z-50 flex items-end justify-end p-4 pointer-events-none">
       <div 
         className={cn(
-          "pointer-events-auto transition-all duration-300 ease-in-out",
+          "pointer-events-auto transition-all duration-300 ease-in-out animate-slide-in-right",
           isOpen 
             ? "translate-x-0 opacity-100" 
             : "translate-x-full opacity-0",
-          isMinimized ? "w-80 h-16" : "w-96 h-[600px]"
+          isMinimized ? "w-80 h-16" : "w-80 h-[500px]"
         )}
       >
         <Card className="w-full h-full flex flex-col shadow-2xl border-2">
@@ -172,129 +191,84 @@ const LiveChatPopup: React.FC<LiveChatPopupProps> = ({ isOpen, onClose }) => {
 
           {!isMinimized && (
             <>
-              {/* Chat Mode Selection */}
-              {!chatMode && (
-                <CardContent className="p-4">
-                  <div className="space-y-4">
-                    <p className="text-sm text-text-secondary text-center">
-                      How would you like to get help today?
-                    </p>
-                    
-                    <div className="grid gap-3">
-                      <Button
-                        onClick={() => selectChatMode('bot')}
-                        variant="outline"
-                        className="flex items-center gap-3 h-auto p-4 text-left"
-                      >
-                        <Bot className="w-6 h-6 text-primary" />
-                        <div>
-                          <div className="font-medium">AI Assistant</div>
-                          <div className="text-xs text-text-secondary">
-                            Quick answers to common questions
-                          </div>
-                        </div>
-                      </Button>
-                      
-                      <Button
-                        onClick={() => selectChatMode('staff')}
-                        variant="outline"
-                        className="flex items-center gap-3 h-auto p-4 text-left"
-                      >
-                        <User className="w-6 h-6 text-primary" />
-                        <div>
-                          <div className="font-medium">Live Agent</div>
-                          <div className="text-xs text-text-secondary">
-                            Connect with our support team
-                          </div>
-                        </div>
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              )}
-
               {/* Messages */}
-              {chatMode && (
-                <>
-                  <CardContent className="flex-1 overflow-y-auto p-4 space-y-4">
-                    {messages.map((message) => (
-                      <div
-                        key={message.id}
-                        className={cn(
-                          "flex gap-3",
-                          message.sender === 'user' ? 'justify-end' : 'justify-start'
-                        )}
-                      >
-                        {message.sender !== 'user' && (
-                          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                            {message.sender === 'bot' ? (
-                              <Bot className="w-4 h-4 text-primary" />
-                            ) : (
-                              <User className="w-4 h-4 text-primary" />
-                            )}
-                          </div>
-                        )}
-                        
-                        <div
-                          className={cn(
-                            "max-w-[80%] rounded-lg px-3 py-2 text-sm",
-                            message.sender === 'user'
-                              ? "bg-primary text-primary-foreground"
-                              : "bg-muted text-text-primary"
-                          )}
-                        >
-                          <p className="break-words">{message.content}</p>
-                          <p className={cn(
-                            "text-xs mt-1 opacity-70",
-                            message.sender === 'user' ? "text-primary-foreground" : "text-text-tertiary"
-                          )}>
-                            {message.timestamp.toLocaleTimeString([], { 
-                              hour: '2-digit', 
-                              minute: '2-digit' 
-                            })}
-                          </p>
-                        </div>
-                        
-                        {message.sender === 'user' && (
-                          <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
-                            <User className="w-4 h-4 text-primary-foreground" />
-                          </div>
+              <CardContent className="flex-1 overflow-y-auto p-4 space-y-4">
+                {messages.map((message) => (
+                  <div
+                    key={message.id}
+                    className={cn(
+                      "flex gap-3",
+                      message.sender === 'user' ? 'justify-end' : 'justify-start'
+                    )}
+                  >
+                    {message.sender !== 'user' && (
+                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        {message.sender === 'bot' ? (
+                          <Bot className="w-4 h-4 text-primary" />
+                        ) : (
+                          <User className="w-4 h-4 text-primary" />
                         )}
                       </div>
-                    ))}
-                    <div ref={messagesEndRef} />
-                  </CardContent>
-
-                  <Separator />
-
-                  {/* Input */}
-                  <div className="p-4">
-                    <div className="flex gap-2">
-                      <Input
-                        value={messageInput}
-                        onChange={(e) => setMessageInput(e.target.value)}
-                        onKeyPress={handleKeyPress}
-                        placeholder="Type your message..."
-                        className="flex-1"
-                      />
-                      <Button 
-                        onClick={handleSendMessage}
-                        disabled={!messageInput.trim()}
-                        size="sm"
-                        className="px-3"
-                      >
-                        <Send className="w-4 h-4" />
-                      </Button>
+                    )}
+                    
+                    <div
+                      className={cn(
+                        "max-w-[80%] rounded-lg px-3 py-2 text-sm",
+                        message.sender === 'user'
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-muted text-text-primary"
+                      )}
+                    >
+                      <p className="break-words">{message.content}</p>
+                      <p className={cn(
+                        "text-xs mt-1 opacity-70",
+                        message.sender === 'user' ? "text-primary-foreground" : "text-text-tertiary"
+                      )}>
+                        {message.timestamp.toLocaleTimeString([], { 
+                          hour: '2-digit', 
+                          minute: '2-digit' 
+                        })}
+                      </p>
                     </div>
                     
-                    {chatMode === 'staff' && (
-                      <p className="text-xs text-text-secondary mt-2 text-center">
-                        Average response time: 2-3 minutes
-                      </p>
+                    {message.sender === 'user' && (
+                      <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
+                        <User className="w-4 h-4 text-primary-foreground" />
+                      </div>
                     )}
                   </div>
-                </>
-              )}
+                ))}
+                <div ref={messagesEndRef} />
+              </CardContent>
+
+              <Separator />
+
+              {/* Input */}
+              <div className="p-4">
+                <div className="flex gap-2">
+                  <Input
+                    value={messageInput}
+                    onChange={(e) => setMessageInput(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    placeholder="Type your message..."
+                    className="flex-1"
+                  />
+                  <Button 
+                    onClick={handleSendMessage}
+                    disabled={!messageInput.trim()}
+                    size="sm"
+                    className="px-3"
+                  >
+                    <Send className="w-4 h-4" />
+                  </Button>
+                </div>
+                
+                {chatMode === 'staff' && (
+                  <p className="text-xs text-text-secondary mt-2 text-center">
+                    Average response time: 2-3 minutes
+                  </p>
+                )}
+              </div>
             </>
           )}
         </Card>
