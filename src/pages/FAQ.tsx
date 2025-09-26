@@ -10,6 +10,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Search, MessageCircle, Mail, Phone, ExternalLink } from 'lucide-react';
+import LiveChatPopup from '@/components/chat/LiveChatPopup';
 
 interface FAQItem {
   id: string;
@@ -253,6 +254,7 @@ const FAQ = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   const filteredFAQs = faqData.filter(faq => {
     const matchesSearch = faq.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -404,7 +406,10 @@ const FAQ = () => {
                   <p className="text-text-secondary text-sm mb-4">
                     Get instant help from our support team
                   </p>
-                  <Button className="w-full">
+                  <Button 
+                    className="w-full"
+                    onClick={() => setIsChatOpen(true)}
+                  >
                     Start Chat
                   </Button>
                 </CardContent>
@@ -467,6 +472,12 @@ const FAQ = () => {
           </div>
         </div>
       </section>
+
+      {/* Live Chat Popup */}
+      <LiveChatPopup 
+        isOpen={isChatOpen} 
+        onClose={() => setIsChatOpen(false)} 
+      />
     </div>
   );
 };
