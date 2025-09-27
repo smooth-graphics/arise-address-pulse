@@ -3,8 +3,13 @@ import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import OrganizationDashboard from './OrganizationDashboard';
 import GovernmentDashboard from './GovernmentDashboard';
+import { useWalletBalance, useUsageStats } from '@/hooks/api/useWallet';
+import { useNotifications } from '@/hooks/api/useNotifications';
+import { useVerificationHistory } from '@/hooks/api/useVerification';
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import WalletBalance from '@/components/billing/WalletBalance';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Bell,
   Search,
@@ -118,111 +123,37 @@ function NotificationItem({
 }
 
 function StatusBadge({ status }: { status: string }) {
+  const getStatusColor = (status: string) => {
+    switch (status.toLowerCase()) {
+      case 'verified':
+      case 'completed':
+        return 'border-green-500 bg-green-100 text-green-700';
+      case 'pending':
+        return 'border-yellow-500 bg-yellow-100 text-yellow-700';
+      case 'rejected':
+      case 'failed':
+        return 'border-red-500 bg-red-100 text-red-700';
+      case 'needs_more_info':
+        return 'border-blue-500 bg-blue-100 text-blue-700';
+      default:
+        return 'border-gray-500 bg-gray-100 text-gray-700';
+    }
+  };
+
   return (
-    <span className="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-full border-0.5 border-green-500 bg-green-100 text-green-700">
-      {status}
+    <span className={`inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-full border-0.5 ${getStatusColor(status)}`}>
+      {status.charAt(0).toUpperCase() + status.slice(1).replace('_', ' ')}
     </span>
   );
 }
 
-interface SearchRecord {
-  id: string;
-  name: string;
-  address: string;
-  status: "completed";
-  result: "verified";
-  date: string;
-}
-
-const recentSearches: SearchRecord[] = [
-  {
-    id: "1",
-    name: "Joseph Oluwamuyiwa",
-    address: "No. 7, Coker Street, Ibadan, Oyo State",
-    status: "completed",
-    result: "verified",
-    date: "12:24 p.m.",
-  },
-  {
-    id: "2",
-    name: "Joseph Oluwamuyiwa",
-    address: "No. 7, Coker Street, Ibadan, Oyo State",
-    status: "completed",
-    result: "verified",
-    date: "12:24 p.m.",
-  },
-  {
-    id: "3",
-    name: "Joseph Oluwamuyiwa",
-    address: "No. 7, Coker Street, Ibadan, Oyo State",
-    status: "completed",
-    result: "verified",
-    date: "24 Jul 2025",
-  },
-  {
-    id: "4",
-    name: "Joseph Oluwamuyiwa",
-    address: "No. 7, Coker Street, Ibadan, Oyo State",
-    status: "completed",
-    result: "verified",
-    date: "24 Jul 2025",
-  },
-  {
-    id: "5",
-    name: "Joseph Oluwamuyiwa",
-    address: "No. 7, Coker Street, Ibadan, Oyo State",
-    status: "completed",
-    result: "verified",
-    date: "24 Jul 2025",
-  },
-];
-
-const notifications = [
-  {
-    id: "1",
-    title: "Title",
-    subtitle: "Subtitle",
-    time: "6:24 p.m.",
-    isUnread: true,
-  },
-  {
-    id: "2",
-    title: "Title",
-    subtitle: "Subtitle",
-    time: "6:24 p.m.",
-    isUnread: true,
-  },
-  {
-    id: "3",
-    title: "Title",
-    subtitle: "Subtitle",
-    time: "6:24 p.m.",
-    isUnread: false,
-  },
-  {
-    id: "4",
-    title: "Title",
-    subtitle: "Subtitle",
-    time: "6:24 p.m.",
-    isUnread: false,
-  },
-  {
-    id: "5",
-    title: "Title",
-    subtitle: "Subtitle",
-    time: "6:24 p.m.",
-    isUnread: false,
-  },
-  {
-    id: "6",
-    title: "Title",
-    subtitle: "Subtitle",
-    time: "6:24 p.m.",
-    isUnread: false,
-  },
-];
 
 function Overview() {
+  const { data: walletBalance, isLoading: walletLoading } = useWalletBalance();
+  const { data: usageStats, isLoading: usageLoading } = useUsageStats();
+  const { data: notifications, isLoading: notificationsLoading } = useNotifications({ limit: 6 });
+  const { data: recentSearches, isLoading: searchesLoading } = useVerificationHistory({ limit: 5 });
+  
   const [selectedFilter, setSelectedFilter] = useState("verified");
 
   return (
@@ -258,20 +189,19 @@ function Overview() {
           <div className="flex gap-4 mb-8">
             <DashboardCard
               title="Wallet Balance"
-              value="437"
+              value={walletLoading ? "..." : `${walletBalance?.balance || 0}`}
               subtitle="credits"
               showEye={true}
             />
             <DashboardCard
               title="Verifications"
-              value="65"
+              value={usageLoading ? "..." : `${usageStats?.usedThisMonth || 0}`}
               showDropdown={true}
               dropdownText="This Month"
             />
             <DashboardCard
               title="System Uptime"
-              value="437"
-              subtitle="credits"
+              value="99.9%"
               showEye={true}
             />
           </div>
@@ -296,56 +226,64 @@ function Overview() {
 
             {/* Table */}
             <div className="border border-gray-200 rounded-2xl overflow-hidden">
-              <table className="w-full">
-                <thead className="bg-gray-100">
-                  <tr>
-                    <th className="px-3 py-2.5 text-left text-xs font-medium text-gray-600">
-                      Name
-                    </th>
-                    <th className="px-3 py-2.5 text-left text-xs font-medium text-gray-600 w-44">
-                      Address
-                    </th>
-                    <th className="px-3 py-2.5 text-left text-xs font-medium text-gray-600 w-35">
-                      Status
-                    </th>
-                    <th className="px-3 py-2.5 text-left text-xs font-medium text-gray-600 w-32">
-                      Result
-                    </th>
-                    <th className="px-3 py-2.5 text-left text-xs font-medium text-gray-600 w-32">
-                      Date
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-100">
-                  {recentSearches.map((record) => (
-                    <tr
-                      key={record.id}
-                      className="hover:bg-gray-50 transition-colors cursor-pointer"
-                    >
-                      <td className="px-3 py-2.5 pt-4 text-sm text-black h-11">
-                        {record.name}
-                      </td>
-                      <td className="px-3 py-2.5 pt-4 text-sm text-black h-11">
-                        <div
-                          className="truncate max-w-[160px]"
-                          title={record.address}
-                        >
-                          {record.address}
-                        </div>
-                      </td>
-                      <td className="px-3 py-2.5 pt-4 h-11">
-                        <StatusBadge status="Completed" />
-                      </td>
-                      <td className="px-3 py-2.5 pt-4 text-sm text-black h-11">
-                        Verified
-                      </td>
-                      <td className="px-3 py-2.5 pt-4 text-sm text-black h-11">
-                        {record.date}
-                      </td>
+              {searchesLoading ? (
+                <div className="p-6">
+                  <Skeleton className="h-4 w-full mb-2" />
+                  <Skeleton className="h-4 w-3/4 mb-2" />
+                  <Skeleton className="h-4 w-1/2" />
+                </div>
+              ) : (
+                <table className="w-full">
+                  <thead className="bg-gray-100">
+                    <tr>
+                      <th className="px-3 py-2.5 text-left text-xs font-medium text-gray-600">
+                        Name
+                      </th>
+                      <th className="px-3 py-2.5 text-left text-xs font-medium text-gray-600 w-44">
+                        Address
+                      </th>
+                      <th className="px-3 py-2.5 text-left text-xs font-medium text-gray-600 w-35">
+                        Status
+                      </th>
+                      <th className="px-3 py-2.5 text-left text-xs font-medium text-gray-600 w-32">
+                        Result
+                      </th>
+                      <th className="px-3 py-2.5 text-left text-xs font-medium text-gray-600 w-32">
+                        Date
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-100">
+                    {(recentSearches?.verifications || []).slice(0, 5).map((record) => (
+                      <tr
+                        key={record.id}
+                        className="hover:bg-gray-50 transition-colors cursor-pointer"
+                      >
+                        <td className="px-3 py-2.5 pt-4 text-sm text-black h-11">
+                          {record.address.split(',')[0] || 'N/A'}
+                        </td>
+                        <td className="px-3 py-2.5 pt-4 text-sm text-black h-11">
+                          <div
+                            className="truncate max-w-[160px]"
+                            title={record.address}
+                          >
+                            {record.address}
+                          </div>
+                        </td>
+                        <td className="px-3 py-2.5 pt-4 h-11">
+                          <StatusBadge status={record.status} />
+                        </td>
+                        <td className="px-3 py-2.5 pt-4 text-sm text-black h-11">
+                          {record.matchScore ? `${record.matchScore}% Match` : 'Pending'}
+                        </td>
+                        <td className="px-3 py-2.5 pt-4 text-sm text-black h-11">
+                          {new Date(record.submittedAt).toLocaleDateString()}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
             </div>
 
             {/* See History Button */}
@@ -390,15 +328,23 @@ function Overview() {
 
           {/* Notifications List */}
           <div className="flex-1 overflow-y-auto">
-            {notifications.map((notification) => (
-              <NotificationItem
-                key={notification.id}
-                title={notification.title}
-                subtitle={notification.subtitle}
-                time={notification.time}
-                isUnread={notification.isUnread}
-              />
-            ))}
+            {notificationsLoading ? (
+              <div className="p-4 space-y-3">
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-3/4" />
+                <Skeleton className="h-4 w-1/2" />
+              </div>
+            ) : (
+              (notifications?.notifications || []).map((notification) => (
+                <NotificationItem
+                  key={notification.id}
+                  title={notification.title}
+                  subtitle={notification.message}
+                  time={new Date(notification.createdAt).toLocaleTimeString()}
+                  isUnread={!notification.isRead}
+                />
+              ))
+            )}
           </div>
         </div>
       </div>

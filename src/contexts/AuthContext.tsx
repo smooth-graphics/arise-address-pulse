@@ -1,6 +1,8 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { User, AuthContextType, SignupData, UserRole } from '@/types/auth';
+import { authService } from '@/services/authService';
+import { useToast } from '@/hooks/use-toast';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -16,95 +18,53 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const { toast } = useToast();
+
   useEffect(() => {
-    // Check for stored auth token on mount
+    // Check for stored auth token and validate with API
     const token = localStorage.getItem('auth_token');
-    const storedRole = localStorage.getItem('user_role') as UserRole;
     if (token) {
-      // TODO: Validate token with API
-      console.log('Token found, validating with API...');
-      // Simulate API call with demo users based on role
-      setTimeout(() => {
-        const mockUser: User = getDemoUser(storedRole || 'individual');
-        setUser(mockUser);
-        setIsLoading(false);
-      }, 1000);
+      validateCurrentUser();
     } else {
       setIsLoading(false);
     }
   }, []);
 
-  const getDemoUser = (role: UserRole): User => {
-    const baseUser = {
-      id: '1',
-      email: 'user@example.com',
-      firstName: 'Onu',
-      lastName: 'Omar-Ikaige',
-      isVerified: true,
-      createdAt: new Date().toISOString(),
-    };
-
-    switch (role) {
-      case 'organization-admin':
-        return {
-          ...baseUser,
-          email: 'admin@techcorp.com',
-          firstName: 'Onu',
-          lastName: 'Omar-Ikaige',
-          role: 'organization-admin',
-          organizationId: 'org-1',
-          organizationName: 'TechCorp Nigeria',
-        };
-      case 'organization-member':
-        return {
-          ...baseUser,
-          email: 'member@techcorp.com',
-          firstName: 'Onu',
-          lastName: 'Omar-Ikaige',
-          role: 'organization-member',
-          organizationId: 'org-1',
-          organizationName: 'TechCorp Nigeria',
-        };
-      case 'admin':
-        return {
-          ...baseUser,
-          email: 'gov@fmc.gov.ng',
-          firstName: 'Dr. Onu',
-          lastName: 'Omar-Ikaige',
-          role: 'admin',
-        };
-      default:
-        return {
-          ...baseUser,
-          role: 'individual',
-        };
+  const validateCurrentUser = async () => {
+    try {
+      const currentUser = await authService.getCurrentUser();
+      setUser(currentUser);
+    } catch (error) {
+      console.error('Token validation failed:', error);
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('refresh_token');
+      localStorage.removeItem('user_role');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const login = async (email: string, password: string) => {
     setIsLoading(true);
     try {
-      // TODO: Replace with actual API call
-      console.log('Logging in with:', { email, password });
+      const response = await authService.login({ email, password });
       
-      // Determine role based on email for demo purposes
-      let role: UserRole = 'individual';
-      if (email.includes('admin@')) {
-        role = 'organization-admin';
-      } else if (email.includes('member@')) {
-        role = 'organization-member';
-      } else if (email.includes('gov@') || email.includes('@fmc.')) {
-        role = 'admin';
-      }
+      localStorage.setItem('auth_token', response.access_token);
+      localStorage.setItem('refresh_token', response.refresh_token);
+      localStorage.setItem('user_role', response.user.role);
       
-      const mockUser = getDemoUser(role);
-      mockUser.email = email;
-
-      localStorage.setItem('auth_token', 'mock_jwt_token');
-      localStorage.setItem('user_role', role);
-      setUser(mockUser);
-    } catch (error) {
+      setUser(response.user);
+      toast({
+        title: "Login successful",
+        description: "Welcome back!",
+      });
+    } catch (error: any) {
       console.error('Login failed:', error);
+      toast({
+        title: "Login failed",
+        description: error?.response?.data?.message || "Invalid credentials",
+        variant: "destructive",
+      });
       throw error;
     } finally {
       setIsLoading(false);
@@ -114,15 +74,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const signup = async (data: SignupData) => {
     setIsLoading(true);
     try {
-      // TODO: Replace with actual API call
-      console.log('Signing up with:', data);
-      
-      // Simulate API response
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      
-      // After signup, user needs to verify OTP
-    } catch (error) {
+      await authService.signup(data);
+      toast({
+        title: "Account created",
+        description: "Please check your email for verification code",
+      });
+    } catch (error: any) {
       console.error('Signup failed:', error);
+      toast({
+        title: "Signup failed",
+        description: error?.response?.data?.message || "Failed to create account",
+        variant: "destructive",
+      });
       throw error;
     } finally {
       setIsLoading(false);
@@ -130,33 +93,98 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const logout = () => {
-    localStorage.removeItem('auth_token');
-    localStorage.removeItem('user_role');
-    setUser(null);
-  };
-
-  const switchRole = (role: UserRole) => {
-    const newUser = getDemoUser(role);
-    localStorage.setItem('user_role', role);
-    setUser(newUser);
+    try {
+      authService.logout();
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('refresh_token');
+      localStorage.removeItem('user_role');
+      setUser(null);
+      toast({
+        title: "Logged out",
+        description: "You have been successfully logged out",
+      });
+    }
   };
 
   const verifyOTP = async (otp: string) => {
-    // TODO: Replace with actual API call
-    console.log('Verifying OTP:', otp);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    setIsLoading(true);
+    try {
+      const response = await authService.verifyOTP({ otp, email: user?.email || '' });
+      
+      localStorage.setItem('auth_token', response.access_token);
+      localStorage.setItem('refresh_token', response.refresh_token);
+      localStorage.setItem('user_role', response.user.role);
+      
+      setUser(response.user);
+      toast({
+        title: "Account verified",
+        description: "Your account has been successfully verified",
+      });
+    } catch (error: any) {
+      console.error('OTP verification failed:', error);
+      toast({
+        title: "Verification failed",
+        description: error?.response?.data?.message || "Invalid verification code",
+        variant: "destructive",
+      });
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const forgotPassword = async (email: string) => {
-    // TODO: Replace with actual API call
-    console.log('Forgot password for:', email);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    setIsLoading(true);
+    try {
+      await authService.forgotPassword({ email });
+      toast({
+        title: "Reset email sent",
+        description: "Check your email for password reset instructions",
+      });
+    } catch (error: any) {
+      console.error('Forgot password failed:', error);
+      toast({
+        title: "Request failed",
+        description: error?.response?.data?.message || "Failed to send reset email",
+        variant: "destructive",
+      });
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const resetPassword = async (token: string, password: string) => {
-    // TODO: Replace with actual API call
-    console.log('Resetting password with token:', token);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    setIsLoading(true);
+    try {
+      await authService.resetPassword({ token, password, confirmPassword: password });
+      toast({
+        title: "Password reset",
+        description: "Your password has been successfully reset",
+      });
+    } catch (error: any) {
+      console.error('Password reset failed:', error);
+      toast({
+        title: "Reset failed",
+        description: error?.response?.data?.message || "Failed to reset password",
+        variant: "destructive",
+      });
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const switchRole = (role: UserRole) => {
+    // For demo purposes - in production this would require proper authorization
+    if (user) {
+      const updatedUser = { ...user, role };
+      localStorage.setItem('user_role', role);
+      setUser(updatedUser);
+    }
   };
 
   const value: AuthContextType = {
