@@ -378,7 +378,7 @@ const HowItWorks = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/auth/signup">
               <Button className="bg-gradient-to-r from-bold-red to-vibrant-orange hover:from-vibrant-orange hover:to-bright-yellow text-white font-semibold px-8 py-4 text-lg">
-                Start 7-Day Trial
+                Start 7-Days Trial
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
