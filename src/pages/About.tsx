@@ -6,10 +6,10 @@ import { MapPin, Shield, Users, Award, ArrowRight, Globe, Zap } from 'lucide-rea
 
 const About = () => {
   const stats = [
-    { label: "Addresses Verified", value: "50M+", icon: MapPin },
+    { label: "Addresses Verified", value: "2M+", icon: MapPin },
     { label: "Countries Supported", value: "195+", icon: Globe },
-    { label: "Nigerian Businesses", value: "500+", icon: Users },
-    { label: "Accuracy Rate", value: "99.9%", icon: Award }
+    { label: "Businesses", value: "25,000", icon: Users },
+    { label: "Accuracy Rate", value: "99%", icon: Award }
   ];
 
   const team = [
