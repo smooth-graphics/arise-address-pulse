@@ -232,7 +232,7 @@ const Features = () => {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button className="bg-white text-bold-red hover:bg-gray-100 px-8 py-4 text-lg font-semibold rounded-xl shadow-lg">
-              Start Free Trial
+              Start 7-Days Trial
             </Button>
             <Button variant="outline" className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-bold-red px-8 py-4 text-lg font-semibold rounded-xl">
               View Documentation
