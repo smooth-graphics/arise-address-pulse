@@ -9,8 +9,8 @@ export const pricingPlans: PlanSet = {
       monthlyPrice: 500, // $5.00 in cents
       yearlyPrice: 5100, // $51.00 in cents (51% discount)
       features: [
-        '1,000 address verifications/month',
-        'Basic API access',
+        '50 Address verification Look up/month',
+        '20 Identity verifications',
         'Email support',
         'Standard validation accuracy',
         'Basic reporting dashboard'
@@ -31,8 +31,8 @@ export const pricingPlans: PlanSet = {
       yearlyPrice: 15300, // $153.00 in cents (15% discount)
       popular: true,
       features: [
-        '10,000 address verifications/month',
-        'Advanced API access',
+        '100 address verifications/month',
+        '40 Identity verifications',
         'Priority email support',
         'Enhanced validation accuracy',
         'Advanced reporting & analytics',
@@ -53,8 +53,8 @@ export const pricingPlans: PlanSet = {
       monthlyPrice: 2500, // $25.00 in cents
       yearlyPrice: 25500, // $255.00 in cents (15% discount)
       features: [
-        'Unlimited address verifications',
-        'Full API access',
+        '150 address verifications',
+        '80 Identity verifications',
         '24/7 phone & email support',
         'Premium validation accuracy',
         'Custom reporting & analytics',
