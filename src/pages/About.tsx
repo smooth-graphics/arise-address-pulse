@@ -14,20 +14,20 @@ const About = () => {
 
   const team = [
     {
-      name: "Adebayo Johnson",
-      role: "CEO & Co-founder",
+      name: "Anthony Youdeowei",
+      role: "CEO ",
       description: "Former engineering lead at Flutterwave with 10+ years in fintech",
       image: "👨🏿‍💼"
     },
     {
-      name: "Fatima Ibrahim", 
-      role: "CTO & Co-founder",
+      name: "Onu Baba Omar-Ikaige", 
+      role: "COO",
       description: "Ex-Google engineer specializing in verification systems and AI",
       image: "👩🏿‍💻"
     },
     {
-      name: "Chidi Okafor",
-      role: "Head of Product",
+      name: "Olubunmi Olukoju",
+      role: "CFO",
       description: "Product expert with experience building verification solutions",
       image: "👨🏿‍💻"
     }
