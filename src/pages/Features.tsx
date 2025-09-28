@@ -39,7 +39,7 @@ const Features = () => {
   const additionalFeatures = [
     {
       icon: Globe,
-      title: "Nigerian Postal Integration",
+      title: "Globally tested",
       description: "Direct integration with Nigerian Postal Service for accurate local address validation"
     },
     {
