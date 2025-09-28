@@ -1,13 +1,16 @@
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { MapPin, Shield, Menu, X } from 'lucide-react';
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
 
   const toggleMenu = () => setIsOpen(!isOpen);
+
+  const isActive = (path: string) => location.pathname === path;
 
   return (
     <nav className="bg-white/95 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-50">
@@ -28,32 +31,52 @@ export const Navbar = () => {
           <div className="hidden md:flex items-center space-x-8">
             <Link 
               to="/features" 
-              className="text-gray-600 hover:text-bold-red font-medium transition-colors duration-200"
+              className={`font-medium transition-colors duration-200 ${
+                isActive('/features') 
+                  ? 'text-bold-red border-b-2 border-bold-red pb-1' 
+                  : 'text-gray-600 hover:text-bold-red'
+              }`}
             >
               Features
             </Link>
             <Link 
               to="/how-it-works" 
-              className="text-gray-600 hover:text-bold-red font-medium transition-colors duration-200"
+              className={`font-medium transition-colors duration-200 ${
+                isActive('/how-it-works') 
+                  ? 'text-bold-red border-b-2 border-bold-red pb-1' 
+                  : 'text-gray-600 hover:text-bold-red'
+              }`}
             >
               How It Works
             </Link>
             <Link 
               to="/pricing" 
-              className="text-gray-600 hover:text-bold-red font-medium transition-colors duration-200"
+              className={`font-medium transition-colors duration-200 ${
+                isActive('/pricing') 
+                  ? 'text-bold-red border-b-2 border-bold-red pb-1' 
+                  : 'text-gray-600 hover:text-bold-red'
+              }`}
             >
               Pricing
             </Link>
             <Link 
               to="/about" 
-              className="text-gray-600 hover:text-bold-red font-medium transition-colors duration-200"
+              className={`font-medium transition-colors duration-200 ${
+                isActive('/about') 
+                  ? 'text-bold-red border-b-2 border-bold-red pb-1' 
+                  : 'text-gray-600 hover:text-bold-red'
+              }`}
             >
               About
             </Link>
             
             <Link 
               to="/faq" 
-              className="text-gray-600 hover:text-bold-red font-medium transition-colors duration-200"
+              className={`font-medium transition-colors duration-200 ${
+                isActive('/faq') 
+                  ? 'text-bold-red border-b-2 border-bold-red pb-1' 
+                  : 'text-gray-600 hover:text-bold-red'
+              }`}
             >
               FAQ
             </Link>
@@ -91,42 +114,66 @@ export const Navbar = () => {
             <div className="flex flex-col space-y-4">
               <Link 
                 to="/features" 
-                className="text-gray-600 hover:text-bold-red font-medium transition-colors duration-200"
+                className={`font-medium transition-colors duration-200 ${
+                  isActive('/features') 
+                    ? 'text-bold-red font-semibold' 
+                    : 'text-gray-600 hover:text-bold-red'
+                }`}
                 onClick={() => setIsOpen(false)}
               >
                 Features
               </Link>
               <Link 
                 to="/how-it-works" 
-                className="text-gray-600 hover:text-bold-red font-medium transition-colors duration-200"
+                className={`font-medium transition-colors duration-200 ${
+                  isActive('/how-it-works') 
+                    ? 'text-bold-red font-semibold' 
+                    : 'text-gray-600 hover:text-bold-red'
+                }`}
                 onClick={() => setIsOpen(false)}
               >
                 How It Works
               </Link>
               <Link 
                 to="/pricing" 
-                className="text-gray-600 hover:text-bold-red font-medium transition-colors duration-200"
+                className={`font-medium transition-colors duration-200 ${
+                  isActive('/pricing') 
+                    ? 'text-bold-red font-semibold' 
+                    : 'text-gray-600 hover:text-bold-red'
+                }`}
                 onClick={() => setIsOpen(false)}
               >
                 Pricing
               </Link>
               <Link 
                 to="/about" 
-                className="text-gray-600 hover:text-bold-red font-medium transition-colors duration-200"
+                className={`font-medium transition-colors duration-200 ${
+                  isActive('/about') 
+                    ? 'text-bold-red font-semibold' 
+                    : 'text-gray-600 hover:text-bold-red'
+                }`}
                 onClick={() => setIsOpen(false)}
               >
                 About
               </Link>
               <Link 
                 to="/docs" 
-                className="text-gray-600 hover:text-bold-red font-medium transition-colors duration-200"
+                className={`font-medium transition-colors duration-200 ${
+                  isActive('/docs') 
+                    ? 'text-bold-red font-semibold' 
+                    : 'text-gray-600 hover:text-bold-red'
+                }`}
                 onClick={() => setIsOpen(false)}
               >
                 Docs
               </Link>
               <Link 
                 to="/faq" 
-                className="text-gray-600 hover:text-bold-red font-medium transition-colors duration-200"
+                className={`font-medium transition-colors duration-200 ${
+                  isActive('/faq') 
+                    ? 'text-bold-red font-semibold' 
+                    : 'text-gray-600 hover:text-bold-red'
+                }`}
                 onClick={() => setIsOpen(false)}
               >
                 FAQ
