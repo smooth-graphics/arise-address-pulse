@@ -17,14 +17,16 @@ export const Navbar = () => {
       <div className="container mx-auto px-6 lg:px-12">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 group">
-            <div className="w-8 h-8 bg-gradient-to-r from-bold-red to-vibrant-orange rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-              <div className="flex">
-                <MapPin className="w-4 h-4 text-white" />
-                <Shield className="w-4 h-4 text-white -ml-1" />
-              </div>
+          <Link to="/" className="flex items-center space-x-3 group">
+            <div className="w-10 h-10 bg-gradient-to-r from-bold-red to-vibrant-orange rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+              <MapPin className="w-6 h-6 text-white" />
             </div>
-            <span className="text-xl font-bold text-gray-900">Arise</span>
+            <div>
+              <span className="text-2xl font-bold text-gray-900 dark:text-white">
+                Arise
+              </span>
+              <div className="text-sm font-medium text-vibrant-orange -mt-1">Verification</div>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}

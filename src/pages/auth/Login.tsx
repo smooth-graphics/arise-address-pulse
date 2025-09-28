@@ -50,14 +50,17 @@ const Login = () => {
 
         <Card className="shadow-xl border-0 bg-white/80 backdrop-blur-sm">
           <CardHeader className="text-center pb-6">
-            <div className="flex items-center justify-center mb-4">
+            <Link to="/" className="flex items-center space-x-3 mb-4">
               <div className="w-12 h-12 bg-gradient-to-r from-bold-red to-vibrant-orange rounded-xl flex items-center justify-center">
-                <div className="flex">
-                  <MapPin className="w-5 h-5 text-white" />
-                  <Shield className="w-5 h-5 text-white -ml-1" />
-                </div>
+                <MapPin className="w-6 h-6 text-white" />
               </div>
-            </div>
+              <div>
+                <span className="text-2xl font-bold text-gray-900 dark:text-white">
+                  Arise
+                </span>
+                <div className="text-sm font-medium text-vibrant-orange -mt-1">Verification</div>
+              </div>
+            </Link>
             
             <h1 className="text-2xl font-bold text-gray-900 mb-2">Welcome Back</h1>
             <p className="text-gray-600">Sign in to your verification dashboard</p>
