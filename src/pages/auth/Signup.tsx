@@ -52,24 +52,26 @@ const Signup = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-white flex items-center justify-center px-4 py-8">
       <div className="w-full max-w-md">
-        <Link to="/auth/welcome" className="inline-flex items-center text-gray-600 hover:text-bold-red mb-6 transition-colors duration-200">
+        <Link to="/" className="inline-flex items-center text-gray-600 hover:text-bold-red mb-6 transition-colors duration-200">
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back
         </Link>
 
         <Card className="shadow-xl border-0 bg-white/80 backdrop-blur-sm">
           <CardHeader className="text-center pb-6">
-            <Link to="/" className="flex items-center space-x-3 mb-4">
-              <div className="w-12 h-12 bg-gradient-to-r from-bold-red to-vibrant-orange rounded-xl flex items-center justify-center">
-                <MapPin className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <span className="text-2xl font-bold text-gray-900 dark:text-white">
-                  Arise
-                </span>
-                <div className="text-sm font-medium text-vibrant-orange -mt-1">Verification</div>
-              </div>
-            </Link>
+            <div className="flex justify-center mb-4">
+              <Link to="/" className="flex items-center space-x-3">
+                <div className="w-12 h-12 bg-gradient-to-r from-bold-red to-vibrant-orange rounded-xl flex items-center justify-center">
+                  <MapPin className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <span className="text-2xl font-bold text-gray-900 dark:text-white">
+                    Arise
+                  </span>
+                  <div className="text-sm font-medium text-vibrant-orange -mt-1">Verification</div>
+                </div>
+              </Link>
+            </div>
             
             <h1 className="text-2xl font-bold text-gray-900 mb-2">Create Account</h1>
             <p className="text-gray-600">Start verifying addresses across Nigeria</p>
