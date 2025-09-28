@@ -69,7 +69,7 @@ const About = () => {
           
           <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
             We're on a mission to make address and identity verification seamless for businesses across Nigeria and beyond. 
-            Founded in 2020, we've become the trusted verification partner for hundreds of companies.
+            Founded in Abuja in 2011, we've become the trusted verification partner for hundreds of companies.
           </p>
         </div>
       </section>
