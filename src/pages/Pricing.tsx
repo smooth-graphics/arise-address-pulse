@@ -262,7 +262,7 @@ const Pricing = () => {
             Join thousands of businesses that trust Arise for their address verification needs.
           </p>
           <Button className="bg-bold-red text-white font-semibold px-8 py-4 text-lg hover:bg-vibrant-orange">
-            Start Free Trial
+            Start 7-Days Trial
           </Button>
         </div>
       </section>
