@@ -1,10 +1,12 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { MapPin, Twitter, Linkedin, Github, Mail, Phone, MapIcon } from 'lucide-react';
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const { t } = useTranslation();
 
   const quickLinks = [
     { label: 'Home', href: '/' },
@@ -56,8 +58,7 @@ export const Footer = () => {
             </Link>
             
             <p className="text-gray-300 leading-relaxed max-w-md">
-              The most reliable address and identity verification platform. 
-              Trusted by thousands of businesses worldwide to ensure data accuracy and security.
+              {t('footer.description')}
             </p>
             
             <div className="flex space-x-4">
@@ -76,7 +77,7 @@ export const Footer = () => {
 
           {/* Quick Links */}
           <div className="space-y-4">
-            <h4 className="text-lg font-semibold text-white">Quick Links</h4>
+            <h4 className="text-lg font-semibold text-white">{t('footer.quickLinks')}</h4>
             <ul className="space-y-3">
               {quickLinks.map((link) => (
                 <li key={link.href}>
@@ -93,7 +94,7 @@ export const Footer = () => {
 
           {/* Products */}
           <div className="space-y-4">
-            <h4 className="text-lg font-semibold text-white">Products</h4>
+            <h4 className="text-lg font-semibold text-white">{t('footer.products')}</h4>
             <ul className="space-y-3">
               {products.map((link) => (
                 <li key={link.href}>
@@ -111,7 +112,7 @@ export const Footer = () => {
           {/* Company & Contact */}
           <div className="space-y-6">
             <div className="space-y-4">
-              <h4 className="text-lg font-semibold text-white">Company</h4>
+              <h4 className="text-lg font-semibold text-white">{t('footer.company')}</h4>
               <ul className="space-y-3">
                 {company.map((link) => (
                   <li key={link.href}>
@@ -127,7 +128,7 @@ export const Footer = () => {
             </div>
 
             <div className="space-y-3">
-              <h4 className="text-lg font-semibold text-white">Contact</h4>
+              <h4 className="text-lg font-semibold text-white">{t('footer.contact')}</h4>
               <div className="space-y-2">
                 <div className="flex items-center space-x-3 text-gray-300">
                   <Mail className="w-4 h-4 text-vibrant-orange" />
@@ -155,10 +156,10 @@ export const Footer = () => {
         <div className="border-t border-gray-800 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className="text-gray-400 text-sm">
-              © {currentYear} Arise Verification Inc. All rights reserved.
+              © {currentYear} {t('footer.copyright')}
             </p>
             <div className="flex items-center space-x-6">
-              <div className="text-xs text-gray-500">Secured by</div>
+              <div className="text-xs text-gray-500">{t('footer.securedBy')}</div>
               <div className="flex space-x-4 opacity-50">
                 <div className="text-xs text-gray-500">256-bit SSL</div>
                 <div className="text-xs text-gray-500">SOC 2 Compliant</div>

@@ -1,0 +1,137 @@
+{
+  "nav": {
+    "features": "Features",
+    "howItWorks": "How It Works",
+    "pricing": "Pricing",
+    "about": "About",
+    "faq": "FAQ",
+    "signIn": "Sign In",
+    "startFreeTrial": "Start Free Trial"
+  },
+  "hero": {
+    "title": "Verify Any Address",
+    "subtitle": "Anywhere in the World",
+    "description": "The most reliable address verification platform. Validate addresses in real-time with our comprehensive global database covering 240+ countries.",
+    "startFreeTrial": "Start Free Trial",
+    "viewDemo": "View Demo",
+    "trustedBy": "Trusted by 10,000+ businesses worldwide"
+  },
+  "features": {
+    "title": "Why Choose Arise",
+    "subtitle": "For Address Verification",
+    "realTime": {
+      "title": "Real-time Verification",
+      "description": "Get instant address validation with sub-second response times"
+    },
+    "global": {
+      "title": "Global Coverage",
+      "description": "Support for 240+ countries with local postal authority partnerships"
+    },
+    "accurate": {
+      "title": "99.9% Accuracy",
+      "description": "Industry-leading precision with continuous data updates"
+    },
+    "secure": {
+      "title": "Enterprise Security",
+      "description": "SOC 2 compliant with end-to-end encryption"
+    },
+    "integration": {
+      "title": "Easy Integration",
+      "description": "RESTful APIs, SDKs, and plug-and-play solutions"
+    },
+    "support": {
+      "title": "24/7 Support",
+      "description": "Expert technical support whenever you need it"
+    }
+  },
+  "stats": {
+    "addressesVerified": "Addresses Verified",
+    "countries": "Countries Supported",
+    "accuracy": "Accuracy Rate",
+    "responseTime": "Avg Response"
+  },
+  "pricing": {
+    "title": "Simple, Transparent Pricing",
+    "subtitle": "Choose the plan that fits your needs",
+    "free": {
+      "title": "Free Trial",
+      "price": "Free",
+      "description": "Perfect for testing our service",
+      "features": [
+        "100 verification credits",
+        "Basic API access",
+        "Standard support",
+        "7-day trial period"
+      ]
+    },
+    "starter": {
+      "title": "Starter",
+      "price": "$29",
+      "period": "/month",
+      "description": "Great for small businesses",
+      "features": [
+        "5,000 verifications/month",
+        "Full API access",
+        "Priority support",
+        "Analytics dashboard",
+        "Bulk upload"
+      ]
+    },
+    "professional": {
+      "title": "Professional",
+      "price": "$99",
+      "period": "/month",
+      "description": "For growing companies",
+      "features": [
+        "25,000 verifications/month",
+        "Advanced API features",
+        "24/7 phone support",
+        "Custom integrations",
+        "Dedicated account manager"
+      ]
+    },
+    "getStarted": "Get Started",
+    "contactSales": "Contact Sales"
+  },
+  "footer": {
+    "description": "The most reliable address and identity verification platform. Trusted by thousands of businesses worldwide to ensure data accuracy and security.",
+    "quickLinks": "Quick Links",
+    "products": "Products",
+    "company": "Company",
+    "contact": "Contact",
+    "copyright": "Arise Verification Inc. All rights reserved.",
+    "securedBy": "Secured by"
+  },
+  "about": {
+    "title": "About Arise",
+    "subtitle": "Verification",
+    "description": "We're on a mission to make address verification simple, accurate, and accessible for businesses worldwide.",
+    "story": "Our Story",
+    "mission": "Our Mission",
+    "team": "Our Team"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Get in touch with our team",
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "send": "Send Message"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "company": "Company",
+    "welcomeBack": "Welcome Back",
+    "createAccount": "Create Your Account",
+    "back": "Back",
+    "alreadyHaveAccount": "Already have an account?",
+    "dontHaveAccount": "Don't have an account?",
+    "forgotPassword": "Forgot Password?"
+  }
+}

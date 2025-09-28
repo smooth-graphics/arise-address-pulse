@@ -1,0 +1,137 @@
+{
+  "nav": {
+    "features": "Características",
+    "howItWorks": "Cómo funciona",
+    "pricing": "Precios",
+    "about": "Acerca de",
+    "faq": "FAQ",
+    "signIn": "Iniciar sesión",
+    "startFreeTrial": "Prueba gratuita"
+  },
+  "hero": {
+    "title": "Verifica cualquier dirección",
+    "subtitle": "En cualquier lugar del mundo",
+    "description": "La plataforma de verificación de direcciones más confiable. Valida direcciones en tiempo real con nuestra base de datos global integral que cubre más de 240 países.",
+    "startFreeTrial": "Prueba gratuita",
+    "viewDemo": "Ver demo",
+    "trustedBy": "Confiado por más de 10,000 empresas en todo el mundo"
+  },
+  "features": {
+    "title": "Por qué elegir Arise",
+    "subtitle": "Para verificación de direcciones",
+    "realTime": {
+      "title": "Verificación en tiempo real",
+      "description": "Obtén validación instantánea de direcciones con tiempos de respuesta de subsegundos"
+    },
+    "global": {
+      "title": "Cobertura global",
+      "description": "Soporte para más de 240 países con asociaciones de autoridades postales locales"
+    },
+    "accurate": {
+      "title": "99.9% de precisión",
+      "description": "Precisión líder en la industria con actualizaciones continuas de datos"
+    },
+    "secure": {
+      "title": "Seguridad empresarial",
+      "description": "Cumple con SOC 2 con cifrado de extremo a extremo"
+    },
+    "integration": {
+      "title": "Integración fácil",
+      "description": "APIs RESTful, SDKs y soluciones plug-and-play"
+    },
+    "support": {
+      "title": "Soporte 24/7",
+      "description": "Soporte técnico experto cuando lo necesites"
+    }
+  },
+  "stats": {
+    "addressesVerified": "Direcciones verificadas",
+    "countries": "Países soportados",
+    "accuracy": "Tasa de precisión",
+    "responseTime": "Respuesta promedio"
+  },
+  "pricing": {
+    "title": "Precios simples y transparentes",
+    "subtitle": "Elige el plan que se adapte a tus necesidades",
+    "free": {
+      "title": "Prueba gratuita",
+      "price": "Gratis",
+      "description": "Perfecto para probar nuestro servicio",
+      "features": [
+        "100 créditos de verificación",
+        "Acceso básico a API",
+        "Soporte estándar",
+        "Período de prueba de 7 días"
+      ]
+    },
+    "starter": {
+      "title": "Inicial",
+      "price": "$29",
+      "period": "/mes",
+      "description": "Ideal para pequeñas empresas",
+      "features": [
+        "5,000 verificaciones/mes",
+        "Acceso completo a API",
+        "Soporte prioritario",
+        "Panel de análisis",
+        "Carga masiva"
+      ]
+    },
+    "professional": {
+      "title": "Profesional",
+      "price": "$99",
+      "period": "/mes",
+      "description": "Para empresas en crecimiento",
+      "features": [
+        "25,000 verificaciones/mes",
+        "Características avanzadas de API",
+        "Soporte telefónico 24/7",
+        "Integraciones personalizadas",
+        "Gerente de cuenta dedicado"
+      ]
+    },
+    "getStarted": "Comenzar",
+    "contactSales": "Contactar ventas"
+  },
+  "footer": {
+    "description": "La plataforma más confiable de verificación de direcciones e identidad. Confiada por miles de empresas en todo el mundo para garantizar la precisión y seguridad de los datos.",
+    "quickLinks": "Enlaces rápidos",
+    "products": "Productos",
+    "company": "Empresa",
+    "contact": "Contacto",
+    "copyright": "Arise Verification Inc. Todos los derechos reservados.",
+    "securedBy": "Asegurado por"
+  },
+  "about": {
+    "title": "Acerca de Arise",
+    "subtitle": "Verificación",
+    "description": "Estamos en la misión de hacer que la verificación de direcciones sea simple, precisa y accesible para empresas en todo el mundo.",
+    "story": "Nuestra historia",
+    "mission": "Nuestra misión",
+    "team": "Nuestro equipo"
+  },
+  "contact": {
+    "title": "Contáctanos",
+    "subtitle": "Ponte en contacto con nuestro equipo",
+    "name": "Nombre",
+    "email": "Email",
+    "message": "Mensaje",
+    "send": "Enviar mensaje"
+  },
+  "auth": {
+    "signIn": "Iniciar sesión",
+    "signUp": "Registrarse",
+    "email": "Email",
+    "password": "Contraseña",
+    "confirmPassword": "Confirmar contraseña",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "company": "Empresa",
+    "welcomeBack": "Bienvenido de nuevo",
+    "createAccount": "Crea tu cuenta",
+    "back": "Atrás",
+    "alreadyHaveAccount": "¿Ya tienes una cuenta?",
+    "dontHaveAccount": "¿No tienes una cuenta?",
+    "forgotPassword": "¿Olvidaste tu contraseña?"
+  }
+}

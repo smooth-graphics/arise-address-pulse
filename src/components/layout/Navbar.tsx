@@ -1,12 +1,15 @@
 
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
-import { MapPin, Shield, Menu, X } from 'lucide-react';
+import { MapPin, Menu, X } from 'lucide-react';
+import { LanguageSwitcher } from '@/components/common/LanguageSwitcher';
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const { t } = useTranslation();
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -39,7 +42,7 @@ export const Navbar = () => {
                   : 'text-gray-600 hover:text-bold-red'
               }`}
             >
-              Features
+              {t('nav.features')}
             </Link>
             <Link 
               to="/how-it-works" 
@@ -49,7 +52,7 @@ export const Navbar = () => {
                   : 'text-gray-600 hover:text-bold-red'
               }`}
             >
-              How It Works
+              {t('nav.howItWorks')}
             </Link>
             <Link 
               to="/pricing" 
@@ -59,7 +62,7 @@ export const Navbar = () => {
                   : 'text-gray-600 hover:text-bold-red'
               }`}
             >
-              Pricing
+              {t('nav.pricing')}
             </Link>
             <Link 
               to="/about" 
@@ -69,7 +72,7 @@ export const Navbar = () => {
                   : 'text-gray-600 hover:text-bold-red'
               }`}
             >
-              About
+              {t('nav.about')}
             </Link>
             
             <Link 
@@ -80,23 +83,24 @@ export const Navbar = () => {
                   : 'text-gray-600 hover:text-bold-red'
               }`}
             >
-              FAQ
+              {t('nav.faq')}
             </Link>
           </div>
 
-          {/* Auth Buttons */}
+          {/* Auth Buttons & Language Switcher */}
           <div className="hidden md:flex items-center space-x-4">
+            <LanguageSwitcher />
             <Link to="/auth">
               <Button 
                 variant="ghost" 
                 className="text-gray-600 hover:text-bold-red hover:bg-bold-red/5 transition-all duration-200"
               >
-                Sign In
+                {t('nav.signIn')}
               </Button>
             </Link>
             <Link to="/auth/signup">
               <Button className="bg-gradient-to-r from-bold-red to-vibrant-orange hover:from-vibrant-orange hover:to-bright-yellow text-white font-semibold transition-all duration-300 transform hover:scale-105">
-                Start Free Trial
+                {t('nav.startFreeTrial')}
               </Button>
             </Link>
           </div>
@@ -123,7 +127,7 @@ export const Navbar = () => {
                 }`}
                 onClick={() => setIsOpen(false)}
               >
-                Features
+                {t('nav.features')}
               </Link>
               <Link 
                 to="/how-it-works" 
@@ -134,7 +138,7 @@ export const Navbar = () => {
                 }`}
                 onClick={() => setIsOpen(false)}
               >
-                How It Works
+                {t('nav.howItWorks')}
               </Link>
               <Link 
                 to="/pricing" 
@@ -145,7 +149,7 @@ export const Navbar = () => {
                 }`}
                 onClick={() => setIsOpen(false)}
               >
-                Pricing
+                {t('nav.pricing')}
               </Link>
               <Link 
                 to="/about" 
@@ -156,18 +160,7 @@ export const Navbar = () => {
                 }`}
                 onClick={() => setIsOpen(false)}
               >
-                About
-              </Link>
-              <Link 
-                to="/docs" 
-                className={`font-medium transition-colors duration-200 ${
-                  isActive('/docs') 
-                    ? 'text-bold-red font-semibold' 
-                    : 'text-gray-600 hover:text-bold-red'
-                }`}
-                onClick={() => setIsOpen(false)}
-              >
-                Docs
+                {t('nav.about')}
               </Link>
               <Link 
                 to="/faq" 
@@ -178,21 +171,25 @@ export const Navbar = () => {
                 }`}
                 onClick={() => setIsOpen(false)}
               >
-                FAQ
+                {t('nav.faq')}
               </Link>
               
-              <div className="pt-4 space-y-2">
+              <div className="pt-4 border-t border-gray-200">
+                <LanguageSwitcher />
+              </div>
+              
+              <div className="pt-2 space-y-2">
                 <Link to="/auth" onClick={() => setIsOpen(false)}>
                   <Button 
                     variant="outline" 
                     className="w-full border-gray-200 text-gray-600 hover:border-bold-red hover:text-bold-red"
                   >
-                    Sign In
+                    {t('nav.signIn')}
                   </Button>
                 </Link>
-                <Link to="/auth" onClick={() => setIsOpen(false)}>
+                <Link to="/auth/signup" onClick={() => setIsOpen(false)}>
                   <Button className="w-full bg-gradient-to-r from-bold-red to-vibrant-orange hover:from-vibrant-orange hover:to-bright-yellow text-white font-semibold">
-                    Start Free Trial
+                    {t('nav.startFreeTrial')}
                   </Button>
                 </Link>
               </div>

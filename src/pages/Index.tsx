@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowRight, MapPin, Shield, Zap, CheckCircle, Globe, Users, Clock, Star, Building, CreditCard, FileCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Index = () => {
+  const { t } = useTranslation();
   const [animatedCount, setAnimatedCount] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -19,35 +21,35 @@ const Index = () => {
   const features = [
     {
       icon: MapPin,
-      title: "Global Address Verification",
-      description: "Verify addresses in 195+ countries with real-time validation and auto-correction",
+      title: t('features.realTime.title'),
+      description: t('features.realTime.description'),
       color: "from-bold-red to-vibrant-orange"
     },
     {
       icon: Shield,
-      title: "Identity Validation",
-      description: "Secure identity verification with document validation and biometric checks",
+      title: t('features.secure.title'),
+      description: t('features.secure.description'),
       color: "from-vibrant-orange to-bright-yellow"
     },
     {
       icon: Zap,
-      title: "Instant Processing",
-      description: "Process thousands of addresses and identities in seconds with our fast API",
+      title: t('features.integration.title'),
+      description: t('features.integration.description'),
       color: "from-bright-yellow to-bold-red"
     },
     {
-      icon: FileCheck,
-      title: "Document Verification",
-      description: "Validate government IDs, passports, and official documents automatically",
+      icon: Globe,
+      title: t('features.global.title'),
+      description: t('features.global.description'),
       color: "from-bold-red to-vibrant-orange"
     }
   ];
 
   const stats = [
-    { label: "Addresses Verified", value: "50M+", icon: MapPin },
-    { label: "Countries Supported", value: "195+", icon: Globe },
-    { label: "API Response Time", value: "<200ms", icon: Zap },
-    { label: "Accuracy Rate", value: "99.9%", icon: CheckCircle }
+    { label: t('stats.addressesVerified'), value: "50M+", icon: MapPin },
+    { label: t('stats.countries'), value: "240+", icon: Globe },
+    { label: t('stats.responseTime'), value: "<200ms", icon: Zap },
+    { label: t('stats.accuracy'), value: "99.9%", icon: CheckCircle }
   ];
 
   const testimonials = [
@@ -86,30 +88,29 @@ const Index = () => {
         <div className="container mx-auto text-center relative max-w-6xl">
           <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <div className="inline-block px-4 py-2 bg-gradient-to-r from-bold-red/10 to-vibrant-orange/10 rounded-full border border-bold-red/20 mb-6">
-              <span className="text-bold-red font-semibold text-sm">✨ Trusted across Nigeria and 195+ countries</span>
+              <span className="text-bold-red font-semibold text-sm">✨ {t('hero.trustedBy')}</span>
             </div>
             
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-gray-900 leading-tight">
-              Verify Addresses & Identities
+              {t('hero.title')}
               <span className="block text-transparent bg-clip-text bg-gradient-to-r from-bold-red via-vibrant-orange to-bright-yellow">
-                Across Nigeria & Beyond
+                {t('hero.subtitle')}
               </span>
             </h1>
             
             <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-8 leading-relaxed">
-              Clean, accurate address data and secure identity verification for Nigerian businesses. 
-              Reduce delivery costs, prevent fraud, and improve customer experience.
+              {t('hero.description')}
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-              <Link to="/auth">
+              <Link to="/auth/signup">
                 <Button className="group bg-gradient-to-r from-bold-red to-vibrant-orange hover:from-vibrant-orange hover:to-bright-yellow text-white px-6 py-3 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                  Start Free Trial
+                  {t('hero.startFreeTrial')}
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
               <Button variant="outline" className="bg-transparent border-2 border-bold-red text-bold-red hover:bg-bold-red hover:text-white px-6 py-3 text-lg font-semibold rounded-xl transition-all duration-300">
-                View Demo
+                {t('hero.viewDemo')}
               </Button>
             </div>
 
