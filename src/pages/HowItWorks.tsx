@@ -383,7 +383,7 @@ const HowItWorks = () => {
               </Button>
             </Link>
             <Link to="/contact">
-              <Button variant="outline" className="border-gray-400 text-gray-200 hover:bg-white hover:text-gray-900 px-8 py-4 text-lg">
+              <Button variant="outline" className="bg-transparent border-gray-400 text-gray-200 hover:bg-white hover:text-gray-900 px-8 py-4 text-lg">
                 Contact Sales
               </Button>
             </Link>
