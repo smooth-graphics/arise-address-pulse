@@ -9,6 +9,7 @@ import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import DashboardLayout from "@/components/layout/DashboardLayout";
+import ScrollToTop from "@/components/common/ScrollToTop";
 
 // Public pages
 import Index from "./pages/Index";
@@ -78,6 +79,7 @@ const App = () => (
       <Sonner />
       <AuthProvider>
         <BrowserRouter>
+          <ScrollToTop />
           <Routes>
             {/* Public routes with navbar/footer */}
             <Route path="/" element={
