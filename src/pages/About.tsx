@@ -105,7 +105,7 @@ const About = () => {
               </h2>
               <div className="space-y-6 text-gray-600 leading-relaxed">
                 <p>
-                  Founded in Lagos in 2020, Arise Verification was born from a simple observation: 
+                  Founded in Abuja in 2011, Arise Verification was born from a simple observation: 
                   Nigerian businesses were losing millions of naira annually due to failed deliveries 
                   and fraudulent transactions caused by inaccurate address and identity data.
                 </p>
