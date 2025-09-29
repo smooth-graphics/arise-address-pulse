@@ -47,7 +47,7 @@ const Index = () => {
 
   const stats = [
     { label: t('stats.addressesVerified'), value: "50M+", icon: MapPin },
-    { label: t('stats.countries'), value: "240+", icon: Globe },
+    { label: t('stats.countries'), value: "195+", icon: Globe },
     { label: t('stats.responseTime'), value: "<200ms", icon: Zap },
     { label: t('stats.accuracy'), value: "99.9%", icon: CheckCircle }
   ];
