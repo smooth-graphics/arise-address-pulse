@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { userService, NotificationSettings, SecuritySettings, InviteUserRequest } from '@/services/userService';
+import { userService } from '@/services';
+import { NotificationSettings, SecuritySettings, InviteUserRequest } from '@/services/userService';
 import { useToast } from '@/hooks/use-toast';
 
 export const USER_QUERY_KEYS = {

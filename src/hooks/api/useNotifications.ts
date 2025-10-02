@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { notificationService } from '@/services/notificationService';
+import { notificationService } from '@/services';
 import { useToast } from '@/hooks/use-toast';
 import { useEffect, useRef } from 'react';
 

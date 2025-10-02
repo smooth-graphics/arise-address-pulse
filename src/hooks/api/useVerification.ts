@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { verificationService, AddressVerificationRequest, BulkVerificationRequest } from '@/services/verificationService';
+import { verificationService } from '@/services';
+import { AddressVerificationRequest, BulkVerificationRequest } from '@/services/verificationService';
 import { useToast } from '@/hooks/use-toast';
 
 export const VERIFICATION_QUERY_KEYS = {

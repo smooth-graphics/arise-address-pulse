@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { walletService, TopUpRequest } from '@/services/walletService';
+import { walletService } from '@/services';
+import { TopUpRequest } from '@/services/walletService';
 import { useToast } from '@/hooks/use-toast';
 
 export const WALLET_QUERY_KEYS = {

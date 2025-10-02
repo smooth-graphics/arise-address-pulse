@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { MapPin, Menu, X } from 'lucide-react';
 import { LanguageSwitcher } from '@/components/common/LanguageSwitcher';
+import { DemoModeIndicator } from '@/components/common/DemoModeIndicator';
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -89,6 +90,7 @@ export const Navbar = () => {
 
           {/* Auth Buttons & Language Switcher */}
           <div className="hidden md:flex items-center space-x-4">
+            <DemoModeIndicator />
             <LanguageSwitcher />
             <Link to="/auth">
               <Button 

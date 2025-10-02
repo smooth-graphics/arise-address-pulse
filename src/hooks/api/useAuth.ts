@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { authService, LoginRequest, VerifyOTPRequest, ForgotPasswordRequest } from '@/services/authService';
+import { authService } from '@/services';
+import { LoginRequest, VerifyOTPRequest, ForgotPasswordRequest } from '@/services/authService';
 import { SignupData, User } from '@/types/auth';
 import { useToast } from '@/hooks/use-toast';
 
