@@ -1,14 +1,16 @@
-
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Bell, UserRoundSearch, Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { verificationService } from "@/services";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Search() {
   const [fullName, setFullName] = useState("");
   const [fullAddress, setFullAddress] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   const handleVerifyIdentity = async () => {
     if (!fullName.trim() || !fullAddress.trim()) {
@@ -16,18 +18,24 @@ export default function Search() {
     }
 
     setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
-      console.log("Verifying identity for:", { fullName, fullAddress });
-      // Navigate to results page with form data
-      navigate("/verification-results", {
-        state: {
-          fullName: fullName.trim(),
-          fullAddress: fullAddress.trim(),
-        },
+    try {
+      const results = await verificationService.searchIdentity(
+        fullName.trim(),
+        fullAddress.trim()
+      );
+
+      navigate("/dashboard/verification-results", {
+        state: { searchResults: results },
       });
-    }, 2000);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to verify identity. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const isFormValid = fullName.trim() && fullAddress.trim();

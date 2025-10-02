@@ -5,7 +5,12 @@ import {
   VerificationHistory,
   VerificationStats 
 } from '../verificationService';
-import { VerificationRequest, VerificationDocument } from '@/types/dashboard';
+import { 
+  VerificationRequest, 
+  VerificationDocument, 
+  VerificationMatch, 
+  VerificationSearchResult 
+} from '@/types/dashboard';
 
 const NIGERIAN_ADDRESSES = [
   '15 Awolowo Road, Ikoyi, Lagos',
@@ -225,6 +230,91 @@ class MockVerificationService {
       uploadedAt: new Date().toISOString(),
       status: 'pending' as const,
     }));
+  }
+
+  private generateNameVariation(baseName: string, index: number): string {
+    if (index === 0) return baseName;
+    
+    const names = baseName.split(' ');
+    if (index === 1 && names.length > 1) {
+      // Swap first and last name
+      return `${names[names.length - 1]} ${names.slice(0, -1).join(' ')}`;
+    }
+    if (index === 2 && names.length > 2) {
+      // Use middle name variation
+      return `${names[0]} ${names[2]} ${names[1]}`;
+    }
+    // Add slight variations
+    return `${baseName} Jr.`;
+  }
+
+  private generateAddressVariation(baseAddress: string, index: number): string {
+    if (index === 0) return baseAddress;
+    
+    const variations = [
+      baseAddress.replace(/Street/gi, 'St'),
+      baseAddress.replace(/Road/gi, 'Rd'),
+      baseAddress.replace(/\d+/, (match) => String(parseInt(match) + 1)),
+      baseAddress.replace(/Close/gi, 'Street'),
+    ];
+    
+    return variations[index % variations.length] || baseAddress;
+  }
+
+  private getMatchType(score: number): 'exact' | 'high' | 'medium' | 'low' {
+    if (score >= 95) return 'exact';
+    if (score >= 80) return 'high';
+    if (score >= 60) return 'medium';
+    return 'low';
+  }
+
+  async searchIdentity(fullName: string, fullAddress: string): Promise<VerificationSearchResult> {
+    await this.delay(1500);
+
+    // Generate 3-7 mock matches with varying confidence scores
+    const numMatches = Math.floor(Math.random() * 5) + 3;
+    const matches: VerificationMatch[] = [];
+
+    const nigerianFirstNames = ['Oluwaseun', 'Chidinma', 'Ibrahim', 'Ngozi', 'Adeola'];
+    const nigerianLastNames = ['Adebayo', 'Okafor', 'Yusuf', 'Nwankwo', 'Oladipo'];
+
+    for (let i = 0; i < numMatches; i++) {
+      // First match is usually exact, others have variations
+      const confidenceScore = i === 0 
+        ? 95 + Math.floor(Math.random() * 5)  // 95-99%
+        : i === 1
+        ? 80 + Math.floor(Math.random() * 10) // 80-89%
+        : 60 + Math.floor(Math.random() * 20); // 60-79%
+
+      const matchName = this.generateNameVariation(fullName, i);
+      const matchAddress = this.generateAddressVariation(fullAddress, i);
+
+      matches.push({
+        id: `match-${Date.now()}-${i}`,
+        fullName: matchName,
+        address: matchAddress,
+        confidenceScore,
+        matchType: this.getMatchType(confidenceScore),
+        phoneNumber: `+234${Math.floor(Math.random() * 9000000000 + 1000000000)}`,
+        email: `${matchName.toLowerCase().replace(/\s+/g, '.')}@example.com`,
+        nin: `${Math.floor(Math.random() * 90000000000 + 10000000000)}`,
+        dateOfBirth: new Date(1980 + Math.floor(Math.random() * 30), Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1).toISOString().split('T')[0],
+        gender: Math.random() > 0.5 ? 'Male' : 'Female',
+        additionalInfo: {
+          alternateAddresses: i > 0 ? [NIGERIAN_ADDRESSES[Math.floor(Math.random() * NIGERIAN_ADDRESSES.length)]] : undefined,
+          knownAliases: i > 1 ? [`${nigerianFirstNames[Math.floor(Math.random() * nigerianFirstNames.length)]} ${nigerianLastNames[Math.floor(Math.random() * nigerianLastNames.length)]}`] : undefined,
+          verificationDate: new Date().toISOString(),
+          dataSource: 'NIMC Database',
+        },
+      });
+    }
+
+    return {
+      query: { fullName, fullAddress },
+      matches: matches.sort((a, b) => b.confidenceScore - a.confidenceScore),
+      totalMatches: matches.length,
+      searchedAt: new Date().toISOString(),
+    };
   }
 }
 

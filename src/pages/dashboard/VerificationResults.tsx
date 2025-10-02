@@ -1,56 +1,31 @@
+import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Bell, UserRoundSearch, Lock, CircleCheckBig } from "lucide-react";
-
-interface LocationState {
-  fullName: string;
-  fullAddress: string;
-}
+import { VerificationMatch, VerificationSearchResult } from "@/types/dashboard";
+import { DetailedReportView } from "@/components/verification/DetailedReportView";
+import { EmptyResultsState, getScoreBadgeStyle } from "@/components/verification/VerificationHelpers";
 
 export default function VerificationResults() {
   const location = useLocation();
-  const state = location.state as LocationState;
+  const [selectedMatch, setSelectedMatch] = useState<VerificationMatch | null>(null);
+  const searchResults = location.state?.searchResults as VerificationSearchResult;
 
-  // Default values if no state is passed
-  const fullName = state?.fullName || "Joseph Oluwamuyiwa";
-  const fullAddress =
-    state?.fullAddress || "No. 7, Coker Street, Ibadan, Oyo State";
+  // If no data, show empty state
+  if (!searchResults) {
+    return <EmptyResultsState />;
+  }
 
-  const searchResults = [
-    {
-      id: 1,
-      name: "Joseph Oluwamuyiwa",
-      address: "No. 7, Coker Street, Ibadan, Oyo State",
-      matchType: "high",
-      matchColor: "green",
-    },
-    {
-      id: 2,
-      name: "Joseph Oluwamuyiwa",
-      address: "No. 7, Croker Street, Ibadan, Oyo State",
-      matchType: "medium",
-      matchColor: "yellow",
-    },
-    {
-      id: 3,
-      name: "Joseph Oluwamuyiwa",
-      address: "No. 17, Koker Close, Ibadan, Oyo State",
-      matchType: "medium",
-      matchColor: "yellow",
-    },
-  ];
+  // Two views: List view or Detail view
+  if (selectedMatch) {
+    return <DetailedReportView match={selectedMatch} onBack={() => setSelectedMatch(null)} />;
+  }
 
   return (
-    <div
-      className="flex-1 min-h-screen"
-      style={{
-        background:
-          "linear-gradient(0deg, rgba(248, 145, 17, 0.05) 0%, rgba(248, 145, 17, 0.05) 100%), #FFF",
-      }}
-    >
-      <div className="w-full bg-white lg:rounded-tl-xl min-h-screen lg:min-h-0 relative">
+    <div className="flex-1 min-h-screen bg-gradient-to-b from-orange-50/30 to-white">
+      <div className="w-full bg-card lg:rounded-tl-xl min-h-screen lg:min-h-0 relative">
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-4.5 border-b border-gray-100">
-          <h1 className="text-2xl font-bold text-gray-700 tracking-tight">
+        <div className="flex items-center justify-between px-4 py-4.5 border-b border-border">
+          <h1 className="text-2xl font-bold text-foreground tracking-tight">
             Verify Identity
           </h1>
 
@@ -62,8 +37,8 @@ export default function VerificationResults() {
             </button>
 
             {/* Notifications */}
-            <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
-              <Bell className="w-5 h-5 text-gray-400" strokeWidth={1.5} />
+            <div className="w-8 h-8 bg-muted rounded-lg flex items-center justify-center">
+              <Bell className="w-5 h-5 text-muted-foreground" strokeWidth={1.5} />
             </div>
           </div>
         </div>
@@ -71,28 +46,29 @@ export default function VerificationResults() {
         {/* Search Form Display */}
         <div className="flex justify-center px-4 py-6">
           <div className="w-full max-w-4xl">
-            <div className="bg-white border border-gray-200 rounded-2xl shadow-md overflow-hidden p-1">
-              <div className="flex">
+            <div className="bg-card border border-border rounded-2xl shadow-md overflow-hidden p-1">
+              <div className="flex flex-col md:flex-row">
                 {/* Name Section */}
                 <div className="flex-1 px-5 py-3">
-                  <label className="block text-sm font-medium text-gray-600 mb-1">
+                  <label className="block text-sm font-medium text-muted-foreground mb-1">
                     Enter full name
                   </label>
-                  <div className="text-base text-black font-normal">
-                    {fullName}
+                  <div className="text-base text-foreground font-normal">
+                    {searchResults.query.fullName}
                   </div>
                 </div>
 
                 {/* Divider */}
-                <div className="w-px bg-gray-200 my-2"></div>
+                <div className="w-px bg-border my-2 hidden md:block"></div>
+                <div className="h-px bg-border mx-2 md:hidden"></div>
 
                 {/* Address Section */}
                 <div className="flex-1 px-5 py-3">
-                  <label className="block text-sm font-medium text-gray-600 mb-1">
+                  <label className="block text-sm font-medium text-muted-foreground mb-1">
                     Enter full address
                   </label>
-                  <div className="text-base text-black font-normal">
-                    {fullAddress}
+                  <div className="text-base text-foreground font-normal">
+                    {searchResults.query.fullAddress}
                   </div>
                 </div>
               </div>
@@ -104,55 +80,51 @@ export default function VerificationResults() {
         <div className="px-4 pb-8">
           <div className="w-full max-w-4xl mx-auto space-y-5">
             {/* Results Header */}
-            <div className="text-base font-medium text-gray-600 italic">
-              We found <span className="text-orange-primary">3</span> results
+            <div className="text-base font-medium text-muted-foreground italic">
+              We found <span className="text-orange-primary font-semibold">{searchResults.totalMatches}</span> results
               for "
-              <span className="text-orange-primary">
-                {fullName}, {fullAddress}
+              <span className="text-orange-primary font-semibold">
+                {searchResults.query.fullName}, {searchResults.query.fullAddress}
               </span>
               "
             </div>
 
             {/* Results Cards */}
-            <div className="space-y-5">
-              {searchResults.map((result) => (
+            <div className="space-y-4">
+              {searchResults.matches.map((match) => (
                 <div
-                  key={result.id}
-                  className="bg-white rounded-2xl p-4 flex items-center justify-between min-h-[80px] shadow-sm border border-gray-100"
+                  key={match.id}
+                  onClick={() => setSelectedMatch(match)}
+                  className="bg-card rounded-2xl p-5 flex flex-col md:flex-row md:items-center justify-between min-h-[80px] shadow-sm border border-border hover:shadow-lg hover:border-orange-200 cursor-pointer transition-all duration-200"
                 >
-                  <div className="flex-1 py-3">
-                    <div className="text-lg font-medium text-black mb-1">
-                      {result.name}
+                  <div className="flex-1 mb-3 md:mb-0">
+                    <div className="text-lg font-semibold text-foreground mb-1">
+                      {match.fullName}
                     </div>
-                    <div className="text-sm text-gray-600">
-                      {result.address}
+                    <div className="text-sm text-muted-foreground">
+                      {match.address}
                     </div>
                   </div>
 
-                  {/* Match Badge */}
+                  {/* Confidence Score Badge */}
                   <div
                     className={`
-                    flex items-center gap-2 px-2 py-2 rounded-full border
-                    ${
-                      result.matchType === "high"
-                        ? "border-green-500/50 bg-green-500/10 text-green-600"
-                        : "border-yellow-500/50 bg-yellow-500/10 text-yellow-600"
-                    }
+                    flex items-center gap-3 px-4 py-2 rounded-full border
+                    ${getScoreBadgeStyle(match.confidenceScore)}
                   `}
                   >
+                    <div className="text-center">
+                      <div className="text-2xl font-bold leading-none">
+                        {match.confidenceScore}%
+                      </div>
+                      <div className="text-xs mt-0.5 opacity-80">
+                        {match.matchType} match
+                      </div>
+                    </div>
                     <CircleCheckBig
-                      className={`w-5 h-5 ${
-                        result.matchType === "high"
-                          ? "text-green-600"
-                          : "text-yellow-600"
-                      }`}
-                      strokeWidth={1.2}
+                      className="w-5 h-5"
+                      strokeWidth={1.5}
                     />
-                    <span className="text-sm font-medium">
-                      {result.matchType === "high"
-                        ? "High match"
-                        : "Medium match"}
-                    </span>
                   </div>
                 </div>
               ))}
@@ -161,10 +133,10 @@ export default function VerificationResults() {
         </div>
 
         {/* Footer */}
-        <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 w-full max-w-xs">
+        <div className="mt-12 pb-6 w-full max-w-xs mx-auto">
           <div className="text-center space-y-1">
             {/* Security Message */}
-            <div className="flex items-center justify-center gap-2 text-gray-400">
+            <div className="flex items-center justify-center gap-2 text-muted-foreground">
               <Lock className="w-4 h-4 text-orange-primary" strokeWidth={1.2} />
               <span className="text-sm">
                 Your data is secure and encrypted.
@@ -173,11 +145,11 @@ export default function VerificationResults() {
 
             {/* Links */}
             <div className="flex items-center justify-center gap-2 text-sm">
-              <button className="text-gray-500 hover:text-gray-700 transition-colors">
+              <button className="text-muted-foreground hover:text-foreground transition-colors">
                 Terms
               </button>
-              <span className="text-gray-400">•</span>
-              <button className="text-gray-500 hover:text-gray-700 transition-colors">
+              <span className="text-muted-foreground">•</span>
+              <button className="text-muted-foreground hover:text-foreground transition-colors">
                 Privacy
               </button>
             </div>

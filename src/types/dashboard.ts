@@ -59,3 +59,33 @@ export interface ApiUsageStats {
     requests: number;
   }>;
 }
+
+export interface VerificationMatch {
+  id: string;
+  fullName: string;
+  address: string;
+  confidenceScore: number; // 0-100
+  matchType: 'exact' | 'high' | 'medium' | 'low';
+  verificationId?: string;
+  phoneNumber?: string;
+  email?: string;
+  nin?: string; // National Identification Number
+  dateOfBirth?: string;
+  gender?: string;
+  additionalInfo?: {
+    alternateAddresses?: string[];
+    knownAliases?: string[];
+    verificationDate?: string;
+    dataSource?: string;
+  };
+}
+
+export interface VerificationSearchResult {
+  query: {
+    fullName: string;
+    fullAddress: string;
+  };
+  matches: VerificationMatch[];
+  totalMatches: number;
+  searchedAt: string;
+}

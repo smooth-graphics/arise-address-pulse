@@ -1,5 +1,9 @@
 import { apiClient, handleApiResponse, ApiResponse } from '@/config/api';
-import { VerificationRequest, VerificationDocument } from '@/types/dashboard';
+import { 
+  VerificationRequest, 
+  VerificationDocument, 
+  VerificationSearchResult 
+} from '@/types/dashboard';
 
 export interface AddressVerificationRequest {
   address: string;
@@ -180,6 +184,14 @@ class VerificationService {
           'Content-Type': 'multipart/form-data',
         },
       }
+    );
+    return handleApiResponse(response);
+  }
+
+  async searchIdentity(fullName: string, fullAddress: string): Promise<VerificationSearchResult> {
+    const response = await apiClient.post<ApiResponse<VerificationSearchResult>>(
+      '/verification/search-identity',
+      { fullName, fullAddress }
     );
     return handleApiResponse(response);
   }
