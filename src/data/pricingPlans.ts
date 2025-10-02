@@ -130,12 +130,11 @@ export const pricingPlans: PlanSet = {
         'Enterprise API access',
         '24/7 dedicated support',
         'Premium validation accuracy',
-        'Unlimited team members',
+        'Team collaboration (up to 60 users)',
         'Custom analytics & reporting',
         'Unlimited bulk uploads',
         'Custom integrations & APIs',
         'Full white-label solution',
-        'Dedicated account manager',
         'SLA guarantee',
         'On-premise deployment options'
       ],
