@@ -1,7 +1,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { User, AuthContextType, SignupData, UserRole } from '@/types/auth';
-import { authService } from '@/services/authService';
+import { authService } from '@/services';
 import { useToast } from '@/hooks/use-toast';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);

@@ -48,7 +48,7 @@ const Login = () => {
           Back
         </Link>
 
-        <Card className="shadow-xl border-0 bg-white/80 backdrop-blur-sm">
+        <Card className="shadow-xl border-0 bg-white">
           <CardHeader className="text-center pb-6">
             <div className="flex justify-center mb-4">
               <Link to="/" className="flex items-center space-x-3">
