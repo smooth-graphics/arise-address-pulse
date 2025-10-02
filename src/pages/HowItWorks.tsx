@@ -3,6 +3,10 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { UserPlus, Search, Upload, BarChart3, Settings, History, ArrowRight, CheckCircle, Eye, Download, User, CreditCard, Bell } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import signupImage from '@/assets/how-it-works-signup.png';
+import dashboardImage from '@/assets/how-it-works-dashboard.png';
+import verifyImage from '@/assets/how-it-works-verify.png';
+import resultsImage from '@/assets/how-it-works-results.png';
 import {
   Accordion,
   AccordionContent,
@@ -17,6 +21,7 @@ const HowItWorks = () => {
       icon: UserPlus,
       title: 'Sign Up & Get Started',
       description: 'Create your account in under 2 minutes',
+      image: signupImage,
       content: {
         description: 'Getting started with Arise is quick and easy. Create your account and start verifying addresses immediately.',
         features: [
@@ -41,6 +46,7 @@ const HowItWorks = () => {
       icon: BarChart3,
       title: 'Navigate Your Dashboard',
       description: 'Master your control center in minutes',
+      image: dashboardImage,
       content: {
         description: 'Your dashboard is your command center. Everything you need is organized and easily accessible.',
         features: [
@@ -66,6 +72,7 @@ const HowItWorks = () => {
       icon: Search,
       title: 'Verify Addresses',
       description: 'Multiple ways to verify with ease',
+      image: verifyImage,
       content: {
         description: 'Whether you need to verify one address or thousands, Arise makes it simple and intuitive.',
         features: [
@@ -90,6 +97,7 @@ const HowItWorks = () => {
       icon: Eye,
       title: 'View & Export Results',
       description: 'Get your data in the format you need',
+      image: resultsImage,
       content: {
         description: 'Access your verification results anytime, export in multiple formats, and track your verification history.',
         features: [
@@ -324,15 +332,13 @@ const HowItWorks = () => {
                 </div>
 
                 <div className={`${index % 2 === 1 ? 'lg:order-1' : ''}`}>
-                  <Card className="bg-gradient-to-br from-gray-50 to-gray-100 border-0 shadow-lg">
-                    <CardContent className="p-8">
-                      <div className="flex items-center justify-center h-64 bg-white rounded-lg shadow-inner">
-                        <div className="text-center">
-                          <step.icon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                          <p className="text-gray-500 font-medium">{step.title}</p>
-                          <p className="text-sm text-gray-400 mt-2">Interactive demo coming soon</p>
-                        </div>
-                      </div>
+                  <Card className="bg-gradient-to-br from-gray-50 to-gray-100 border-0 shadow-lg overflow-hidden">
+                    <CardContent className="p-0">
+                      <img 
+                        src={step.image} 
+                        alt={step.title}
+                        className="w-full h-auto object-cover rounded-lg"
+                      />
                     </CardContent>
                   </Card>
                 </div>
