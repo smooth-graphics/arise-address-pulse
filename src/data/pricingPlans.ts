@@ -126,7 +126,7 @@ export const pricingPlans: PlanSet = {
       yearlyPrice: 203990,  // 2,039.90 in cent (15% discount)
       features: [
         '1,500 ddress verifications',
-        '800 Identity verifications'
+        '800 Identity verifications',
         'Enterprise API access',
         '24/7 dedicated support',
         'Premium validation accuracy',
