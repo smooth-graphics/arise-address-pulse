@@ -2,7 +2,6 @@
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
@@ -60,8 +59,6 @@ import TeamManagement from "./pages/dashboard/TeamManagement";
 import SystemTesting from "./pages/dashboard/SystemTesting";
 import HelpSupport from "./pages/dashboard/HelpSupport";
 
-const queryClient = new QueryClient();
-
 // Simple placeholder component for routes that need implementation
 const PlaceholderPage = ({ title, description }: { title: string; description: string }) => (
   <div className="flex items-center justify-center min-h-screen">
@@ -73,14 +70,13 @@ const PlaceholderPage = ({ title, description }: { title: string; description: s
 );
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <AuthProvider>
-        <BrowserRouter>
-          <ScrollToTop />
-          <Routes>
+  <TooltipProvider>
+    <Toaster />
+    <Sonner />
+    <AuthProvider>
+      <BrowserRouter>
+        <ScrollToTop />
+        <Routes>
             {/* Public routes with navbar/footer */}
             <Route path="/" element={
               <div className="min-h-screen flex flex-col w-full">
@@ -236,7 +232,6 @@ const App = () => (
         </BrowserRouter>
       </AuthProvider>
     </TooltipProvider>
-  </QueryClientProvider>
 );
 
 export default App;
