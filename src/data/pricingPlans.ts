@@ -9,7 +9,7 @@ export const pricingPlans: PlanSet = {
       monthlyPrice: 500, // $5.00 in cents
       yearlyPrice: 5100, // $51.00 in cents (51% discount)
       features: [
-        '50 Address verification Look up/month',
+        '50 Address verifications/month',
         '20 Identity verifications',
         'Email support',
         'Standard validation accuracy',
@@ -35,7 +35,7 @@ export const pricingPlans: PlanSet = {
         '40 Identity verifications',
         'Priority email support',
         'Enhanced validation accuracy',
-        'Advanced reporting & analytics',
+        'Reporting & analytics',
         'Bulk CSV upload (up to 1,000)',
         'Custom validation rules'
       ],
@@ -55,7 +55,7 @@ export const pricingPlans: PlanSet = {
       features: [
         '150 address verifications',
         '80 Identity verifications',
-        '24/7 phone & email support',
+        'Phone & email support',
         'Premium validation accuracy',
         'Custom reporting & analytics',
         'Unlimited bulk uploads',
@@ -75,7 +75,8 @@ export const pricingPlans: PlanSet = {
       monthlyPrice: 9999, // $99.99 in cents
       yearlyPrice: 101989, // $1019.89 in cents (15% discount)
       features: [
-        '50,000 address verifications/month',
+        '500 address verifications/month',
+        '200 Identity verifications',
         'Business API access',
         'Priority email support',
         'Enhanced validation accuracy',
@@ -99,7 +100,8 @@ export const pricingPlans: PlanSet = {
       yearlyPrice: 132590, // $1325.90 in cents (15% discount)
       popular: true,
       features: [
-        '250,000 address verifications/month',
+        '1,000 address verifications/month',
+        '400 Identity verifications',
         'Advanced business API',
         'Priority support (email & chat)',
         'Premium validation accuracy',
@@ -123,7 +125,8 @@ export const pricingPlans: PlanSet = {
       monthlyPrice: 19999, // $199.99 in cents
       yearlyPrice: 203990,  // 2,039.90 in cent (15% discount)
       features: [
-        'Unlimited address verifications',
+        '1,500 ddress verifications',
+        '800 Identity verifications'
         'Enterprise API access',
         '24/7 dedicated support',
         'Premium validation accuracy',
