@@ -133,12 +133,12 @@ export const Footer = () => {
                 <div className="flex items-center space-x-3 text-gray-300">
                   <Mail className="w-4 h-4 text-vibrant-orange" />
                   <a href="mailto:hello@arise.dev" className="hover:text-white transition-colors">
-                    hello@arise.dev
+                    onu.omar-ikaige@sahara-group.com
                   </a>
                 </div>
                 <div className="flex items-center space-x-3 text-gray-300">
                   <Phone className="w-4 h-4 text-vibrant-orange" />
-                  <span>+1-800-VERIFY</span>
+                  <span>+1-800-GenIEtalVerify or +2349139330519</span>
                 </div>
                 <div className="flex items-start space-x-3 text-gray-300">
                   <MapIcon className="w-4 h-4 text-vibrant-orange mt-1" />
