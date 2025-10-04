@@ -5,6 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
+import { useDecrementUsage, useUsageLimit } from '@/hooks/api/useUsageLimit';
+import { UsageLimitGuard } from './UsageLimitGuard';
 import SearchTable from '@/components/common/SearchTable';
 import { 
   Upload, 
@@ -28,10 +31,14 @@ interface BulkUploadItem {
 }
 
 const BulkUploadPage: React.FC = () => {
+  const { user } = useAuth();
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadedData, setUploadedData] = useState<BulkUploadItem[]>([]);
   const { toast } = useToast();
+  
+  const { data: usageLimit } = useUsageLimit(user?.id || '');
+  const decrementUsage = useDecrementUsage(user?.id || '');
 
   const sampleData: BulkUploadItem[] = [
     {
@@ -76,6 +83,19 @@ const BulkUploadPage: React.FC = () => {
       return;
     }
 
+    // Check if member has sufficient units
+    if (user?.role === 'organization-member' && usageLimit) {
+      const requiredUnits = sampleData.length; // In reality, parse file to get count
+      if (usageLimit.remainingUnits < requiredUnits) {
+        toast({
+          title: "Insufficient Units",
+          description: `This upload requires ${requiredUnits} units, but you only have ${usageLimit.remainingUnits} remaining.`,
+          variant: "destructive",
+        });
+        return;
+      }
+    }
+
     setIsUploading(true);
     setUploadProgress(0);
 
@@ -86,6 +106,12 @@ const BulkUploadPage: React.FC = () => {
           clearInterval(interval);
           setIsUploading(false);
           setUploadedData(sampleData);
+          
+          // Decrement usage for organization members
+          if (user?.role === 'organization-member') {
+            decrementUsage.mutate(sampleData.length);
+          }
+          
           toast({
             title: "Upload Complete",
             description: `Successfully uploaded ${sampleData.length} addresses for verification.`,
@@ -95,7 +121,7 @@ const BulkUploadPage: React.FC = () => {
         return prev + 10;
       });
     }, 200);
-  }, [toast]);
+  }, [toast, user, usageLimit, decrementUsage]);
 
   const handleExport = (format: 'csv' | 'pdf') => {
     console.log(`Exporting as ${format}`);
@@ -176,11 +202,12 @@ const BulkUploadPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-gray-900">Bulk Address Verification</h2>
-        <p className="text-gray-600">Upload CSV or Excel files to verify multiple addresses at once</p>
-      </div>
+    <UsageLimitGuard requiredUnits={sampleData.length}>
+      <div className="space-y-6">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900">Bulk Address Verification</h2>
+          <p className="text-gray-600">Upload CSV or Excel files to verify multiple addresses at once</p>
+        </div>
 
       {/* Upload Area */}
       <Card>
@@ -200,7 +227,7 @@ const BulkUploadPage: React.FC = () => {
                 className="hidden"
                 id="file-upload"
               />
-              <Button asChild className="mt-4">
+              <Button asChild className="mt-4" disabled={user?.role === 'organization-member' && usageLimit?.remainingUnits === 0}>
                 <label htmlFor="file-upload" className="cursor-pointer">
                   <FileText className="h-4 w-4 mr-2" />
                   Choose File
@@ -284,7 +311,8 @@ const BulkUploadPage: React.FC = () => {
           </Card>
         </>
       )}
-    </div>
+      </div>
+    </UsageLimitGuard>
   );
 };
 

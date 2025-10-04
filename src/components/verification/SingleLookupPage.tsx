@@ -6,6 +6,9 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/hooks/use-toast';
+import { useDecrementUsage, useUsageLimit } from '@/hooks/api/useUsageLimit';
+import { UsageLimitGuard } from './UsageLimitGuard';
 import { 
   MapPin, 
   Search, 
@@ -38,14 +41,28 @@ interface VerificationResult {
 
 const SingleLookupPage = () => {
   const { user } = useAuth();
+  const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState('');
   const [searchType, setSearchType] = useState<'address' | 'name' | 'phone' | 'id'>('address');
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<VerificationResult | null>(null);
   const [showEscalation, setShowEscalation] = useState(false);
+  
+  const { data: usageLimit } = useUsageLimit(user?.id || '');
+  const decrementUsage = useDecrementUsage(user?.id || '');
 
   const handleVerification = async () => {
     if (!searchQuery.trim()) return;
+
+    // Check if member has units remaining
+    if (user?.role === 'organization-member' && usageLimit?.remainingUnits === 0) {
+      toast({
+        title: "No Units Remaining",
+        description: "You have no verification units left. Contact your administrator.",
+        variant: "destructive",
+      });
+      return;
+    }
     
     setIsLoading(true);
     
@@ -73,6 +90,16 @@ const SingleLookupPage = () => {
       
       setResult(mockResult);
       setIsLoading(false);
+
+      // Decrement usage for organization members
+      if (user?.role === 'organization-member') {
+        decrementUsage.mutate(1);
+      }
+
+      toast({
+        title: "Verification Complete",
+        description: `${searchType.charAt(0).toUpperCase() + searchType.slice(1)} verification completed successfully`,
+      });
     }, 2000);
   };
 
@@ -91,11 +118,12 @@ const SingleLookupPage = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-gray-900">Single Address Lookup</h2>
-        <p className="text-gray-600">Verify individual addresses, names, phone numbers, or IDs</p>
-      </div>
+    <UsageLimitGuard>
+      <div className="space-y-6">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900">Single Address Lookup</h2>
+          <p className="text-gray-600">Verify individual addresses, names, phone numbers, or IDs</p>
+        </div>
 
       {/* Search Interface */}
       <Card>
@@ -139,7 +167,7 @@ const SingleLookupPage = () => {
             />
             <Button 
               onClick={handleVerification}
-              disabled={!searchQuery.trim() || isLoading}
+              disabled={!searchQuery.trim() || isLoading || (user?.role === 'organization-member' && usageLimit?.remainingUnits === 0)}
               className="px-6"
             >
               {isLoading ? (
@@ -262,7 +290,8 @@ const SingleLookupPage = () => {
           </CardContent>
         </Card>
       )}
-    </div>
+      </div>
+    </UsageLimitGuard>
   );
 };
 

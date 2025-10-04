@@ -6,7 +6,10 @@ import GovernmentDashboard from './GovernmentDashboard';
 import { useWalletBalance, useUsageStats } from '@/hooks/api/useWallet';
 import { useNotifications } from '@/hooks/api/useNotifications';
 import { useVerificationHistory } from '@/hooks/api/useVerification';
+import { useUsageLimit } from '@/hooks/api/useUsageLimit';
+import { mockUsageLimitService } from '@/services/mock/mockUsageLimitService';
 import { useState } from "react";
+import { UsageAlertBanner } from '@/components/notifications/UsageAlertBanner';
 import { Link } from "react-router-dom";
 import WalletBalance from '@/components/billing/WalletBalance';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -149,12 +152,15 @@ function StatusBadge({ status }: { status: string }) {
 
 
 function Overview() {
+  const { user } = useAuth();
   const { data: walletBalance, isLoading: walletLoading } = useWalletBalance();
   const { data: usageStats, isLoading: usageLoading } = useUsageStats();
   const { data: notifications, isLoading: notificationsLoading } = useNotifications({ limit: 6 });
   const { data: recentSearches, isLoading: searchesLoading } = useVerificationHistory({ limit: 5 });
+  const { data: usageLimit } = useUsageLimit(user?.id || '');
   
   const [selectedFilter, setSelectedFilter] = useState("verified");
+  const usagePercentage = usageLimit ? mockUsageLimitService.calculateUsagePercentage(usageLimit) : 0;
 
   return (
     <div className="flex-1 bg-white lg:rounded-tl-xl min-h-screen lg:min-h-0">
@@ -185,25 +191,56 @@ function Overview() {
       <div className="flex gap-4 p-4 h-[calc(100vh-6rem)]">
         {/* Main Content */}
         <div className="flex-1">
+          {/* Usage Alert for Organization Members */}
+          {user?.role === 'organization-member' && (
+            <div className="mb-4">
+              <UsageAlertBanner />
+            </div>
+          )}
+
           {/* Dashboard Cards */}
           <div className="flex gap-4 mb-8">
-            <DashboardCard
-              title="Wallet Balance"
-              value={walletLoading ? "..." : `${walletBalance?.balance || 0}`}
-              subtitle="credits"
-              showEye={true}
-            />
-            <DashboardCard
-              title="Verifications"
-              value={usageLoading ? "..." : `${usageStats?.usedThisMonth || 0}`}
-              showDropdown={true}
-              dropdownText="This Month"
-            />
-            <DashboardCard
-              title="System Uptime"
-              value="99.9%"
-              showEye={true}
-            />
+            {user?.role === 'organization-member' && usageLimit ? (
+              <>
+                <DashboardCard
+                  title="Units Remaining"
+                  value={usageLimit.remainingUnits.toString()}
+                  subtitle={`of ${usageLimit.allocatedUnits}`}
+                  showEye={false}
+                />
+                <DashboardCard
+                  title="Units Used"
+                  value={`${usagePercentage}%`}
+                  subtitle={`${usageLimit.usedUnits} used`}
+                  showEye={false}
+                />
+                <DashboardCard
+                  title="Reset Date"
+                  value={usageLimit.resetDate ? new Date(usageLimit.resetDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'N/A'}
+                  showEye={false}
+                />
+              </>
+            ) : (
+              <>
+                <DashboardCard
+                  title="Wallet Balance"
+                  value={walletLoading ? "..." : `${walletBalance?.balance || 0}`}
+                  subtitle="credits"
+                  showEye={true}
+                />
+                <DashboardCard
+                  title="Verifications"
+                  value={usageLoading ? "..." : `${usageStats?.usedThisMonth || 0}`}
+                  showDropdown={true}
+                  dropdownText="This Month"
+                />
+                <DashboardCard
+                  title="System Uptime"
+                  value="99.9%"
+                  showEye={true}
+                />
+              </>
+            )}
           </div>
 
           {/* Recent Searches Section */}

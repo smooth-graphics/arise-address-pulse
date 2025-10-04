@@ -89,3 +89,23 @@ export interface VerificationSearchResult {
   totalMatches: number;
   searchedAt: string;
 }
+
+export interface MemberUsageLimit {
+  userId: string;
+  allocatedUnits: number;
+  usedUnits: number;
+  remainingUnits: number;
+  resetDate?: string;
+  warningThreshold: number; // percentage (e.g., 80)
+  criticalThreshold: number; // percentage (e.g., 95)
+}
+
+export interface UsageLimitNotification {
+  id: string;
+  userId: string;
+  type: 'warning' | 'critical' | 'depleted';
+  message: string;
+  threshold: number;
+  createdAt: string;
+  isRead: boolean;
+}

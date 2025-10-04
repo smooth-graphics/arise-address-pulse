@@ -2,22 +2,30 @@
 import { useState } from "react";
 import { Bell, UserRoundSearch, Rocket, CreditCard } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/contexts/AuthContext";
+
+interface TabItem {
+  id: string;
+  label: string;
+  roles?: string[]; // Optional: restrict to specific roles
+}
+
+const allTabs: TabItem[] = [
+  { id: "account", label: "Account" },
+  { id: "billing", label: "Plan & Billings", roles: ['individual', 'organization-admin', 'admin'] },
+  { id: "notifications", label: "Notifications" },
+];
 
 interface TabsProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
+  visibleTabs: TabItem[];
 }
 
-const tabs = [
-  { id: "account", label: "Account" },
-  { id: "billing", label: "Plan & Billings" },
-  { id: "notifications", label: "Notifications" },
-];
-
-function Tabs({ activeTab, onTabChange }: TabsProps) {
+function Tabs({ activeTab, onTabChange, visibleTabs }: TabsProps) {
   return (
     <div className="inline-flex p-0.5 bg-gray-100 rounded-xl">
-      {tabs.map((tab) => (
+      {visibleTabs.map((tab) => (
         <button
           key={tab.id}
           onClick={() => onTabChange(tab.id)}
@@ -98,11 +106,18 @@ function Toggle({ checked, onChange, disabled = false }: ToggleProps) {
 }
 
 export default function Settings() {
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("notifications");
+  
+  // Filter tabs based on user role
+  const visibleTabs = allTabs.filter(tab => {
+    if (!tab.roles) return true; // No role restriction
+    return user?.role && tab.roles.includes(user.role);
+  });
   const [formData, setFormData] = useState({
-    firstName: "Joseph",
-    lastName: "Oladepo",
-    email: "jolada55@gmail.com",
+    firstName: user?.firstName || "onu.omar-ikaige",
+    lastName: user?.lastName || "",
+    email: user?.email || "demo@individual.com",
   });
 
   // Notifications state
@@ -153,7 +168,7 @@ export default function Settings() {
       <div className="p-4 sm:p-6 max-w-4xl">
         {/* Tabs */}
         <div className="mb-6">
-          <Tabs activeTab={activeTab} onTabChange={setActiveTab} />
+          <Tabs activeTab={activeTab} onTabChange={setActiveTab} visibleTabs={visibleTabs} />
         </div>
 
         {/* Account Content */}
@@ -170,7 +185,9 @@ export default function Settings() {
               {/* Profile Picture Section */}
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 <div className="w-24 h-24 bg-gray-400 rounded-2xl flex items-center justify-center">
-                  <span className="text-2xl font-normal text-text-50">JO</span>
+                  <span className="text-2xl font-normal text-text-50">
+                    {user?.firstName?.substring(0, 2).toUpperCase() || "OU"}
+                  </span>
                 </div>
                 <div className="space-y-1">
                   <h3 className="text-base font-medium text-text-70">

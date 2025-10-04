@@ -16,6 +16,9 @@ interface TeamMember {
   avatar: string;
   dateAdded: string;
   status: "active" | "inactive";
+  allocatedUnits?: number;
+  usedUnits?: number;
+  remainingUnits?: number;
 }
 
 const teamMembers: TeamMember[] = [
@@ -26,6 +29,9 @@ const teamMembers: TeamMember[] = [
     avatar: "https://api.builder.io/api/v1/image/assets/TEMP/0daf656e2958fd63d7fc63ce08fb48fed8267ae4?width=80",
     dateAdded: "24/07/2025 - 09:41 AM",
     status: "active",
+    allocatedUnits: 100,
+    usedUnits: 45,
+    remainingUnits: 55,
   },
   {
     id: "2",
@@ -34,6 +40,9 @@ const teamMembers: TeamMember[] = [
     avatar: "https://api.builder.io/api/v1/image/assets/TEMP/80c63fcf970df44a3b4a227466aeb2d918d268af?width=80",
     dateAdded: "24/07/2025 - 09:41 AM",
     status: "active",
+    allocatedUnits: 150,
+    usedUnits: 120,
+    remainingUnits: 30,
   },
   {
     id: "3",
@@ -42,6 +51,9 @@ const teamMembers: TeamMember[] = [
     avatar: "https://api.builder.io/api/v1/image/assets/TEMP/7616138e88321fa9e95fe33d079a5138acb44f42?width=80",
     dateAdded: "24/07/2025 - 09:41 AM",
     status: "active",
+    allocatedUnits: 200,
+    usedUnits: 25,
+    remainingUnits: 175,
   },
 ];
 
@@ -130,13 +142,16 @@ export default function TeamManagement() {
             <div className="flex-1 flex items-center px-3 h-full">
               <span className="text-xs font-medium text-gray-950">Name</span>
             </div>
-            <div className="w-[300px] flex items-center px-3 h-full">
+            <div className="w-[200px] flex items-center px-3 h-full">
               <span className="text-xs font-medium text-gray-950">Date added</span>
             </div>
-            <div className="w-[180px] flex items-center px-3 h-full">
+            <div className="w-[150px] flex items-center px-3 h-full">
+              <span className="text-xs font-medium text-gray-950">Units</span>
+            </div>
+            <div className="w-[120px] flex items-center px-3 h-full">
               <span className="text-xs font-medium text-gray-950">Status</span>
             </div>
-            <div className="w-[150px] flex items-center justify-end px-3 h-full">
+            <div className="w-[120px] flex items-center justify-end px-3 h-full">
               <span className="text-xs font-medium text-gray-950">Actions</span>
             </div>
           </div>
@@ -163,19 +178,24 @@ export default function TeamManagement() {
                     </div>
                   </div>
                 </div>
-                <div className="w-[300px] flex items-center px-3 h-full">
+                <div className="w-[200px] flex items-center px-3 h-full">
                   <div className="text-sm font-normal text-black leading-5 truncate">
                     {member.dateAdded}
                   </div>
                 </div>
-                <div className="w-[180px] flex items-center px-3 h-full">
+                <div className="w-[150px] flex items-center px-3 h-full">
+                  <div className="text-sm font-normal text-black">
+                    {member.remainingUnits}/{member.allocatedUnits}
+                  </div>
+                </div>
+                <div className="w-[120px] flex items-center px-3 h-full">
                   <div className="flex items-center justify-center gap-2 px-2 py-0.5 rounded-full border-0.5 border-green-500 bg-green-50">
                     <span className="text-xs font-medium text-green-600 leading-4.5">
                       Active
                     </span>
                   </div>
                 </div>
-                <div className="w-[150px] flex items-center justify-end gap-3 px-3 h-full">
+                <div className="w-[120px] flex items-center justify-end gap-3 px-3 h-full">
                   <button 
                     onClick={() => handleEditMember(member.id)}
                     className="text-gray-800 hover:text-orange-500 transition-colors"
