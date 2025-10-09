@@ -94,6 +94,20 @@ class MockAuthService {
     };
   }
 
+  async resendOTP(email: string): Promise<{ message: string }> {
+    await this.delay(800);
+    
+    const user = Object.values(DEMO_USERS).find(u => u.email === email);
+    
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    return {
+      message: 'A new verification code has been sent to your email.',
+    };
+  }
+
   async forgotPassword(data: ForgotPasswordRequest): Promise<{ message: string }> {
     await this.delay(800);
     

@@ -11,9 +11,32 @@ import { useToast } from '@/hooks/use-toast';
 
 const VerifyOTP = () => {
   const [otp, setOtp] = useState('');
-  const { verifyOTP, isLoading } = useAuth();
+  const [email, setEmail] = useState('');
+  const [resendCooldown, setResendCooldown] = useState(0);
+  const { verifyOTP, resendOTP, isLoading } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    const storedEmail = localStorage.getItem('pending_verification_email');
+    if (!storedEmail) {
+      toast({
+        title: "Session expired",
+        description: "Please sign up again.",
+        variant: "destructive",
+      });
+      navigate('/auth/signup');
+    } else {
+      setEmail(storedEmail);
+    }
+  }, [navigate, toast]);
+
+  React.useEffect(() => {
+    if (resendCooldown > 0) {
+      const timer = setTimeout(() => setResendCooldown(resendCooldown - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [resendCooldown]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,11 +48,18 @@ const VerifyOTP = () => {
       });
       navigate('/dashboard');
     } catch (error) {
-      toast({
-        title: "Verification failed",
-        description: "Please check your OTP and try again.",
-        variant: "destructive",
-      });
+      // Error handled by AuthContext
+    }
+  };
+
+  const handleResendCode = async () => {
+    if (resendCooldown > 0) return;
+    
+    try {
+      await resendOTP();
+      setResendCooldown(60);
+    } catch (error) {
+      // Error handled by AuthContext
     }
   };
 
@@ -56,7 +86,10 @@ const VerifyOTP = () => {
             </Link>
             
             <h1 className="text-2xl font-bold text-gray-900 mb-2">Verify Your Account</h1>
-            <p className="text-gray-600">Enter the verification code sent to your email</p>
+            <p className="text-gray-600">
+              Enter the verification code sent to<br />
+              <span className="font-medium text-gray-900">{email}</span>
+            </p>
           </CardHeader>
 
           <CardContent>
@@ -86,8 +119,13 @@ const VerifyOTP = () => {
             <div className="text-center mt-6">
               <p className="text-gray-600">
                 Didn't receive the code?{' '}
-                <button className="text-bold-red hover:text-vibrant-orange font-semibold">
-                  Resend Code
+                <button 
+                  type="button"
+                  onClick={handleResendCode}
+                  disabled={resendCooldown > 0 || isLoading}
+                  className="text-bold-red hover:text-vibrant-orange font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {resendCooldown > 0 ? `Resend in ${resendCooldown}s` : 'Resend Code'}
                 </button>
               </p>
             </div>

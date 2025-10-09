@@ -143,14 +143,15 @@ VITE_REAL_TIME_WALLET=true
 |--------|----------|-------|-------------|
 | `login()` | `POST /auth/login` | 40-44 | User authentication |
 | `signup()` | `POST /auth/signup` | 50-54 | User registration |
-| `verifyOTP()` | `POST /auth/verify-otp` | 60-64 | OTP verification |
-| `forgotPassword()` | `POST /auth/forgot-password` | 70-74 | Password reset request |
-| `resetPassword()` | `POST /auth/reset-password` | 80-84 | Password reset with token |
-| `refreshToken()` | `POST /auth/refresh` | 90-94 | JWT token refresh |
-| `getCurrentUser()` | `GET /auth/me` | 99-101 | Get current user profile |
-| `logout()` | `POST /auth/logout` | 106-110 | User logout |
-| `updateProfile()` | `PATCH /auth/profile` | 116-120 | Update user profile |
-| `changePassword()` | `POST /auth/change-password` | 126-130 | Change password |
+| `verifyOTP()` | `POST /api/v1/auth/verify-otp` | 49-52 | OTP verification |
+| `resendOTP()` | `POST /api/v1/auth/resend-otp` | 54-57 | Resend OTP code |
+| `forgotPassword()` | `POST /auth/forgot-password` | 59-62 | Password reset request |
+| `resetPassword()` | `POST /auth/reset-password` | 64-67 | Password reset with token |
+| `refreshToken()` | `POST /auth/refresh` | 69-74 | JWT token refresh |
+| `getCurrentUser()` | `GET /auth/me` | 76-79 | Get current user profile |
+| `logout()` | `POST /auth/logout` | 81-95 | User logout |
+| `updateProfile()` | `PATCH /auth/profile` | 97-100 | Update user profile |
+| `changePassword()` | `POST /auth/change-password` | 102-105 | Change password |
 
 #### Detailed Integration Points:
 
@@ -189,20 +190,37 @@ async signup(data: SignupRequest): Promise<SignupResponse> {
   return handleApiResponse(response);
 }
 
-// LINE 60-64: Verify OTP
+// LINE 49-52: Verify OTP
 async verifyOTP(data: VerifyOTPRequest): Promise<LoginResponse> {
-  const response = await apiClient.post<ApiResponse<LoginResponse>>('/auth/verify-otp', data);
+  const response = await apiClient.post<ApiResponse<LoginResponse>>('/api/v1/auth/verify-otp', data);
   // ⚠️ BACKEND REQUIRED
   // Request: { email: string, otp: string }
   // Response: { 
   //   user: User, 
   //   access_token: string, 
-  //   refresh_token: string 
+  //   refresh_token: string
   // }
   return handleApiResponse(response);
 }
 
-// LINE 99-101: Get Current User
+// LINE 54-57: Resend OTP
+async resendOTP(email: string): Promise<{ message: string }> {
+  const response = await apiClient.post<ApiResponse<{ message: string }>>('/api/v1/auth/resend-otp', { email });
+  // ⚠️ BACKEND REQUIRED
+  // Request: { email: string }
+  // Response: { 
+  //   success: boolean,
+  //   message: string
+  // }
+  // Backend should:
+  // - Generate new OTP code
+  // - Send OTP via email
+  // - Implement rate limiting (max 3 requests per 10 minutes)
+  // - Invalidate previous OTP codes
+  return handleApiResponse(response);
+}
+
+// LINE 76-79: Get Current User
 async getCurrentUser(): Promise<User> {
   const response = await apiClient.get<ApiResponse<User>>('/auth/me');
   // ⚠️ BACKEND REQUIRED
@@ -216,6 +234,7 @@ async getCurrentUser(): Promise<User> {
 - Email/password authentication
 - JWT token generation (access + refresh tokens)
 - OTP generation and validation
+- OTP resend with rate limiting (e.g., max 3 requests per 10 minutes per email)
 - Password hashing (bcrypt recommended)
 - Email service for OTP delivery
 - Session management

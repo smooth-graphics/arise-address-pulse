@@ -21,6 +21,7 @@ export interface AuthContextType {
   signup: (data: SignupData) => Promise<void>;
   logout: () => void;
   verifyOTP: (otp: string) => Promise<void>;
+  resendOTP: () => Promise<void>;
   forgotPassword: (email: string) => Promise<void>;
   resetPassword: (token: string, password: string) => Promise<void>;
   switchRole: (role: UserRole) => void;

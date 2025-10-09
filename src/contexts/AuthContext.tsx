@@ -75,6 +75,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(true);
     try {
       await authService.signup(data);
+      // Store email for OTP verification
+      localStorage.setItem('pending_verification_email', data.email);
       toast({
         title: "Account created",
         description: "Please check your email for verification code",
@@ -112,11 +114,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const verifyOTP = async (otp: string) => {
     setIsLoading(true);
     try {
-      const response = await authService.verifyOTP({ otp, email: user?.email || '' });
+      const email = localStorage.getItem('pending_verification_email');
+      if (!email) {
+        throw new Error('Email not found. Please sign up again.');
+      }
+      
+      const response = await authService.verifyOTP({ otp, email });
       
       localStorage.setItem('auth_token', response.access_token);
       localStorage.setItem('refresh_token', response.refresh_token);
       localStorage.setItem('user_role', response.user.role);
+      localStorage.removeItem('pending_verification_email');
       
       setUser(response.user);
       toast({
@@ -128,6 +136,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       toast({
         title: "Verification failed",
         description: error?.response?.data?.message || "Invalid verification code",
+        variant: "destructive",
+      });
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const resendOTP = async () => {
+    setIsLoading(true);
+    try {
+      const email = localStorage.getItem('pending_verification_email');
+      if (!email) {
+        throw new Error('Email not found. Please sign up again.');
+      }
+      
+      await authService.resendOTP(email);
+      toast({
+        title: "Code resent",
+        description: "A new verification code has been sent to your email",
+      });
+    } catch (error: any) {
+      console.error('Resend OTP failed:', error);
+      toast({
+        title: "Resend failed",
+        description: error?.response?.data?.message || "Failed to resend code",
         variant: "destructive",
       });
       throw error;
@@ -194,6 +228,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     signup,
     logout,
     verifyOTP,
+    resendOTP,
     forgotPassword,
     resetPassword,
     switchRole,
