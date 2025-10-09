@@ -188,13 +188,13 @@ const HowItWorks = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/auth/signup">
               <Button className="bg-gradient-to-r from-bold-red to-vibrant-orange hover:from-vibrant-orange hover:to-bright-yellow text-white font-semibold px-8 py-3 text-lg">
-                Start Free Trial
+                Start 7-days Trial
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
-            <Link to="/auth">
+            <Link to="/contact">
               <Button variant="outline" className="border-gray-300 text-gray-700 hover:border-bold-red hover:text-bold-red px-8 py-3 text-lg">
-                Sign In to Dashboard
+                Contact Sales
               </Button>
             </Link>
           </div>
@@ -384,7 +384,7 @@ const HowItWorks = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/auth/signup">
               <Button className="bg-gradient-to-r from-bold-red to-vibrant-orange hover:from-vibrant-orange hover:to-bright-yellow text-white font-semibold px-8 py-4 text-lg">
-                Start 7-Days Trial
+                Start 7-days Trial
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Check, X, Star, Shield, Zap } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import {
   Accordion,
   AccordionContent,
@@ -261,9 +262,18 @@ const Pricing = () => {
           <p className="text-lg text-gray-300 max-w-2xl mx-auto">
             Join thousands of businesses that trust Arise for their address verification needs.
           </p>
-          <Button className="bg-bold-red text-white font-semibold px-8 py-4 text-lg hover:bg-vibrant-orange">
-            Start 7-Days Trial
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link to="/auth/signup">
+              <Button className="bg-bold-red text-white font-semibold px-8 py-4 text-lg hover:bg-vibrant-orange">
+                Start 7-days Trial
+              </Button>
+            </Link>
+            <Link to="/contact">
+              <Button variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-dark-charcoal font-semibold px-8 py-4 text-lg">
+                Contact Sales
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
     </div>

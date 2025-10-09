@@ -3,6 +3,7 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { MapPin, Shield, Zap, Globe, FileCheck, Users, Building, CreditCard, CheckCircle, Clock, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Features = () => {
   const mainFeatures = [
@@ -123,10 +124,19 @@ const Features = () => {
             From corporate validation to government ID verification.
           </p>
           
-          <Button className="group bg-gradient-to-r from-bold-red to-vibrant-orange hover:from-vibrant-orange hover:to-bright-yellow text-white px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-            Start Free Trial
-            <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link to="/auth/signup">
+              <Button className="group bg-gradient-to-r from-bold-red to-vibrant-orange hover:from-vibrant-orange hover:to-bright-yellow text-white px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                Start 7-days Trial
+                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
+            <Link to="/contact">
+              <Button variant="outline" className="border-2 border-gray-300 text-gray-700 hover:border-bold-red hover:text-bold-red px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-300">
+                Contact Sales
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -231,12 +241,16 @@ const Features = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button className="bg-white text-bold-red hover:bg-gray-100 px-8 py-4 text-lg font-semibold rounded-xl shadow-lg">
-              Start 7-Days Trial
-            </Button>
-            <Button variant="outline" className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-bold-red px-8 py-4 text-lg font-semibold rounded-xl">
-              View Documentation
-            </Button>
+            <Link to="/auth/signup">
+              <Button className="bg-white text-bold-red hover:bg-gray-100 px-8 py-4 text-lg font-semibold rounded-xl shadow-lg">
+                Start 7-days Trial
+              </Button>
+            </Link>
+            <Link to="/contact">
+              <Button variant="outline" className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-bold-red px-8 py-4 text-lg font-semibold rounded-xl">
+                Contact Sales
+              </Button>
+            </Link>
           </div>
         </div>
       </section>

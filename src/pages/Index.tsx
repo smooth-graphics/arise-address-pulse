@@ -105,13 +105,15 @@ const Index = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <Link to="/auth/signup">
                 <Button className="group bg-gradient-to-r from-bold-red to-vibrant-orange hover:from-vibrant-orange hover:to-bright-yellow text-white px-6 py-3 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                  {t('hero.startFreeTrial')}
+                  Start 7-days Trial
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
-              <Button variant="outline" className="bg-transparent border-2 border-bold-red text-bold-red hover:bg-bold-red hover:text-white px-6 py-3 text-lg font-semibold rounded-xl transition-all duration-300">
-                {t('hero.viewDemo')}
-              </Button>
+              <Link to="/contact">
+                <Button variant="outline" className="bg-transparent border-2 border-bold-red text-bold-red hover:bg-bold-red hover:text-white px-6 py-3 text-lg font-semibold rounded-xl transition-all duration-300">
+                  Contact Sales
+                </Button>
+              </Link>
             </div>
 
             {/* Nigeria Usage Animation */}
@@ -296,14 +298,16 @@ const Index = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/auth">
+            <Link to="/auth/signup">
               <Button className="bg-white text-bold-red hover:bg-white/90 px-6 py-3 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
-                Start Free Trial
+                Start 7-days Trial
               </Button>
             </Link>
-            <Button variant="outline" className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-vibrant-orange px-6 py-3 text-lg font-semibold rounded-xl transition-all duration-300">
-              Contact Sales
-            </Button>
+            <Link to="/contact">
+              <Button variant="outline" className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-vibrant-orange px-6 py-3 text-lg font-semibold rounded-xl transition-all duration-300">
+                Contact Sales
+              </Button>
+            </Link>
           </div>
 
           <div className="flex flex-wrap justify-center gap-8 mt-8 text-white/80 text-sm">
