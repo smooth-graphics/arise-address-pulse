@@ -1,20 +1,22 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Bell, UserRoundSearch, Rocket, CreditCard } from "lucide-react";
 import { cn } from "@/lib/utils";
 import PlanUpgradeModal from "@/components/billing/PlanUpgradeModal";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface TabsProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
+  tabs: Array<{ id: string; label: string }>;
 }
 
-const tabs = [
+const allTabs = [
   { id: "account", label: "Account" },
   { id: "billing", label: "Plan & Billings" },
   { id: "notifications", label: "Notifications" },
 ];
 
-function Tabs({ activeTab, onTabChange }: TabsProps) {
+function Tabs({ activeTab, onTabChange, tabs }: TabsProps) {
   return (
     <div className="inline-flex p-0.5 bg-gray-100 rounded-xl">
       {tabs.map((tab) => (
@@ -90,8 +92,17 @@ function Toggle({ checked, onChange, disabled = false }: ToggleProps) {
 }
 
 const DashboardSettings = () => {
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("notifications");
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+
+  // Filter tabs based on user role - hide billing for organization members
+  const tabs = useMemo(() => {
+    if (user?.role === 'organization-member') {
+      return allTabs.filter(tab => tab.id !== 'billing');
+    }
+    return allTabs;
+  }, [user?.role]);
   const [formData, setFormData] = useState({
     firstName: "Onu",
     lastName: "Omar-Ikaige",
@@ -146,7 +157,7 @@ const DashboardSettings = () => {
       <div className="p-4 sm:p-6 max-w-4xl">
         {/* Tabs */}
         <div className="mb-6">
-          <Tabs activeTab={activeTab} onTabChange={setActiveTab} />
+          <Tabs activeTab={activeTab} onTabChange={setActiveTab} tabs={tabs} />
         </div>
 
         {/* Account Content */}
