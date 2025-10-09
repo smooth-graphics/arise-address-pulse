@@ -40,19 +40,14 @@ class AuthService {
 
   async signup(data: SignupData): Promise<{ message: string; requiresVerification: boolean }> {
     const response = await apiClient.post<ApiResponse<{ message: string; requiresVerification: boolean }>>(
-      "/auth/signup",
+      "/api/v1/auth/register",
       data,
     );
     return handleApiResponse(response);
   }
 
   async verifyOTP(data: VerifyOTPRequest): Promise<LoginResponse> {
-    const response = await apiClient.post<ApiResponse<LoginResponse>>("/api/v1/auth/verify-otp", data);
-    return handleApiResponse(response);
-  }
-
-  async resendOTP(email: string): Promise<{ message: string }> {
-    const response = await apiClient.post<ApiResponse<{ message: string }>>("/api/v1/auth/resend-otp", { email });
+    const response = await apiClient.post<ApiResponse<LoginResponse>>("/api/v1/auth/register", data);
     return handleApiResponse(response);
   }
 
@@ -74,7 +69,7 @@ class AuthService {
   }
 
   async getCurrentUser(): Promise<User> {
-    const response = await apiClient.get<ApiResponse<User>>("/auth/me");
+    const response = await apiClient.get<ApiResponse<User>>("/api/v1/user/me");
     return handleApiResponse(response);
   }
 
@@ -95,7 +90,7 @@ class AuthService {
   }
 
   async updateProfile(data: Partial<User>): Promise<User> {
-    const response = await apiClient.put<ApiResponse<User>>("/auth/profile", data);
+    const response = await apiClient.put<ApiResponse<User>>("/api/v1/user/profile", data);
     return handleApiResponse(response);
   }
 
