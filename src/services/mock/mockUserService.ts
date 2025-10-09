@@ -19,7 +19,7 @@ class MockUserService {
       id: "demo-user-001",
       email: isOrgUser ? "admin@arisetech.com" : "demo@individual.com",
       phone: "+234-801-234-5678",
-      firstName: "onu.omar-ikaige",
+      firstName: "onu omar-ikaige",
       lastName: "",
       role: isOrgUser ? "organization-admin" : "individual",
       organizationId: isOrgUser ? "org-arise-001" : undefined,
