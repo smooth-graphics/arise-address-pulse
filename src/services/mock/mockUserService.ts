@@ -4,31 +4,31 @@ import {
   SecuritySettings,
   OrganizationMember,
   InviteUserRequest,
-} from '../userService';
+} from "../userService";
 
 class MockUserService {
-  private delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+  private delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
   async getProfile(): Promise<UserProfile> {
     await this.delay(500);
 
-    const token = localStorage.getItem('auth_token') || '';
-    const isOrgUser = token.includes('org');
+    const token = localStorage.getItem("auth_token") || "";
+    const isOrgUser = token.includes("org");
 
     return {
-      id: 'demo-user-001',
-      email: isOrgUser ? 'admin@arisetech.com' : 'demo@individual.com',
-      phone: '+234-801-234-5678',
-      firstName: 'onu.omar-ikaige',
-      lastName: '',
-      role: isOrgUser ? 'organization-admin' : 'individual',
-      organizationId: isOrgUser ? 'org-arise-001' : undefined,
-      organizationName: isOrgUser ? 'AriseTech Solutions' : undefined,
+      id: "demo-user-001",
+      email: isOrgUser ? "admin@arisetech.com" : "demo@individual.com",
+      phone: "+234-801-234-5678",
+      firstName: "onu.omar-ikaige",
+      lastName: "",
+      role: isOrgUser ? "organization-admin" : "individual",
+      organizationId: isOrgUser ? "org-arise-001" : undefined,
+      organizationName: isOrgUser ? "AriseTech Solutions" : undefined,
       isVerified: true,
-      createdAt: '2024-01-15T10:30:00Z',
+      createdAt: "2024-01-15T10:30:00Z",
       avatar: undefined,
-      timezone: 'Africa/Lagos',
-      language: 'en',
+      timezone: "Africa/Lagos",
+      language: "en",
       notifications: {
         email: true,
         sms: false,
@@ -96,25 +96,25 @@ class MockUserService {
     await this.delay(800);
 
     return {
-      qrCode: 'data:image/png;base64,mock-qr-code',
-      backupCodes: ['ABC123', 'DEF456', 'GHI789'],
+      qrCode: "data:image/png;base64,mock-qr-code",
+      backupCodes: ["ABC123", "DEF456", "GHI789"],
     };
   }
 
   async verifyTwoFactor(code: string): Promise<{ message: string }> {
     await this.delay(600);
 
-    if (code === '123456') {
-      return { message: 'Two-factor authentication enabled successfully' };
+    if (code === "123456") {
+      return { message: "Two-factor authentication enabled successfully" };
     }
-    throw new Error('Invalid verification code');
+    throw new Error("Invalid verification code");
   }
 
   async disableTwoFactor(token: string): Promise<{ message: string }> {
     await this.delay(600);
 
     return {
-      message: 'Two-factor authentication disabled',
+      message: "Two-factor authentication disabled",
     };
   }
 
@@ -123,60 +123,60 @@ class MockUserService {
 
     return [
       {
-        id: 'member-001',
+        id: "member-001",
         user: {
-          id: 'user-001',
-          email: 'admin@arisetech.com',
-          firstName: 'onu.omar-ikaige',
-          lastName: '',
-          role: 'organization-admin',
-          organizationId: 'org-arise-001',
-          organizationName: 'AriseTech Solutions',
+          id: "user-001",
+          email: "admin@arisetech.com",
+          firstName: "onu omar-ikaige",
+          lastName: "",
+          role: "organization-admin",
+          organizationId: "org-arise-001",
+          organizationName: "AriseTech Solutions",
           isVerified: true,
-          createdAt: '2024-01-10T08:00:00Z',
+          createdAt: "2024-01-10T08:00:00Z",
         },
-        role: 'admin',
-        status: 'active',
-        joinedAt: '2024-01-10T08:00:00Z',
+        role: "admin",
+        status: "active",
+        joinedAt: "2024-01-10T08:00:00Z",
         lastActive: new Date().toISOString(),
-        permissions: ['all'],
+        permissions: ["all"],
       },
       {
-        id: 'member-002',
+        id: "member-002",
         user: {
-          id: 'user-002',
-          email: 'member@arisetech.com',
-          firstName: 'onu.omar-ikaige',
-          lastName: '',
-          role: 'organization-member',
-          organizationId: 'org-arise-001',
-          organizationName: 'AriseTech Solutions',
+          id: "user-002",
+          email: "member@arisetech.com",
+          firstName: "onu omar-ikaige",
+          lastName: "",
+          role: "organization-member",
+          organizationId: "org-arise-001",
+          organizationName: "AriseTech Solutions",
           isVerified: true,
-          createdAt: '2024-01-12T09:15:00Z',
+          createdAt: "2024-01-12T09:15:00Z",
         },
-        role: 'member',
-        status: 'active',
-        joinedAt: '2024-01-12T09:15:00Z',
+        role: "member",
+        status: "active",
+        joinedAt: "2024-01-12T09:15:00Z",
         lastActive: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-        permissions: ['verify', 'view_reports'],
+        permissions: ["verify", "view_reports"],
       },
       {
-        id: 'member-003',
+        id: "member-003",
         user: {
-          id: 'user-003',
-          email: 'viewer@arisetech.com',
-          firstName: 'onu.omar-ikaige',
-          lastName: '',
-          role: 'organization-member',
-          organizationId: 'org-arise-001',
-          organizationName: 'AriseTech Solutions',
+          id: "user-003",
+          email: "viewer@arisetech.com",
+          firstName: "onu omar-ikaige",
+          lastName: "",
+          role: "organization-member",
+          organizationId: "org-arise-001",
+          organizationName: "AriseTech Solutions",
           isVerified: true,
-          createdAt: '2024-03-01T14:20:00Z',
+          createdAt: "2024-03-01T14:20:00Z",
         },
-        role: 'member',
-        status: 'pending',
-        joinedAt: '2024-03-01T14:20:00Z',
-        permissions: ['view_reports'],
+        role: "member",
+        status: "pending",
+        joinedAt: "2024-03-01T14:20:00Z",
+        permissions: ["view_reports"],
       },
     ];
   }
@@ -185,7 +185,7 @@ class MockUserService {
     await this.delay(800);
 
     return {
-      message: 'Invitation sent successfully',
+      message: "Invitation sent successfully",
     };
   }
 
@@ -193,18 +193,22 @@ class MockUserService {
     await this.delay(600);
 
     return {
-      message: 'Member removed successfully',
+      message: "Member removed successfully",
     };
   }
 
-  async updateMemberRole(memberId: string, role: 'admin' | 'member', permissions?: string[]): Promise<OrganizationMember> {
+  async updateMemberRole(
+    memberId: string,
+    role: "admin" | "member",
+    permissions?: string[],
+  ): Promise<OrganizationMember> {
     await this.delay(600);
 
     const members = await this.getOrganizationMembers();
-    const member = members.find(m => m.id === memberId);
+    const member = members.find((m) => m.id === memberId);
 
     if (!member) {
-      throw new Error('Member not found');
+      throw new Error("Member not found");
     }
 
     return {
@@ -219,18 +223,18 @@ class MockUserService {
 
     return [
       {
-        id: 'session-001',
-        device: 'Chrome on Windows',
-        location: 'Lagos, Nigeria',
-        ip: '102.89.xxx.xxx',
+        id: "session-001",
+        device: "Chrome on Windows",
+        location: "Lagos, Nigeria",
+        ip: "102.89.xxx.xxx",
         lastActive: new Date().toISOString(),
         current: true,
       },
       {
-        id: 'session-002',
-        device: 'Safari on iPhone',
-        location: 'Abuja, Nigeria',
-        ip: '102.90.xxx.xxx',
+        id: "session-002",
+        device: "Safari on iPhone",
+        location: "Abuja, Nigeria",
+        ip: "102.90.xxx.xxx",
         lastActive: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
         current: false,
       },
@@ -241,7 +245,7 @@ class MockUserService {
     await this.delay(500);
 
     return {
-      message: 'Session terminated successfully',
+      message: "Session terminated successfully",
     };
   }
 
@@ -249,7 +253,7 @@ class MockUserService {
     await this.delay(800);
 
     return {
-      message: 'Account deletion initiated. You will receive a confirmation email.',
+      message: "Account deletion initiated. You will receive a confirmation email.",
     };
   }
 }
