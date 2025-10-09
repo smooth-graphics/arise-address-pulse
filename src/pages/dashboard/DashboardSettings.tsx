@@ -23,9 +23,7 @@ function Tabs({ activeTab, onTabChange }: TabsProps) {
           onClick={() => onTabChange(tab.id)}
           className={cn(
             "px-3 py-1 text-sm font-medium rounded-lg transition-all duration-200",
-            activeTab === tab.id
-              ? "bg-white text-text-70 shadow-sm"
-              : "text-text-50 hover:text-text-70",
+            activeTab === tab.id ? "bg-white text-text-70 shadow-sm" : "text-text-50 hover:text-text-70",
           )}
         >
           {tab.label}
@@ -43,13 +41,7 @@ interface InputFieldProps {
   type?: string;
 }
 
-function InputField({
-  label,
-  value,
-  onChange,
-  disabled = false,
-  type = "text",
-}: InputFieldProps) {
+function InputField({ label, value, onChange, disabled = false, type = "text" }: InputFieldProps) {
   return (
     <div className="flex flex-col gap-1">
       <label className="text-sm font-medium text-text-70">{label}</label>
@@ -101,9 +93,9 @@ const DashboardSettings = () => {
   const [activeTab, setActiveTab] = useState("notifications");
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [formData, setFormData] = useState({
-    firstName: "Joseph",
-    lastName: "Oladepo",
-    email: "jolada55@gmail.com",
+    firstName: "Onu",
+    lastName: "Omar-Ikaige",
+    email: "onu.omar-ikaige@sahara-group.com",
   });
 
   // Notifications state
@@ -117,10 +109,7 @@ const DashboardSettings = () => {
     documentUpdates: true,
   });
 
-  const updateNotification = (
-    key: keyof typeof notifications,
-    value: boolean,
-  ) => {
+  const updateNotification = (key: keyof typeof notifications, value: boolean) => {
     setNotifications((prev) => ({ ...prev, [key]: value }));
   };
 
@@ -129,7 +118,7 @@ const DashboardSettings = () => {
   };
 
   const handleUpgrade = (plan: string) => {
-    console.log('User selected plan:', plan);
+    console.log("User selected plan:", plan);
     // Handle upgrade logic here
   };
 
@@ -137,9 +126,7 @@ const DashboardSettings = () => {
     <div className="flex-1 bg-white lg:rounded-tl-xl min-h-screen lg:min-h-0">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-4.5 border-b border-gray-100">
-        <h1 className="text-2xl font-bold text-text-70 tracking-tight">
-          Settings
-        </h1>
+        <h1 className="text-2xl font-bold text-text-70 tracking-tight">Settings</h1>
 
         <div className="flex items-center gap-4">
           {/* Verify Button */}
@@ -166,9 +153,7 @@ const DashboardSettings = () => {
         {activeTab === "account" && (
           <div className="space-y-5">
             <div>
-              <h2 className="text-lg font-medium text-foreground mb-5">
-                Account
-              </h2>
+              <h2 className="text-lg font-medium text-foreground mb-5">Account</h2>
               <div className="w-full h-px bg-gray-200 mb-6" />
             </div>
 
@@ -176,15 +161,11 @@ const DashboardSettings = () => {
               {/* Profile Picture Section */}
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 <div className="w-24 h-24 bg-gray-400 rounded-2xl flex items-center justify-center">
-                  <span className="text-2xl font-normal text-text-50">JO</span>
+                  <span className="text-2xl font-normal text-text-50">OO</span>
                 </div>
                 <div className="space-y-1">
-                  <h3 className="text-base font-medium text-text-70">
-                    Profile Picture
-                  </h3>
-                  <p className="text-xs text-text-50">
-                    PNG or JPEG under 10MB.
-                  </p>
+                  <h3 className="text-base font-medium text-text-70">Profile Picture</h3>
+                  <p className="text-xs text-text-50">PNG or JPEG under 10MB.</p>
                   <button className="mt-2 px-3 py-2 border border-muted-foreground rounded-lg text-sm text-text-70 hover:bg-gray-50 transition-colors">
                     Upload new picture
                   </button>
@@ -223,12 +204,8 @@ const DashboardSettings = () => {
                 {/* Password Section */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div className="flex-1">
-                    <h3 className="text-base font-medium text-text-70 mb-1">
-                      Password
-                    </h3>
-                    <p className="text-sm text-text-50">
-                      Update your password.
-                    </p>
+                    <h3 className="text-base font-medium text-text-70 mb-1">Password</h3>
+                    <p className="text-sm text-text-50">Update your password.</p>
                   </div>
                   <button className="h-9 px-4 border border-muted-foreground text-sm font-medium text-text-70 rounded-lg hover:bg-gray-50 transition-colors w-full sm:w-auto">
                     Update Password
@@ -244,10 +221,8 @@ const DashboardSettings = () => {
           <div className="space-y-4">
             {/* Header with Upgrade Plan button */}
             <div className="flex justify-between items-center">
-              <h2 className="text-lg font-medium text-foreground">
-                Plan & Billings
-              </h2>
-              <button 
+              <h2 className="text-lg font-medium text-foreground">Plan & Billings</h2>
+              <button
                 onClick={() => setShowUpgradeModal(true)}
                 className="flex items-center gap-1.5 h-9 px-3 border border-orange-primary text-orange-primary bg-white rounded-lg shadow-lg shadow-orange-primary/25 hover:bg-orange-primary/5 transition-colors text-sm font-medium"
               >
@@ -263,9 +238,7 @@ const DashboardSettings = () => {
               <div className="flex justify-between items-center mb-3">
                 <span className="text-base text-text-70">Basic Plan</span>
                 <div className="flex items-baseline gap-2">
-                  <span className="text-base text-text-70">
-                    Subscription end date:
-                  </span>
+                  <span className="text-base text-text-70">Subscription end date:</span>
                   <div className="px-1.5 py-0.5 bg-orange-primary/10 text-orange-primary text-sm font-medium rounded">
                     26 Sep 2025
                   </div>
@@ -275,19 +248,9 @@ const DashboardSettings = () => {
               {/* Usage Indicator */}
               <div className="flex items-center gap-3">
                 <div className="relative w-16 h-16">
-                  <svg
-                    className="w-16 h-16 transform -rotate-90"
-                    viewBox="0 0 64 64"
-                  >
+                  <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 64 64">
                     {/* Background circle */}
-                    <circle
-                      cx="32"
-                      cy="32"
-                      r="28.8"
-                      stroke="#E8E8E8"
-                      strokeWidth="6.4"
-                      fill="none"
-                    />
+                    <circle cx="32" cy="32" r="28.8" stroke="#E8E8E8" strokeWidth="6.4" fill="none" />
                     {/* Progress circle */}
                     <circle
                       cx="32"
@@ -302,12 +265,8 @@ const DashboardSettings = () => {
                   </svg>
                 </div>
                 <div>
-                  <div className="text-2xl font-medium text-foreground leading-7">
-                    37 searches left
-                  </div>
-                  <div className="text-sm text-text-70">
-                    13/50 searches used.
-                  </div>
+                  <div className="text-2xl font-medium text-foreground leading-7">37 searches left</div>
+                  <div className="text-sm text-text-70">13/50 searches used.</div>
                 </div>
               </div>
             </div>
@@ -316,24 +275,15 @@ const DashboardSettings = () => {
 
             {/* Payment Information */}
             <div className="space-y-4">
-              <h3 className="text-base font-medium text-text-70">
-                Payment Information
-              </h3>
+              <h3 className="text-base font-medium text-text-70">Payment Information</h3>
 
               <div className="p-3 border border-gray-200 rounded-2xl space-y-3">
                 {/* Payment Method */}
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-                  <span className="text-sm font-medium text-text-70">
-                    Payment Method
-                  </span>
+                  <span className="text-sm font-medium text-text-70">Payment Method</span>
                   <div className="flex items-center gap-2">
-                    <CreditCard
-                      className="w-5 h-5 text-muted-foreground"
-                      strokeWidth={1.2}
-                    />
-                    <span className="text-sm text-text-50">
-                      MasterCard (**** **** **** 5988)
-                    </span>
+                    <CreditCard className="w-5 h-5 text-muted-foreground" strokeWidth={1.2} />
+                    <span className="text-sm text-text-50">MasterCard (**** **** **** 5988)</span>
                   </div>
                 </div>
 
@@ -341,21 +291,15 @@ const DashboardSettings = () => {
 
                 {/* Billing Email */}
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-                  <span className="text-sm font-medium text-text-70">
-                    Billing email
-                  </span>
-                  <span className="text-sm text-text-50">
-                    josephola@gmail.com
-                  </span>
+                  <span className="text-sm font-medium text-text-70">Billing email</span>
+                  <span className="text-sm text-text-50">josephola@gmail.com</span>
                 </div>
 
                 <div className="w-full h-px bg-gray-200" />
 
                 {/* Billing Address */}
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
-                  <span className="text-sm font-medium text-text-70">
-                    Billing Address
-                  </span>
+                  <span className="text-sm font-medium text-text-70">Billing Address</span>
                   <span className="text-sm text-text-50 text-right sm:text-left max-w-64">
                     24, Allen Avenue, Ikeja, Lagos 101233, Lagos.
                   </span>
@@ -367,22 +311,14 @@ const DashboardSettings = () => {
 
             {/* Billing History */}
             <div className="space-y-4 pb-6">
-              <h3 className="text-base font-medium text-text-70">
-                Billing History
-              </h3>
+              <h3 className="text-base font-medium text-text-70">Billing History</h3>
 
               <div className="border border-gray-200 rounded-2xl overflow-hidden">
                 {/* Table Header */}
                 <div className="hidden sm:flex bg-gray-100 px-3 py-2 items-center">
-                  <div className="flex-1 text-xs font-medium text-gray-600 px-3">
-                    Invoice
-                  </div>
-                  <div className="w-64 text-xs font-medium text-gray-600 px-3">
-                    Date Initiated
-                  </div>
-                  <div className="w-36 text-xs font-medium text-gray-600 px-3">
-                    Status
-                  </div>
+                  <div className="flex-1 text-xs font-medium text-gray-600 px-3">Invoice</div>
+                  <div className="w-64 text-xs font-medium text-gray-600 px-3">Date Initiated</div>
+                  <div className="w-36 text-xs font-medium text-gray-600 px-3">Status</div>
                 </div>
 
                 {/* Table Rows */}
@@ -390,12 +326,8 @@ const DashboardSettings = () => {
                   {/* Row 1 */}
                   <div className="px-3 py-3 border-b border-gray-100">
                     <div className="hidden sm:flex items-center">
-                      <div className="flex-1 text-sm text-foreground px-3">
-                        Basic Plan
-                      </div>
-                      <div className="w-64 text-sm text-foreground px-3">
-                        26 Aug 2025 - 09:41 AM
-                      </div>
+                      <div className="flex-1 text-sm text-foreground px-3">Basic Plan</div>
+                      <div className="w-64 text-sm text-foreground px-3">26 Aug 2025 - 09:41 AM</div>
                       <div className="w-36 px-3">
                         <span className="inline-flex px-2 py-0.5 bg-green-100 text-green-700 text-xs font-medium rounded-full border border-green-200">
                           Paid
@@ -405,28 +337,20 @@ const DashboardSettings = () => {
                     {/* Mobile layout */}
                     <div className="sm:hidden space-y-2">
                       <div className="flex justify-between">
-                        <span className="text-sm font-medium text-foreground">
-                          Basic Plan
-                        </span>
+                        <span className="text-sm font-medium text-foreground">Basic Plan</span>
                         <span className="inline-flex px-2 py-0.5 bg-green-100 text-green-700 text-xs font-medium rounded-full border border-green-200">
                           Paid
                         </span>
                       </div>
-                      <div className="text-sm text-text-50">
-                        26 Aug 2025 - 09:41 AM
-                      </div>
+                      <div className="text-sm text-text-50">26 Aug 2025 - 09:41 AM</div>
                     </div>
                   </div>
 
                   {/* Row 2 */}
                   <div className="px-3 py-3">
                     <div className="hidden sm:flex items-center">
-                      <div className="flex-1 text-sm text-foreground px-3">
-                        Basic Plan
-                      </div>
-                      <div className="w-64 text-sm text-foreground px-3">
-                        26 Jul 2025 - 10:12 AM
-                      </div>
+                      <div className="flex-1 text-sm text-foreground px-3">Basic Plan</div>
+                      <div className="w-64 text-sm text-foreground px-3">26 Jul 2025 - 10:12 AM</div>
                       <div className="w-36 px-3">
                         <span className="inline-flex px-2 py-0.5 bg-green-100 text-green-700 text-xs font-medium rounded-full border border-green-200">
                           Paid
@@ -436,16 +360,12 @@ const DashboardSettings = () => {
                     {/* Mobile layout */}
                     <div className="sm:hidden space-y-2">
                       <div className="flex justify-between">
-                        <span className="text-sm font-medium text-foreground">
-                          Basic Plan
-                        </span>
+                        <span className="text-sm font-medium text-foreground">Basic Plan</span>
                         <span className="inline-flex px-2 py-0.5 bg-green-100 text-green-700 text-xs font-medium rounded-full border border-green-200">
                           Paid
                         </span>
                       </div>
-                      <div className="text-sm text-text-50">
-                        26 Jul 2025 - 10:12 AM
-                      </div>
+                      <div className="text-sm text-text-50">26 Jul 2025 - 10:12 AM</div>
                     </div>
                   </div>
                 </div>
@@ -459,9 +379,7 @@ const DashboardSettings = () => {
           <div className="space-y-4">
             {/* Header */}
             <div>
-              <h2 className="text-lg font-medium text-foreground">
-                Notifications
-              </h2>
+              <h2 className="text-lg font-medium text-foreground">Notifications</h2>
             </div>
 
             <div className="w-full h-px bg-gray-200" />
@@ -470,12 +388,8 @@ const DashboardSettings = () => {
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 py-6">
               {/* Left column - Section title and description */}
               <div className="lg:col-span-2 space-y-1">
-                <h3 className="text-base font-medium text-text-70">
-                  Email Notifications
-                </h3>
-                <p className="text-sm text-text-50">
-                  Get emails to find out what's going on when you're not online.
-                </p>
+                <h3 className="text-base font-medium text-text-70">Email Notifications</h3>
+                <p className="text-sm text-text-50">Get emails to find out what's going on when you're not online.</p>
               </div>
 
               {/* Right column - Toggle options */}
@@ -484,18 +398,11 @@ const DashboardSettings = () => {
                 <div className="flex items-start gap-4">
                   <Toggle
                     checked={notifications.walletAlerts}
-                    onChange={(checked) =>
-                      updateNotification("walletAlerts", checked)
-                    }
+                    onChange={(checked) => updateNotification("walletAlerts", checked)}
                   />
                   <div className="flex-1 space-y-0.5">
-                    <h4 className="text-base font-medium text-text-70">
-                      Wallet Alerts
-                    </h4>
-                    <p className="text-sm text-text-50">
-                      Stay updated on your wallet balance and payment
-                      activities.
-                    </p>
+                    <h4 className="text-base font-medium text-text-70">Wallet Alerts</h4>
+                    <p className="text-sm text-text-50">Stay updated on your wallet balance and payment activities.</p>
                   </div>
                 </div>
 
@@ -503,17 +410,12 @@ const DashboardSettings = () => {
                 <div className="flex items-start gap-4">
                   <Toggle
                     checked={notifications.subscriptionUpdates}
-                    onChange={(checked) =>
-                      updateNotification("subscriptionUpdates", checked)
-                    }
+                    onChange={(checked) => updateNotification("subscriptionUpdates", checked)}
                   />
                   <div className="flex-1 space-y-0.5">
-                    <h4 className="text-base font-medium text-text-70">
-                      Subscription & Billing Updates
-                    </h4>
+                    <h4 className="text-base font-medium text-text-70">Subscription & Billing Updates</h4>
                     <p className="text-sm text-text-50">
-                      Get reminders about your subscription status and upcoming
-                      charges.
+                      Get reminders about your subscription status and upcoming charges.
                     </p>
                   </div>
                 </div>
@@ -522,17 +424,11 @@ const DashboardSettings = () => {
                 <div className="flex items-start gap-4">
                   <Toggle
                     checked={notifications.newsUpdates}
-                    onChange={(checked) =>
-                      updateNotification("newsUpdates", checked)
-                    }
+                    onChange={(checked) => updateNotification("newsUpdates", checked)}
                   />
                   <div className="flex-1 space-y-0.5">
-                    <h4 className="text-base font-medium text-text-70">
-                      News and updates
-                    </h4>
-                    <p className="text-sm text-text-50">
-                      News about products and features updates.
-                    </p>
+                    <h4 className="text-base font-medium text-text-70">News and updates</h4>
+                    <p className="text-sm text-text-50">News about products and features updates.</p>
                   </div>
                 </div>
               </div>
@@ -544,12 +440,9 @@ const DashboardSettings = () => {
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 py-6">
               {/* Left column - Section title and description */}
               <div className="lg:col-span-2 space-y-1">
-                <h3 className="text-base font-medium text-text-70">
-                  Push Notifications
-                </h3>
+                <h3 className="text-base font-medium text-text-70">Push Notifications</h3>
                 <p className="text-sm text-text-50">
-                  Get notifications in-app to find out what's going on when
-                  you're online.
+                  Get notifications in-app to find out what's going on when you're online.
                 </p>
               </div>
 
@@ -559,17 +452,11 @@ const DashboardSettings = () => {
                 <div className="flex items-start gap-4">
                   <Toggle
                     checked={notifications.verificationResults}
-                    onChange={(checked) =>
-                      updateNotification("verificationResults", checked)
-                    }
+                    onChange={(checked) => updateNotification("verificationResults", checked)}
                   />
                   <div className="flex-1 space-y-0.5">
-                    <h4 className="text-base font-medium text-text-70">
-                      Verification Results
-                    </h4>
-                    <p className="text-sm text-text-50">
-                      Get notified about your the status of your verifications.
-                    </p>
+                    <h4 className="text-base font-medium text-text-70">Verification Results</h4>
+                    <p className="text-sm text-text-50">Get notified about your the status of your verifications.</p>
                   </div>
                 </div>
 
@@ -577,17 +464,12 @@ const DashboardSettings = () => {
                 <div className="flex items-start gap-4">
                   <Toggle
                     checked={notifications.documentUpdates}
-                    onChange={(checked) =>
-                      updateNotification("documentUpdates", checked)
-                    }
+                    onChange={(checked) => updateNotification("documentUpdates", checked)}
                   />
                   <div className="flex-1 space-y-0.5">
-                    <h4 className="text-base font-medium text-text-70">
-                      Document Status Updates
-                    </h4>
+                    <h4 className="text-base font-medium text-text-70">Document Status Updates</h4>
                     <p className="text-sm text-text-50">
-                      Know when your uploaded documents are approved or need
-                      changes.
+                      Know when your uploaded documents are approved or need changes.
                     </p>
                   </div>
                 </div>
