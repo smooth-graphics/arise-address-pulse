@@ -3,6 +3,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { useNotifications } from '@/hooks/api/useNotifications';
 import { useUsageLimit } from '@/hooks/api/useUsageLimit';
 import { mockUsageLimitService } from '@/services/mock/mockUsageLimitService';
@@ -23,6 +24,7 @@ import {
   BarChart3,
   TrendingUp,
   Clock,
+  Check,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -242,18 +244,80 @@ const OrganizationDashboard = () => {
             </button>
           </Link>
 
-          {/* Notifications */}
-          <Link to="/dashboard/notifications">
-            <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center hover:bg-gray-200 transition-colors cursor-pointer">
-              <Bell className="w-5 h-5 text-gray-400" strokeWidth={1.5} />
-            </div>
-          </Link>
+          {/* Notifications Dropdown */}
+          <Popover>
+            <PopoverTrigger asChild>
+              <button className="relative w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center hover:bg-gray-200 transition-colors cursor-pointer">
+                <Bell className="w-5 h-5 text-gray-400" strokeWidth={1.5} />
+                {notifications?.unreadCount ? (
+                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-orange-primary text-white text-xs rounded-full flex items-center justify-center">
+                    {notifications.unreadCount}
+                  </span>
+                ) : null}
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="w-[374px] p-0 bg-gray-200 border-gray-200" align="end">
+              <div className="flex flex-col max-h-[600px]">
+                {/* Header */}
+                <div className="flex items-center justify-between p-4 bg-white border-b border-gray-200">
+                  <div className="flex items-center gap-1">
+                    <span className="text-sm font-medium text-gray-700">
+                      All Notifications
+                    </span>
+                    <ChevronDown className="w-5 h-5 text-gray-600" strokeWidth={1} />
+                  </div>
+                  <SettingsIcon className="w-6 h-6 text-gray-500" strokeWidth={1.5} />
+                </div>
+
+                {/* Filter Tabs */}
+                <div className="flex items-center justify-between px-4 py-3 bg-white border-b border-gray-200">
+                  <div className="flex items-center gap-2">
+                    <button className="px-2 py-1 bg-gray-200 text-gray-700 text-xs font-medium rounded">
+                      All
+                    </button>
+                    <button className="px-2 py-1 text-gray-700 text-xs font-medium rounded hover:bg-gray-100">
+                      Unread ({notifications?.unreadCount || 0})
+                    </button>
+                  </div>
+                  <button className="text-xs font-medium text-gray-700 hover:text-gray-900">
+                    Mark all as read
+                  </button>
+                </div>
+
+                {/* Notifications List */}
+                <div className="flex-1 overflow-y-auto">
+                  {notificationsLoading ? (
+                    <div className="p-4 space-y-3 bg-white">
+                      <Skeleton className="h-4 w-full" />
+                      <Skeleton className="h-4 w-3/4" />
+                      <Skeleton className="h-4 w-1/2" />
+                    </div>
+                  ) : (notifications?.notifications || []).length === 0 ? (
+                    <div className="p-8 text-center bg-white">
+                      <Bell className="w-12 h-12 text-gray-300 mx-auto mb-2" />
+                      <p className="text-sm text-gray-500">No notifications yet</p>
+                    </div>
+                  ) : (
+                    (notifications?.notifications || []).map((notification) => (
+                      <NotificationItem
+                        key={notification.id}
+                        title={notification.title}
+                        subtitle={notification.message}
+                        time={new Date(notification.createdAt).toLocaleTimeString()}
+                        isUnread={!notification.isRead}
+                      />
+                    ))
+                  )}
+                </div>
+              </div>
+            </PopoverContent>
+          </Popover>
         </div>
       </div>
 
-      <div className="flex gap-4 p-4 h-[calc(100vh-6rem)]">
+      <div className="p-4">
         {/* Main Content */}
-        <div className="flex-1">
+        <div className="flex-1 max-w-full">
           {/* Usage Alert for Organization Members */}
           {!isAdmin && (
             <div className="mb-4">
@@ -324,6 +388,53 @@ const OrganizationDashboard = () => {
                 />
               </>
             )}
+          </div>
+
+          {/* Quick Actions Section */}
+          <div className="mb-8">
+            <h3 className="text-lg font-medium text-black mb-4">Quick Actions</h3>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              {isAdmin && (
+                <Link to="/dashboard/team">
+                  <button className="w-full flex items-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm">
+                    <Users className="w-4 h-4" />
+                    Team Management
+                  </button>
+                </Link>
+              )}
+              <Link to="/dashboard/bulk-upload">
+                <button className="w-full flex items-center gap-2 px-4 py-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm">
+                  <Upload className="w-4 h-4" />
+                  {isAdmin ? 'Bulk Upload' : 'Upload Documents'}
+                </button>
+              </Link>
+              <Link to="/dashboard/settings">
+                <button className="w-full flex items-center gap-2 px-4 py-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm">
+                  <Building className="w-4 h-4" />
+                  Organization Profile
+                </button>
+              </Link>
+              {isAdmin && (
+                <Link to="/dashboard/api">
+                  <button className="w-full flex items-center gap-2 px-4 py-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm">
+                    <Key className="w-4 h-4" />
+                    API Management
+                  </button>
+                </Link>
+              )}
+              <Link to="/dashboard/documents">
+                <button className="w-full flex items-center gap-2 px-4 py-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm">
+                  <FileText className="w-4 h-4" />
+                  {isAdmin ? 'Document Templates' : 'My Documents'}
+                </button>
+              </Link>
+              <Link to="/dashboard/activity">
+                <button className="w-full flex items-center gap-2 px-4 py-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm">
+                  <BarChart3 className="w-4 h-4" />
+                  Analytics
+                </button>
+              </Link>
+            </div>
           </div>
 
           {/* Recent Verifications Section */}
@@ -407,103 +518,6 @@ const OrganizationDashboard = () => {
                 See history
               </Link>
             </div>
-
-            {/* Quick Actions Section */}
-            <div className="mt-8 pt-6 border-t border-gray-200">
-              <h3 className="text-lg font-medium text-black mb-4">Quick Actions</h3>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                {isAdmin && (
-                  <Link to="/dashboard/team">
-                    <button className="w-full flex items-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm">
-                      <Users className="w-4 h-4" />
-                      Team Management
-                    </button>
-                  </Link>
-                )}
-                <Link to="/dashboard/bulk-upload">
-                  <button className="w-full flex items-center gap-2 px-4 py-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm">
-                    <Upload className="w-4 h-4" />
-                    {isAdmin ? 'Bulk Upload' : 'Upload Documents'}
-                  </button>
-                </Link>
-                <Link to="/dashboard/settings">
-                  <button className="w-full flex items-center gap-2 px-4 py-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm">
-                    <Building className="w-4 h-4" />
-                    Organization Profile
-                  </button>
-                </Link>
-                {isAdmin && (
-                  <Link to="/dashboard/api">
-                    <button className="w-full flex items-center gap-2 px-4 py-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm">
-                      <Key className="w-4 h-4" />
-                      API Management
-                    </button>
-                  </Link>
-                )}
-                <Link to="/dashboard/documents">
-                  <button className="w-full flex items-center gap-2 px-4 py-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm">
-                    <FileText className="w-4 h-4" />
-                    {isAdmin ? 'Document Templates' : 'My Documents'}
-                  </button>
-                </Link>
-                <Link to="/dashboard/activity">
-                  <button className="w-full flex items-center gap-2 px-4 py-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm">
-                    <BarChart3 className="w-4 h-4" />
-                    Analytics
-                  </button>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Notifications Panel */}
-        <div className="w-[374px] bg-gray-200 rounded-2xl border border-gray-200 overflow-hidden flex flex-col h-full">
-          {/* Header */}
-          <div className="flex items-center justify-between p-4 bg-white border-b border-gray-200">
-            <div className="flex items-center gap-1">
-              <span className="text-sm font-medium text-gray-700">
-                All Notifications
-              </span>
-              <ChevronDown className="w-5 h-5 text-gray-600" strokeWidth={1} />
-            </div>
-            <SettingsIcon className="w-6 h-6 text-gray-500" strokeWidth={1.5} />
-          </div>
-
-          {/* Filter Tabs */}
-          <div className="flex items-center justify-between px-4 py-3 bg-white border-b border-gray-200">
-            <div className="flex items-center gap-2">
-              <button className="px-2 py-1 bg-gray-200 text-gray-700 text-xs font-medium rounded">
-                All
-              </button>
-              <button className="px-2 py-1 text-gray-700 text-xs font-medium rounded hover:bg-gray-100">
-                Unread (2)
-              </button>
-            </div>
-            <button className="text-xs font-medium text-gray-700 hover:text-gray-900">
-              Mark all as read
-            </button>
-          </div>
-
-          {/* Notifications List */}
-          <div className="flex-1 overflow-y-auto">
-            {notificationsLoading ? (
-              <div className="p-4 space-y-3">
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-3/4" />
-                <Skeleton className="h-4 w-1/2" />
-              </div>
-            ) : (
-              (notifications?.notifications || []).map((notification) => (
-                <NotificationItem
-                  key={notification.id}
-                  title={notification.title}
-                  subtitle={notification.message}
-                  time={new Date(notification.createdAt).toLocaleTimeString()}
-                  isUnread={!notification.isRead}
-                />
-              ))
-            )}
           </div>
         </div>
       </div>
