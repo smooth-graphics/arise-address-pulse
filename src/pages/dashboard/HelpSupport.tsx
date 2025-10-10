@@ -95,7 +95,7 @@ export default function HelpSupportPage() {
 
           {/* FAQ Section */}
           <div className="max-w-4xl">
-            <h2 className="text-lg font-medium text-black mb-4">Frequently Asked Questions</h2>
+            <h2 className="text-lg font-medium text-black mb-4">Frequently Asked Questions (FAQs)</h2>
             <div className="space-y-0">
               {faqItems.map((faq, index) => (
                 <div key={index} className="border-b border-genital-stroke/50">

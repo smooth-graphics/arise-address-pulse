@@ -234,7 +234,7 @@ const Pricing = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto">
             <h2 className="h2-desktop lg:h2-mobile text-dark-charcoal text-center mb-12">
-              Frequently Asked Questions
+              Frequently Asked Questions (FAQs)
             </h2>
 
             <Accordion type="single" collapsible className="space-y-4">
@@ -269,7 +269,7 @@ const Pricing = () => {
               </Button>
             </Link>
             <Link to="/contact">
-              <Button variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-dark-charcoal font-semibold px-8 py-4 text-lg">
+              <Button variant="outline" className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-vibrant-orange px-6 py-3 text-lg font-semibold rounded-xl transition-all duration-300">
                 Contact Sales
               </Button>
             </Link>

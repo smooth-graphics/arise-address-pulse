@@ -274,7 +274,7 @@ const FAQ = () => {
         <div className="container mx-auto px-4 text-center space-y-8">
           <div className="max-w-3xl mx-auto">
             <h1 className="text-4xl lg:text-5xl font-bold text-text-primary mb-6">
-              Frequently Asked Questions
+              Frequently Asked Questions (FAQs)
             </h1>
             <p className="text-lg text-text-secondary mb-8">
               Find answers to common questions about our address validation platform, features, pricing, and more.
