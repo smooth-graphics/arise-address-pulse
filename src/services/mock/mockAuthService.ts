@@ -35,7 +35,7 @@ const DEMO_USERS = {
     id: "demo-org-member-001",
     email: "member@arisetech.com",
     phone: "+234-803-456-7890",
-    firstName: "onu ",
+    firstName: "onu",
     lastName: "omar-ikaige",
     role: "organization-member" as const,
     organizationId: "org-arise-001",
