@@ -3,9 +3,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { SearchTable } from "@/components/common/SearchTable";
+import SearchTable from "@/components/common/SearchTable";
 import { useUsers, useUserStats, useUpdateUserStatus } from "@/hooks/api/useUserManagement";
-import { UserManagementFilters } from "@/types/userManagement";
+import { UserManagementFilters, UserManagementRecord } from "@/types/userManagement";
 import { Search, Filter, Users as UsersIcon, UserCheck, UserX, Clock } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
@@ -15,11 +15,15 @@ const Users = () => {
   const { data: stats } = useUserStats();
   const updateStatus = useUpdateUserStatus();
 
-  const columns = [
+  const columns: Array<{
+    key: keyof UserManagementRecord;
+    label: string;
+    render?: (value: any, user: UserManagementRecord) => React.ReactNode;
+  }> = [
     { 
       key: 'fullName', 
       label: 'Name',
-      render: (user: any) => (
+      render: (value: any, user: UserManagementRecord) => (
         <div>
           <p className="font-medium">{user.fullName}</p>
           <p className="text-sm text-muted-foreground">{user.email}</p>
@@ -29,14 +33,14 @@ const Users = () => {
     { 
       key: 'role', 
       label: 'Role',
-      render: (user: any) => (
+      render: (value: any, user: UserManagementRecord) => (
         <Badge variant="outline">{user.role.replace(/-/g, ' ')}</Badge>
       )
     },
     { 
       key: 'status', 
       label: 'Status',
-      render: (user: any) => (
+      render: (value: any, user: UserManagementRecord) => (
         <Badge variant={user.status === 'active' ? 'default' : 'destructive'}>
           {user.status}
         </Badge>
@@ -45,19 +49,22 @@ const Users = () => {
     { 
       key: 'totalVerifications', 
       label: 'Verifications',
-      render: (user: any) => user.totalVerifications || 0
+      render: (value: any, user: UserManagementRecord) => user.totalVerifications || 0
     },
     {
-      key: 'actions',
+      key: 'id',
       label: 'Actions',
-      render: (user: any) => (
+      render: (value: any, user: UserManagementRecord) => (
         <Button
           size="sm"
           variant={user.status === 'active' ? 'destructive' : 'default'}
-          onClick={() => updateStatus.mutate({ 
-            userId: user.id, 
-            status: user.status === 'active' ? 'suspended' : 'active' 
-          })}
+          onClick={(e) => {
+            e.stopPropagation();
+            updateStatus.mutate({ 
+              userId: user.id, 
+              status: user.status === 'active' ? 'suspended' : 'active' 
+            });
+          }}
         >
           {user.status === 'active' ? 'Suspend' : 'Activate'}
         </Button>
@@ -144,11 +151,7 @@ const Users = () => {
           <SearchTable
             data={data?.users || []}
             columns={columns}
-            isLoading={isLoading}
-            totalItems={data?.total || 0}
-            currentPage={filters.page || 1}
-            itemsPerPage={filters.limit || 10}
-            onPageChange={(page) => setFilters({ ...filters, page })}
+            pageSize={10}
           />
         </CardContent>
       </Card>
