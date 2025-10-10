@@ -8,6 +8,18 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+import { EditMemberModal } from '@/components/team/EditMemberModal';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import { useToast } from '@/hooks/use-toast';
 
 interface TeamMember {
   id: string;
@@ -58,34 +70,75 @@ const teamMembers: TeamMember[] = [
 ];
 
 export default function TeamManagement() {
+  const { toast } = useToast();
+  const [members, setMembers] = useState<TeamMember[]>(teamMembers);
   const [searchQuery, setSearchQuery] = useState("");
   const [showInviteModal, setShowInviteModal] = useState(false);
   const [inviteEmail, setInviteEmail] = useState("");
   const [inviteType, setInviteType] = useState<"single" | "bulk">("single");
+  const [editingMember, setEditingMember] = useState<TeamMember | null>(null);
+  const [deletingMemberId, setDeletingMemberId] = useState<string | null>(null);
 
-  const filteredMembers = teamMembers.filter(
+  const filteredMembers = members.filter(
     (member) =>
       member.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       member.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleSendInvite = () => {
-    if (inviteEmail.trim()) {
-      console.log('Sending invite to:', inviteEmail);
-      // TODO: Implement actual invite functionality
-      setInviteEmail("");
-      setShowInviteModal(false);
+    if (!inviteEmail.trim()) return;
+
+    const emails = inviteEmail.split(',').map(e => e.trim()).filter(e => e);
+    
+    if (emails.some(email => !email.includes('@'))) {
+      toast({
+        title: 'Invalid Email',
+        description: 'Please enter valid email addresses.',
+        variant: 'destructive',
+      });
+      return;
     }
+
+    // Mock sending invites
+    toast({
+      title: 'Invitations Sent',
+      description: `Successfully sent ${emails.length} invitation${emails.length > 1 ? 's' : ''}.`,
+    });
+    
+    setInviteEmail("");
+    setShowInviteModal(false);
   };
 
   const handleEditMember = (memberId: string) => {
-    console.log('Editing member:', memberId);
-    // TODO: Implement edit functionality
+    const member = members.find(m => m.id === memberId);
+    if (member) {
+      setEditingMember(member);
+    }
+  };
+
+  const handleUpdateMember = (memberId: string, updates: Partial<TeamMember>) => {
+    setMembers(prevMembers =>
+      prevMembers.map(member =>
+        member.id === memberId ? { ...member, ...updates } : member
+      )
+    );
   };
 
   const handleDeleteMember = (memberId: string) => {
-    console.log('Deleting member:', memberId);
-    // TODO: Implement delete functionality with confirmation
+    setDeletingMemberId(memberId);
+  };
+
+  const confirmDeleteMember = () => {
+    if (!deletingMemberId) return;
+
+    setMembers(prevMembers => prevMembers.filter(m => m.id !== deletingMemberId));
+    
+    toast({
+      title: 'Member Removed',
+      description: 'The team member has been removed successfully.',
+    });
+    
+    setDeletingMemberId(null);
   };
 
   return (
@@ -313,6 +366,35 @@ export default function TeamManagement() {
           </div>
         </div>
       )}
+
+      {/* Edit Member Modal */}
+      {editingMember && (
+        <EditMemberModal
+          isOpen={!!editingMember}
+          onClose={() => setEditingMember(null)}
+          member={editingMember}
+          onUpdate={handleUpdateMember}
+        />
+      )}
+
+      {/* Delete Confirmation */}
+      <AlertDialog open={!!deletingMemberId} onOpenChange={() => setDeletingMemberId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Remove Team Member?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently remove the member from your team
+              and revoke their access to the platform. All their data and usage history will be lost.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDeleteMember} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Remove Member
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

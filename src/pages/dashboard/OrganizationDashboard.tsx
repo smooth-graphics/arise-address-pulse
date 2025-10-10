@@ -4,10 +4,12 @@ import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { useNotifications } from '@/hooks/api/useNotifications';
+import { useNotifications, useMarkAllNotificationsAsRead } from '@/hooks/api/useNotifications';
 import { useUsageLimit } from '@/hooks/api/useUsageLimit';
 import { mockUsageLimitService } from '@/services/mock/mockUsageLimitService';
 import { UsageAlertBanner } from '@/components/notifications/UsageAlertBanner';
+import { NotificationSettingsModal } from '@/components/notifications/NotificationSettingsModal';
+import { useToast } from '@/hooks/use-toast';
 import {
   Bell,
   Search,
@@ -35,6 +37,7 @@ interface DashboardCardProps {
   showEye?: boolean;
   showDropdown?: boolean;
   dropdownText?: string;
+  linkTo?: string;
 }
 
 function DashboardCard({
@@ -44,8 +47,9 @@ function DashboardCard({
   showEye,
   showDropdown,
   dropdownText,
+  linkTo,
 }: DashboardCardProps) {
-  return (
+  const CardContent = (
     <div className="flex-1 p-4 border-2 border-dashed border-gray-200 rounded-2xl bg-white">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
@@ -71,15 +75,19 @@ function DashboardCard({
             </span>
           )}
         </div>
-        <button className="p-1 hover:bg-gray-50 rounded transition-colors">
-          <ArrowUpRight
-            className="w-6 h-6 text-orange-primary"
-            strokeWidth={1.5}
-          />
-        </button>
+        {linkTo && (
+          <Link to={linkTo} className="p-1 hover:bg-gray-50 rounded transition-colors">
+            <ArrowUpRight
+              className="w-6 h-6 text-orange-primary"
+              strokeWidth={1.5}
+            />
+          </Link>
+        )}
       </div>
     </div>
   );
+
+  return linkTo ? CardContent : CardContent;
 }
 
 interface NotificationItemProps {
@@ -158,12 +166,20 @@ function StatusBadge({ status }: { status: string }) {
 
 const OrganizationDashboard = () => {
   const { user } = useAuth();
+  const { toast } = useToast();
   const { data: notifications, isLoading: notificationsLoading } = useNotifications({ limit: 6 });
   const { data: usageLimit } = useUsageLimit(user?.id || '');
+  const markAllAsRead = useMarkAllNotificationsAsRead();
   const [selectedFilter, setSelectedFilter] = useState("verified");
+  const [showNotificationSettings, setShowNotificationSettings] = useState(false);
 
   const isAdmin = user?.role === 'organization-admin';
   const usagePercentage = usageLimit ? mockUsageLimitService.calculateUsagePercentage(usageLimit) : 0;
+
+  const handleMarkAllAsRead = () => {
+    markAllAsRead.mutate();
+    toast({ title: 'All notifications marked as read' });
+  };
 
   // Mock recent verifications data
   const recentVerifications = [
@@ -266,7 +282,9 @@ const OrganizationDashboard = () => {
                     </span>
                     <ChevronDown className="w-5 h-5 text-gray-600" strokeWidth={1} />
                   </div>
-                  <SettingsIcon className="w-6 h-6 text-gray-500" strokeWidth={1.5} />
+                  <button onClick={() => setShowNotificationSettings(true)} className="hover:bg-gray-100 rounded p-1 transition-colors">
+                    <SettingsIcon className="w-6 h-6 text-gray-500" strokeWidth={1.5} />
+                  </button>
                 </div>
 
                 {/* Filter Tabs */}
@@ -279,7 +297,10 @@ const OrganizationDashboard = () => {
                       Unread ({notifications?.unreadCount || 0})
                     </button>
                   </div>
-                  <button className="text-xs font-medium text-gray-700 hover:text-gray-900">
+                  <button 
+                    onClick={handleMarkAllAsRead}
+                    className="text-xs font-medium text-gray-700 hover:text-gray-900"
+                  >
                     Mark all as read
                   </button>
                 </div>
@@ -334,17 +355,20 @@ const OrganizationDashboard = () => {
                   value="1,247"
                   subtitle="members"
                   showEye={true}
+                  linkTo="/dashboard/team"
                 />
                 <DashboardCard
                   title="API Requests"
                   value="23,451"
                   showDropdown={true}
                   dropdownText="This Month"
+                  linkTo="/dashboard/api-monitor"
                 />
                 <DashboardCard
                   title="System Uptime"
                   value="99.9%"
                   showEye={true}
+                  linkTo="/dashboard/api-monitor"
                 />
               </>
             ) : usageLimit ? (
@@ -354,17 +378,20 @@ const OrganizationDashboard = () => {
                   value={usageLimit.remainingUnits.toString()}
                   subtitle={`of ${usageLimit.allocatedUnits}`}
                   showEye={false}
+                  linkTo="/dashboard/billing"
                 />
                 <DashboardCard
                   title="Units Used"
                   value={`${usagePercentage}%`}
                   subtitle={`${usageLimit.usedUnits} used`}
                   showEye={false}
+                  linkTo="/dashboard/billing"
                 />
                 <DashboardCard
                   title="Reset Date"
                   value={usageLimit.resetDate ? new Date(usageLimit.resetDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'N/A'}
                   showEye={false}
+                  linkTo="/dashboard/billing"
                 />
               </>
             ) : (
@@ -518,11 +545,16 @@ const OrganizationDashboard = () => {
                 See history
               </Link>
             </div>
+            </div>
           </div>
         </div>
+
+        <NotificationSettingsModal
+          isOpen={showNotificationSettings}
+          onClose={() => setShowNotificationSettings(false)}
+        />
       </div>
-    </div>
-  );
-};
+    );
+  };
 
 export default OrganizationDashboard;

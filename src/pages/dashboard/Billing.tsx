@@ -6,12 +6,14 @@ import { Check, CreditCard, Download, FileText } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { pricingPlans, formatPrice, calculateYearlyDiscount } from '@/data/pricingPlans';
 import PlanUpgradeModal from '@/components/billing/PlanUpgradeModal';
+import { PaymentMethodModal } from '@/components/billing/PaymentMethodModal';
 import type { BillingPeriod } from '@/types/billing';
 
 const Billing = () => {
   const { user } = useAuth();
   const [billingPeriod, setBillingPeriod] = useState<BillingPeriod>('monthly');
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
   // Determine user type based on role
   const userType = user?.role === 'organization' || user?.role === 'organization-admin' || user?.role === 'organization-member' ? 'business' : 'individual';
@@ -72,7 +74,7 @@ const Billing = () => {
             <Button onClick={() => setIsUpgradeModalOpen(true)}>
               Upgrade Plan
             </Button>
-            <Button variant="outline">
+            <Button variant="outline" onClick={() => setIsPaymentModalOpen(true)}>
               <CreditCard className="w-4 h-4 mr-2" />
               Manage Payment Method
             </Button>
@@ -253,6 +255,11 @@ const Billing = () => {
           onUpgrade={handleUpgrade}
           userRole={user?.role || 'individual'}
           billingPeriod={billingPeriod}
+        />
+        
+        <PaymentMethodModal
+          isOpen={isPaymentModalOpen}
+          onClose={() => setIsPaymentModalOpen(false)}
         />
     </div>
   );

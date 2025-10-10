@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { PricingManagementDashboard } from '@/components/pricing/PricingManagementDashboard';
 
 const DashboardPricing = () => {
   return (
@@ -8,15 +8,7 @@ const DashboardPricing = () => {
         <p className="text-gray-600">Configure pricing plans and billing settings</p>
       </div>
       
-      <Card>
-        <CardHeader>
-          <CardTitle>Pricing Plans</CardTitle>
-          <CardDescription>Manage subscription plans and pricing</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-gray-500">Pricing management interface coming soon...</p>
-        </CardContent>
-      </Card>
+      <PricingManagementDashboard />
     </div>
   );
 };
