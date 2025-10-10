@@ -5,14 +5,14 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import SearchTable from "@/components/common/SearchTable";
 import { useActivities, useExportActivities } from "@/hooks/api/useActivityLog";
-import { ActivityLogFilters, ActivityLogRecord } from "@/types/activityLog";
+import { ActivityFilters, ActivityRecord } from "@/types/activityLog";
 import { Search, Download, Activity as ActivityIcon, Shield, Eye } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { formatDistanceToNow } from "date-fns";
 
 const Activity = () => {
-  const [filters, setFilters] = useState<ActivityLogFilters>({ page: 1, limit: 10 });
+  const [filters, setFilters] = useState<ActivityFilters>({ page: 1, limit: 10 });
   const { data, isLoading } = useActivities(filters);
   const exportMutation = useExportActivities();
 
@@ -24,22 +24,22 @@ const Activity = () => {
   };
 
   const columns: Array<{
-    key: keyof ActivityLogRecord;
+    key: keyof ActivityRecord;
     label: string;
-    render?: (value: any, activity: ActivityLogRecord) => React.ReactNode;
+    render?: (value: any, activity: ActivityRecord) => React.ReactNode;
   }> = [
     { 
-      key: 'user', 
+      key: 'userName', 
       label: 'User',
-      render: (value: any, activity: ActivityLogRecord) => (
+      render: (value: any, activity: ActivityRecord) => (
         <div className="flex items-center gap-2">
           <Avatar className="h-8 w-8">
-            <AvatarImage src={activity.user.avatar} />
-            <AvatarFallback>{activity.user.name.charAt(0)}</AvatarFallback>
+            <AvatarImage src={activity.userAvatar} />
+            <AvatarFallback>{activity.userName.charAt(0)}</AvatarFallback>
           </Avatar>
           <div>
-            <p className="font-medium text-sm">{activity.user.name}</p>
-            <p className="text-xs text-muted-foreground">{activity.user.role}</p>
+            <p className="font-medium text-sm">{activity.userName}</p>
+            <p className="text-xs text-muted-foreground">{activity.userEmail}</p>
           </div>
         </div>
       )
@@ -47,20 +47,20 @@ const Activity = () => {
     { 
       key: 'action', 
       label: 'Action',
-      render: (value: any, activity: ActivityLogRecord) => (
+      render: (value: any, activity: ActivityRecord) => (
         <Badge variant={getActionBadgeVariant(activity.action)}>
           {activity.action.replace(/_/g, ' ')}
         </Badge>
       )
     },
     { 
-      key: 'entity', 
+      key: 'entityType', 
       label: 'Entity',
-      render: (value: any, activity: ActivityLogRecord) => (
+      render: (value: any, activity: ActivityRecord) => (
         <div>
-          <p className="font-medium text-sm">{activity.entity.type}</p>
+          <p className="font-medium text-sm">{activity.entityType || 'N/A'}</p>
           <p className="text-xs text-muted-foreground truncate max-w-[200px]">
-            {activity.entity.id}
+            {activity.entityId || ''}
           </p>
         </div>
       )
@@ -68,7 +68,7 @@ const Activity = () => {
     { 
       key: 'timestamp', 
       label: 'Time',
-      render: (value: any, activity: ActivityLogRecord) => (
+      render: (value: any, activity: ActivityRecord) => (
         <div>
           <p className="text-sm">{new Date(activity.timestamp).toLocaleString()}</p>
           <p className="text-xs text-muted-foreground">
@@ -80,13 +80,13 @@ const Activity = () => {
     {
       key: 'ipAddress',
       label: 'IP Address',
-      render: (value: any, activity: ActivityLogRecord) => (
-        <span className="text-sm font-mono">{activity.ipAddress}</span>
+      render: (value: any, activity: ActivityRecord) => (
+        <span className="text-sm font-mono">{activity.ipAddress || 'N/A'}</span>
       )
     }
   ];
 
-  const handleExport = (format: 'csv' | 'pdf') => {
+  const handleExport = (format: 'csv' | 'xlsx') => {
     exportMutation.mutate({ filters, format });
   };
 
@@ -121,18 +121,20 @@ const Activity = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {data?.activities?.filter(a => a.isSecurityEvent).length || 0}
+              {data?.activities?.filter(a => a.severity === 'critical').length || 0}
             </div>
             <p className="text-xs text-muted-foreground">Requires attention</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Users</CardTitle>
+            <CardTitle className="text-sm font-medium">Unique Users</CardTitle>
             <Eye className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{data?.activeUsers || 0}</div>
+            <div className="text-2xl font-bold">
+              {new Set(data?.activities?.map(a => a.userId) || []).size}
+            </div>
             <p className="text-xs text-muted-foreground">Last 24 hours</p>
           </CardContent>
         </Card>
@@ -175,7 +177,6 @@ const Activity = () => {
             data={data?.activities || []}
             columns={columns}
             pageSize={10}
-            onExport={handleExport}
           />
         </CardContent>
       </Card>

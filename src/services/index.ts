@@ -13,6 +13,12 @@ import { verificationService as realVerificationService } from './verificationSe
 import { walletService as realWalletService } from './walletService';
 import { notificationService as realNotificationService } from './notificationService';
 import { userService as realUserService } from './userService';
+import { userManagementService as realUserManagementService } from './userManagementService';
+import { verificationQueueService as realVerificationQueueService } from './verificationQueueService';
+import { activityLogService as realActivityLogService } from './activityLogService';
+import { apiMonitorService as realApiMonitorService } from './apiMonitorService';
+import { apiAccessService as realApiAccessService } from './apiAccessService';
+import { pricingManagementService as realPricingManagementService } from './pricingManagementService';
 
 // Mock services
 import { mockAuthService } from './mock/mockAuthService';
@@ -20,24 +26,30 @@ import { mockVerificationService } from './mock/mockVerificationService';
 import { mockWalletService } from './mock/mockWalletService';
 import { mockNotificationService } from './mock/mockNotificationService';
 import { mockUserService } from './mock/mockUserService';
+import { mockUserManagementService } from './mock/mockUserManagementService';
+import { mockVerificationQueueService } from './mock/mockVerificationQueueService';
+import { mockActivityLogService } from './mock/mockActivityLogService';
+import { mockApiMonitorService } from './mock/mockApiMonitorService';
+import { mockApiAccessService } from './mock/mockApiAccessService';
+import { mockPricingManagementService } from './mock/mockPricingManagementService';
 
 // Export the appropriate service based on feature flags
-export const authService = FEATURES.REAL_AUTH ? realAuthService : mockAuthService;
-export const verificationService = FEATURES.REAL_VERIFICATION ? realVerificationService : mockVerificationService;
-export const walletService = FEATURES.REAL_WALLET ? realWalletService : mockWalletService;
-export const notificationService = FEATURES.REAL_NOTIFICATIONS ? realNotificationService : mockNotificationService;
-export const userService = FEATURES.REAL_VERIFICATION ? realUserService : mockUserService;
+export const authService = FEATURES.USE_REAL_API ? realAuthService : mockAuthService;
+export const verificationService = FEATURES.USE_REAL_API ? realVerificationService : mockVerificationService;
+export const walletService = FEATURES.USE_REAL_API ? realWalletService : mockWalletService;
+export const notificationService = FEATURES.USE_REAL_API ? realNotificationService : mockNotificationService;
+export const userService = FEATURES.USE_REAL_API ? realUserService : mockUserService;
+export const userManagementService = FEATURES.USE_REAL_API ? realUserManagementService : mockUserManagementService;
+export const verificationQueueService = FEATURES.USE_REAL_API ? realVerificationQueueService : mockVerificationQueueService;
+export const activityLogService = FEATURES.USE_REAL_API ? realActivityLogService : mockActivityLogService;
+export const apiMonitorService = FEATURES.USE_REAL_API ? realApiMonitorService : mockApiMonitorService;
+export const apiAccessService = FEATURES.USE_REAL_API ? realApiAccessService : mockApiAccessService;
+export const pricingManagementService = FEATURES.USE_REAL_API ? realPricingManagementService : mockPricingManagementService;
 
 // Log which services are in mock mode (development only)
 if (import.meta.env.DEV) {
-  const mockServices = [];
-  if (!FEATURES.REAL_AUTH) mockServices.push('Auth');
-  if (!FEATURES.REAL_VERIFICATION) mockServices.push('Verification');
-  if (!FEATURES.REAL_WALLET) mockServices.push('Wallet');
-  if (!FEATURES.REAL_NOTIFICATIONS) mockServices.push('Notifications');
-  
-  if (mockServices.length > 0) {
-    console.log(`[Demo Mode] Using mock services: ${mockServices.join(', ')}`);
+  if (!FEATURES.USE_REAL_API) {
+    console.log('[Demo Mode] Using mock services for all features');
   } else {
     console.log('[Live Mode] All services connected to real API');
   }

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import SearchTable from "@/components/common/SearchTable";
 import { useApiKeys, useGenerateApiKey, useRevokeApiKey } from "@/hooks/api/useApiAccess";
-import { ApiKey, ApiKeyCreateRequest } from "@/types/apiAccess";
+import { ApiKey, CreateApiKeyRequest } from "@/types/apiAccess";
 import { Key, Copy, Trash2, Plus, CheckCircle, AlertCircle } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -32,9 +32,10 @@ const ApiAccess = () => {
   ];
 
   const handleGenerateKey = () => {
-    const request: ApiKeyCreateRequest = {
+    const request: CreateApiKeyRequest = {
       name: newKeyName,
       scopes: selectedScopes,
+      environment: 'production'
     };
 
     generateMutation.mutate(request, {
@@ -72,7 +73,7 @@ const ApiAccess = () => {
         <div>
           <p className="font-medium">{apiKey.name}</p>
           <p className="text-sm text-muted-foreground font-mono">
-            {apiKey.keyPreview}
+            {apiKey.maskedKey}
           </p>
         </div>
       )
@@ -105,19 +106,19 @@ const ApiAccess = () => {
       )
     },
     { 
-      key: 'lastUsed', 
+      key: 'lastUsedAt', 
       label: 'Last Used',
       render: (value: any, apiKey: ApiKey) => (
         <span className="text-sm">
-          {apiKey.lastUsed ? new Date(apiKey.lastUsed).toLocaleDateString() : 'Never'}
+          {apiKey.lastUsedAt ? new Date(apiKey.lastUsedAt).toLocaleDateString() : 'Never'}
         </span>
       )
     },
     { 
-      key: 'requestCount', 
-      label: 'Requests',
+      key: 'createdAt', 
+      label: 'Created',
       render: (value: any, apiKey: ApiKey) => (
-        <span className="text-sm font-medium">{apiKey.requestCount.toLocaleString()}</span>
+        <span className="text-sm">{new Date(apiKey.createdAt).toLocaleDateString()}</span>
       )
     },
     {
@@ -130,7 +131,7 @@ const ApiAccess = () => {
             variant="ghost"
             onClick={(e) => {
               e.stopPropagation();
-              handleCopyKey(apiKey.keyPreview);
+              handleCopyKey(apiKey.maskedKey);
             }}
           >
             <Copy className="h-4 w-4" />
@@ -182,7 +183,7 @@ const ApiAccess = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {apiKeys?.reduce((acc, k) => acc + k.requestCount, 0).toLocaleString() || 0}
+              {apiKeys?.length || 0} Keys
             </div>
           </CardContent>
         </Card>

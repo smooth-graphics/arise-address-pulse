@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import SearchTable from "@/components/common/SearchTable";
 import { useQueueItems, useQueueStats, useProcessQueueItem } from "@/hooks/api/useVerificationQueue";
-import { VerificationQueueFilters, VerificationQueueItem } from "@/types/verificationQueue";
+import { QueueFilters, QueueItem } from "@/types/verificationQueue";
 import { Search, Clock, AlertTriangle, CheckCircle, XCircle } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
@@ -13,12 +13,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { formatDistanceToNow } from "date-fns";
 
 const VerificationQueue = () => {
-  const [filters, setFilters] = useState<VerificationQueueFilters>({ page: 1, limit: 10 });
+  const [filters, setFilters] = useState<QueueFilters>({ page: 1, limit: 10 });
   const { data, isLoading } = useQueueItems(filters);
   const { data: stats } = useQueueStats();
   const processMutation = useProcessQueueItem();
   
-  const [selectedItem, setSelectedItem] = useState<VerificationQueueItem | null>(null);
+  const [selectedItem, setSelectedItem] = useState<QueueItem | null>(null);
   const [reviewNotes, setReviewNotes] = useState("");
 
   const getPriorityVariant = (priority: string) => {
@@ -31,13 +31,14 @@ const VerificationQueue = () => {
     }
   };
 
-  const handleProcess = (decision: 'approve' | 'reject' | 'request_info') => {
+  const handleProcess = (decision: 'approve' | 'reject' | 'request_more_info') => {
     if (!selectedItem) return;
     
     processMutation.mutate({
       itemId: selectedItem.id,
       decision,
-      notes: reviewNotes
+      notes: reviewNotes,
+      reviewerId: 'current-user-id'
     }, {
       onSuccess: () => {
         setSelectedItem(null);
@@ -47,31 +48,31 @@ const VerificationQueue = () => {
   };
 
   const columns: Array<{
-    key: keyof VerificationQueueItem;
+    key: keyof QueueItem;
     label: string;
-    render?: (value: any, item: VerificationQueueItem) => React.ReactNode;
+    render?: (value: any, item: QueueItem) => React.ReactNode;
   }> = [
     { 
       key: 'verificationId', 
       label: 'ID',
-      render: (value: any, item: VerificationQueueItem) => (
+      render: (value: any, item: QueueItem) => (
         <span className="font-mono text-sm">{item.verificationId.slice(0, 8)}...</span>
       )
     },
     { 
-      key: 'applicantName', 
+      key: 'fullName', 
       label: 'Applicant',
-      render: (value: any, item: VerificationQueueItem) => (
+      render: (value: any, item: QueueItem) => (
         <div>
-          <p className="font-medium">{item.applicantName}</p>
-          <p className="text-sm text-muted-foreground">{item.applicantEmail}</p>
+          <p className="font-medium">{item.fullName}</p>
+          <p className="text-sm text-muted-foreground">{item.submittedBy.email}</p>
         </div>
       )
     },
     { 
       key: 'priority', 
       label: 'Priority',
-      render: (value: any, item: VerificationQueueItem) => (
+      render: (value: any, item: QueueItem) => (
         <Badge variant={getPriorityVariant(item.priority)}>
           {item.priority}
         </Badge>
@@ -80,7 +81,7 @@ const VerificationQueue = () => {
     { 
       key: 'slaDeadline', 
       label: 'SLA',
-      render: (value: any, item: VerificationQueueItem) => {
+      render: (value: any, item: QueueItem) => {
         const isOverdue = new Date(item.slaDeadline) < new Date();
         return (
           <div className={isOverdue ? 'text-destructive' : ''}>
@@ -95,14 +96,14 @@ const VerificationQueue = () => {
     { 
       key: 'status', 
       label: 'Status',
-      render: (value: any, item: VerificationQueueItem) => (
+      render: (value: any, item: QueueItem) => (
         <Badge variant="outline">{item.status.replace(/_/g, ' ')}</Badge>
       )
     },
     {
       key: 'id',
       label: 'Actions',
-      render: (value: any, item: VerificationQueueItem) => (
+      render: (value: any, item: QueueItem) => (
         <Button
           size="sm"
           onClick={(e) => {
@@ -130,34 +131,34 @@ const VerificationQueue = () => {
             <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.pendingCount || 0}</div>
+            <div className="text-2xl font-bold">{stats?.totalPending || 0}</div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Urgent</CardTitle>
-            <AlertTriangle className="h-4 w-4 text-destructive" />
+            <CardTitle className="text-sm font-medium">Under Review</CardTitle>
+            <AlertTriangle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-destructive">{stats?.urgentCount || 0}</div>
+            <div className="text-2xl font-bold">{stats?.underReview || 0}</div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Overdue</CardTitle>
+            <CardTitle className="text-sm font-medium">Escalated</CardTitle>
             <XCircle className="h-4 w-4 text-destructive" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.overdueCount || 0}</div>
+            <div className="text-2xl font-bold">{stats?.escalated || 0}</div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Processed Today</CardTitle>
-            <CheckCircle className="h-4 w-4 text-green-600" />
+            <CardTitle className="text-sm font-medium">Breaching SLA</CardTitle>
+            <CheckCircle className="h-4 w-4 text-destructive" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.processedTodayCount || 0}</div>
+            <div className="text-2xl font-bold">{stats?.breachingSLA || 0}</div>
           </CardContent>
         </Card>
       </div>
@@ -217,11 +218,11 @@ const VerificationQueue = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <p className="text-sm font-medium">Applicant</p>
-                  <p className="text-sm text-muted-foreground">{selectedItem.applicantName}</p>
+                  <p className="text-sm text-muted-foreground">{selectedItem.fullName}</p>
                 </div>
                 <div>
                   <p className="text-sm font-medium">Email</p>
-                  <p className="text-sm text-muted-foreground">{selectedItem.applicantEmail}</p>
+                  <p className="text-sm text-muted-foreground">{selectedItem.submittedBy.email}</p>
                 </div>
                 <div>
                   <p className="text-sm font-medium">Priority</p>
@@ -253,7 +254,7 @@ const VerificationQueue = () => {
             <Button variant="outline" onClick={() => setSelectedItem(null)}>
               Cancel
             </Button>
-            <Button variant="secondary" onClick={() => handleProcess('request_info')}>
+            <Button variant="secondary" onClick={() => handleProcess('request_more_info')}>
               Request More Info
             </Button>
             <Button variant="destructive" onClick={() => handleProcess('reject')}>
