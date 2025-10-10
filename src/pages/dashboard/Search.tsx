@@ -111,27 +111,16 @@ export default function Search() {
 
                 {/* Address Input */}
                 <div className="px-5 py-3">
-                  {fullAddress ? (
-                    <>
-                      <label className="block text-sm font-medium text-gray-600 mb-1">
-                        Enter full address
-                      </label>
-                      <input
-                        type="text"
-                        value={fullAddress}
-                        onChange={(e) => setFullAddress(e.target.value)}
-                        className="w-full text-base text-black bg-transparent border-none outline-none"
-                      />
-                    </>
-                  ) : (
-                    <input
-                      type="text"
-                      placeholder="Enter full address"
-                      value={fullAddress}
-                      onChange={(e) => setFullAddress(e.target.value)}
-                      className="w-full text-base text-gray-500 bg-transparent border-none outline-none"
-                    />
-                  )}
+                  <label className="block text-sm font-medium text-gray-600 mb-1">
+                    Enter full address
+                  </label>
+                  <input
+                    type="text"
+                    value={fullAddress}
+                    onChange={(e) => setFullAddress(e.target.value)}
+                    placeholder="123 Main Street, City, State"
+                    className="w-full text-base text-black bg-transparent border-none outline-none"
+                  />
                 </div>
               </div>
 
