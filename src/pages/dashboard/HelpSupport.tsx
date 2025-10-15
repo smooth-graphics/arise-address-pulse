@@ -132,8 +132,8 @@ export default function HelpSupportPage() {
             <h3 className="text-lg font-medium text-black mb-2">Call Us</h3>
             <p className="text-sm text-genital-gray-500 mb-4">Mon - Fri. 9:00AM - 5:00PM</p>
             <div className="space-y-2">
-              <a href="tel:081634503433" className="block text-sm text-genital-gray-700 underline hover:text-genital-orange">
-                081634503433
+              <a href="tel:+(234)81634503433" className="block text-sm text-genital-gray-700 underline hover:text-genital-orange">
+                +(234)-816-345-3433
               </a>
               <a href="tel:+234909999988" className="block text-sm text-genital-gray-700 underline hover:text-genital-orange">
                 +(234)-909-999-9988
