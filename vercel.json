@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/api/(.*)",
+      "destination": "https://genietalapi.projectgenietalmetaverse.org/api/v1/$1"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
