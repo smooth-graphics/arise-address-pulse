@@ -53,9 +53,21 @@ apiClient.interceptors.response.use(
       message: error.message,
       code: error.code,
       url: error.config?.url,
+      method: error.config?.method,
       status: error.response?.status,
+      statusText: error.response?.statusText,
       data: error.response?.data,
+      requestData: error.config?.data,
     });
+    
+    // Log detailed backend validation errors for 400 responses
+    if (error.response?.status === 400) {
+      console.error('🔴 Backend Validation Error (400):', {
+        endpoint: error.config?.url,
+        sentData: error.config?.data ? JSON.parse(error.config.data) : null,
+        backendResponse: error.response?.data,
+      });
+    }
     
     const originalRequest = error.config;
 
