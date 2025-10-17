@@ -60,9 +60,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
     } catch (error: any) {
       console.error('Login failed:', error);
+      const errorMessage = 
+        error?.response?.data?.message || 
+        error?.response?.data?.error ||
+        error?.message || 
+        "Invalid email or password. Please try again.";
+      
       toast({
         title: "Login failed",
-        description: error?.response?.data?.message || "Invalid credentials",
+        description: errorMessage,
         variant: "destructive",
       });
       throw error;
@@ -74,18 +80,37 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const signup = async (data: SignupData) => {
     setIsLoading(true);
     try {
-      await authService.signup(data);
+      const response = await authService.signup(data);
       // Store email for OTP verification
       localStorage.setItem('pending_verification_email', data.email);
+      
       toast({
-        title: "Account created",
-        description: "Please check your email for verification code",
+        title: "Account created successfully",
+        description: response.requiresVerification 
+          ? "Please check your email for verification code" 
+          : "You can now sign in to your account",
       });
     } catch (error: any) {
       console.error('Signup failed:', error);
+      
+      // Extract error message from various possible error formats
+      let errorMessage = "Failed to create account. Please try again.";
+      
+      if (error?.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      } else if (error?.response?.data?.error) {
+        errorMessage = error.response.data.error;
+      } else if (error?.response?.data?.errors) {
+        // Handle validation errors
+        const errors = error.response.data.errors;
+        errorMessage = Object.values(errors).flat().join(', ');
+      } else if (error?.message) {
+        errorMessage = error.message;
+      }
+      
       toast({
         title: "Signup failed",
-        description: error?.response?.data?.message || "Failed to create account",
+        description: errorMessage,
         variant: "destructive",
       });
       throw error;

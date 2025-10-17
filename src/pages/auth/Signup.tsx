@@ -30,17 +30,10 @@ const Signup = () => {
     try {
       const { confirmPassword, ...signupData } = data;
       await signup({ ...signupData, role: accountType });
-      toast({
-        title: "Account created!",
-        description: "Please check your email for verification instructions.",
-      });
       navigate('/auth/verify-otp');
     } catch (error) {
-      toast({
-        title: "Signup failed",
-        description: "Please try again or contact support.",
-        variant: "destructive",
-      });
+      // Error is already handled and displayed in AuthContext
+      console.error('Signup error:', error);
     }
   };
 
