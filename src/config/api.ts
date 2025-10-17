@@ -59,6 +59,15 @@ apiClient.interceptors.response.use(
     
     const originalRequest = error.config;
 
+    // Handle 405 errors (Method Not Allowed)
+    if (error.response?.status === 405) {
+      console.error('⚠️ HTTP 405 - Method Not Allowed:', {
+        url: error.config?.url,
+        method: error.config?.method,
+        fullURL: `${error.config?.baseURL}${error.config?.url}`,
+      });
+    }
+
     // Handle 401 errors (token expired)
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
@@ -67,7 +76,7 @@ apiClient.interceptors.response.use(
       const refreshToken = localStorage.getItem("refresh_token");
       if (refreshToken) {
         try {
-          const response = await axios.post(`${API_CONFIG.BASE_URL}/api/v1/auth/refresh`, {
+          const response = await axios.post(`${API_CONFIG.BASE_URL}/auth/refresh`, {
             refresh_token: refreshToken,
           });
 

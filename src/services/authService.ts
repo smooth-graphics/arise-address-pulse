@@ -34,47 +34,47 @@ export interface ResetPasswordRequest {
 
 class AuthService {
   async login(credentials: LoginRequest): Promise<LoginResponse> {
-    const response = await apiClient.post<ApiResponse<LoginResponse>>("/api/v1/auth/login", credentials);
+    const response = await apiClient.post<ApiResponse<LoginResponse>>("/auth/login", credentials);
     return handleApiResponse(response);
   }
 
   async signup(data: SignupData): Promise<{ message: string; requiresVerification: boolean }> {
     const response = await apiClient.post<ApiResponse<{ message: string; requiresVerification: boolean }>>(
-      "/api/v1/auth/register",
+      "/auth/register",
       data,
     );
     return handleApiResponse(response);
   }
 
   async verifyOTP(data: VerifyOTPRequest): Promise<LoginResponse> {
-    const response = await apiClient.post<ApiResponse<LoginResponse>>("/api/v1/auth/verify-email", data);
+    const response = await apiClient.post<ApiResponse<LoginResponse>>("/auth/verify-email", data);
     return handleApiResponse(response);
   }
 
   async resendOTP(email: string): Promise<{ message: string }> {
-    const response = await apiClient.post<ApiResponse<{ message: string }>>("/api/v1/auth/resend-verification-email", { email });
+    const response = await apiClient.post<ApiResponse<{ message: string }>>("/auth/resend-verification-email", { email });
     return handleApiResponse(response);
   }
 
   async forgotPassword(data: ForgotPasswordRequest): Promise<{ message: string }> {
-    const response = await apiClient.post<ApiResponse<{ message: string }>>("/api/v1/auth/forgot-password", data);
+    const response = await apiClient.post<ApiResponse<{ message: string }>>("/auth/forgot-password", data);
     return handleApiResponse(response);
   }
 
   async resetPassword(data: ResetPasswordRequest): Promise<{ message: string }> {
-    const response = await apiClient.post<ApiResponse<{ message: string }>>("/api/v1/auth/reset-password", data);
+    const response = await apiClient.post<ApiResponse<{ message: string }>>("/auth/reset-password", data);
     return handleApiResponse(response);
   }
 
   async refreshToken(refreshToken: string): Promise<RefreshTokenResponse> {
-    const response = await apiClient.post<ApiResponse<RefreshTokenResponse>>("/api/v1/auth/refresh", {
+    const response = await apiClient.post<ApiResponse<RefreshTokenResponse>>("/auth/refresh", {
       refresh_token: refreshToken,
     });
     return handleApiResponse(response);
   }
 
   async getCurrentUser(): Promise<User> {
-    const response = await apiClient.get<ApiResponse<User>>("/api/v1/user/me");
+    const response = await apiClient.get<ApiResponse<User>>("/user/me");
     return handleApiResponse(response);
   }
 
@@ -95,7 +95,7 @@ class AuthService {
   }
 
   async updateProfile(data: Partial<User>): Promise<User> {
-    const response = await apiClient.put<ApiResponse<User>>("/api/v1/user/profile", data);
+    const response = await apiClient.put<ApiResponse<User>>("/user/profile", data);
     return handleApiResponse(response);
   }
 
