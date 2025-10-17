@@ -1,7 +1,7 @@
 // Feature flags for API integration
 export const FEATURES = {
   // Set to true to use real API calls, false for mock data
-  USE_REAL_API: import.meta.env.VITE_USE_REAL_API === 'true' || false,
+  USE_REAL_API: import.meta.env.VITE_USE_REAL_API === 'true' || true,
   
   // Individual feature flags
   REAL_AUTH: import.meta.env.VITE_REAL_AUTH === 'true' || false,

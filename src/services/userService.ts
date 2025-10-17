@@ -47,13 +47,23 @@ export interface InviteUserRequest {
 }
 
 class UserService {
+  async getCurrentUser(): Promise<User> {
+    const response = await apiClient.get<ApiResponse<User>>('/api/v1/user/me');
+    return handleApiResponse(response);
+  }
+
+  async getUserHello(): Promise<{ message: string; firstName: string }> {
+    const response = await apiClient.get<ApiResponse<{ message: string; firstName: string }>>('/api/v1/user/hello');
+    return handleApiResponse(response);
+  }
+
   async getProfile(): Promise<UserProfile> {
-    const response = await apiClient.get<ApiResponse<UserProfile>>('/user/profile');
+    const response = await apiClient.get<ApiResponse<UserProfile>>('/api/v1/user/profile');
     return handleApiResponse(response);
   }
 
   async updateProfile(data: Partial<UserProfile>): Promise<UserProfile> {
-    const response = await apiClient.put<ApiResponse<UserProfile>>('/user/profile', data);
+    const response = await apiClient.put<ApiResponse<UserProfile>>('/api/v1/user/profile', data);
     return handleApiResponse(response);
   }
 
@@ -62,7 +72,7 @@ class UserService {
     formData.append('avatar', file);
 
     const response = await apiClient.post<ApiResponse<{ avatarUrl: string }>>(
-      '/user/avatar',
+      '/api/v1/user/avatar',
       formData,
       {
         headers: {
@@ -74,26 +84,26 @@ class UserService {
   }
 
   async getNotificationSettings(): Promise<NotificationSettings> {
-    const response = await apiClient.get<ApiResponse<NotificationSettings>>('/user/notifications');
+    const response = await apiClient.get<ApiResponse<NotificationSettings>>('/api/v1/user/notifications');
     return handleApiResponse(response);
   }
 
   async updateNotificationSettings(settings: Partial<NotificationSettings>): Promise<NotificationSettings> {
     const response = await apiClient.put<ApiResponse<NotificationSettings>>(
-      '/user/notifications',
+      '/api/v1/user/notifications',
       settings
     );
     return handleApiResponse(response);
   }
 
   async getSecuritySettings(): Promise<SecuritySettings> {
-    const response = await apiClient.get<ApiResponse<SecuritySettings>>('/user/security');
+    const response = await apiClient.get<ApiResponse<SecuritySettings>>('/api/v1/user/security');
     return handleApiResponse(response);
   }
 
   async updateSecuritySettings(settings: Partial<SecuritySettings>): Promise<SecuritySettings> {
     const response = await apiClient.put<ApiResponse<SecuritySettings>>(
-      '/user/security',
+      '/api/v1/user/security',
       settings
     );
     return handleApiResponse(response);
@@ -101,14 +111,14 @@ class UserService {
 
   async enableTwoFactor(): Promise<{ qrCode: string; backupCodes: string[] }> {
     const response = await apiClient.post<ApiResponse<{ qrCode: string; backupCodes: string[] }>>(
-      '/user/2fa/enable'
+      '/api/v1/user/2fa/enable'
     );
     return handleApiResponse(response);
   }
 
   async verifyTwoFactor(token: string): Promise<{ message: string }> {
     const response = await apiClient.post<ApiResponse<{ message: string }>>(
-      '/user/2fa/verify',
+      '/api/v1/user/2fa/verify',
       { token }
     );
     return handleApiResponse(response);
@@ -116,7 +126,7 @@ class UserService {
 
   async disableTwoFactor(token: string): Promise<{ message: string }> {
     const response = await apiClient.post<ApiResponse<{ message: string }>>(
-      '/user/2fa/disable',
+      '/api/v1/user/2fa/disable',
       { token }
     );
     return handleApiResponse(response);
@@ -124,13 +134,13 @@ class UserService {
 
   // Organization management (for organization users)
   async getOrganizationMembers(): Promise<OrganizationMember[]> {
-    const response = await apiClient.get<ApiResponse<OrganizationMember[]>>('/user/organization/members');
+    const response = await apiClient.get<ApiResponse<OrganizationMember[]>>('/api/v1/user/organization/members');
     return handleApiResponse(response);
   }
 
   async inviteUser(data: InviteUserRequest): Promise<{ message: string }> {
     const response = await apiClient.post<ApiResponse<{ message: string }>>(
-      '/user/organization/invite',
+      '/api/v1/user/organization/invite',
       data
     );
     return handleApiResponse(response);
@@ -138,7 +148,7 @@ class UserService {
 
   async removeMember(memberId: string): Promise<{ message: string }> {
     const response = await apiClient.delete<ApiResponse<{ message: string }>>(
-      `/user/organization/members/${memberId}`
+      `/api/v1/user/organization/members/${memberId}`
     );
     return handleApiResponse(response);
   }
@@ -149,7 +159,7 @@ class UserService {
     permissions?: string[]
   ): Promise<OrganizationMember> {
     const response = await apiClient.put<ApiResponse<OrganizationMember>>(
-      `/user/organization/members/${memberId}`,
+      `/api/v1/user/organization/members/${memberId}`,
       { role, permissions }
     );
     return handleApiResponse(response);
@@ -170,20 +180,20 @@ class UserService {
       ip: string;
       lastActive: string;
       current: boolean;
-    }>>>('/user/sessions');
+    }>>>('/api/v1/user/sessions');
     return handleApiResponse(response);
   }
 
   async terminateSession(sessionId: string): Promise<{ message: string }> {
     const response = await apiClient.delete<ApiResponse<{ message: string }>>(
-      `/user/sessions/${sessionId}`
+      `/api/v1/user/sessions/${sessionId}`
     );
     return handleApiResponse(response);
   }
 
   async deleteAccount(password: string): Promise<{ message: string }> {
     const response = await apiClient.post<ApiResponse<{ message: string }>>(
-      '/user/delete-account',
+      '/api/v1/user/delete-account',
       { password }
     );
     return handleApiResponse(response);

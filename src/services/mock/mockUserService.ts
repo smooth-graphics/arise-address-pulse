@@ -9,6 +9,39 @@ import {
 class MockUserService {
   private delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
+  async getCurrentUser(): Promise<any> {
+    await this.delay(400);
+
+    const token = localStorage.getItem("auth_token") || "";
+    const isOrgUser = token.includes("org");
+
+    return {
+      id: "demo-user-001",
+      email: isOrgUser ? "admin@arisetech.com" : "demo@individual.com",
+      phone: "+234-801-234-5678",
+      firstName: "onu omar-ikaige",
+      lastName: "",
+      role: isOrgUser ? "organization-admin" : "individual",
+      organizationId: isOrgUser ? "org-arise-001" : undefined,
+      organizationName: isOrgUser ? "AriseTech Solutions" : undefined,
+      isVerified: true,
+      createdAt: "2024-01-15T10:30:00Z",
+    };
+  }
+
+  async getUserHello(): Promise<{ message: string; firstName: string }> {
+    await this.delay(300);
+
+    const token = localStorage.getItem("auth_token") || "";
+    const isOrgUser = token.includes("org");
+    const firstName = "Onu";
+
+    return {
+      message: `Welcome back, ${firstName}!`,
+      firstName: firstName,
+    };
+  }
+
   async getProfile(): Promise<UserProfile> {
     await this.delay(500);
 

@@ -141,16 +141,16 @@ VITE_REAL_TIME_WALLET=true
 
 | Method | Endpoint | Lines | Description |
 |--------|----------|-------|-------------|
-| `login()` | `POST /auth/login` | 40-44 | User authentication |
-| `signup()` | `POST /auth/signup` | 50-54 | User registration |
-| `verifyOTP()` | `POST /api/v1/auth/verify-otp` | 49-52 | OTP verification |
-| `resendOTP()` | `POST /api/v1/auth/resend-otp` | 54-57 | Resend OTP code |
-| `forgotPassword()` | `POST /auth/forgot-password` | 59-62 | Password reset request |
-| `resetPassword()` | `POST /auth/reset-password` | 64-67 | Password reset with token |
-| `refreshToken()` | `POST /auth/refresh` | 69-74 | JWT token refresh |
-| `getCurrentUser()` | `GET /auth/me` | 76-79 | Get current user profile |
+| `login()` | `POST /api/v1/auth/login` | 36-39 | User authentication |
+| `signup()` | `POST /api/v1/auth/register` | 41-47 | User registration |
+| `verifyOTP()` | `POST /api/v1/auth/verify-email` | 49-52 | Email verification |
+| `resendOTP()` | `POST /api/v1/auth/resend-verification-email` | 54-57 | Resend verification email |
+| `forgotPassword()` | `POST /api/v1/auth/forgot-password` | 59-62 | Password reset request |
+| `resetPassword()` | `POST /api/v1/auth/reset-password` | 64-67 | Password reset with token |
+| `refreshToken()` | `POST /api/v1/auth/refresh` | 69-74 | JWT token refresh |
+| `getCurrentUser()` | `GET /api/v1/user/me` | 76-79 | Get current user profile |
 | `logout()` | `POST /auth/logout` | 81-95 | User logout |
-| `updateProfile()` | `PATCH /auth/profile` | 97-100 | Update user profile |
+| `updateProfile()` | `PUT /api/v1/user/profile` | 97-100 | Update user profile |
 | `changePassword()` | `POST /auth/change-password` | 102-105 | Change password |
 
 #### Detailed Integration Points:
@@ -190,9 +190,9 @@ async signup(data: SignupRequest): Promise<SignupResponse> {
   return handleApiResponse(response);
 }
 
-// LINE 49-52: Verify OTP
+// LINE 49-52: Verify Email
 async verifyOTP(data: VerifyOTPRequest): Promise<LoginResponse> {
-  const response = await apiClient.post<ApiResponse<LoginResponse>>('/api/v1/auth/verify-otp', data);
+  const response = await apiClient.post<ApiResponse<LoginResponse>>('/api/v1/auth/verify-email', data);
   // ⚠️ BACKEND REQUIRED
   // Request: { email: string, otp: string }
   // Response: { 
@@ -203,9 +203,9 @@ async verifyOTP(data: VerifyOTPRequest): Promise<LoginResponse> {
   return handleApiResponse(response);
 }
 
-// LINE 54-57: Resend OTP
+// LINE 54-57: Resend Verification Email
 async resendOTP(email: string): Promise<{ message: string }> {
-  const response = await apiClient.post<ApiResponse<{ message: string }>>('/api/v1/auth/resend-otp', { email });
+  const response = await apiClient.post<ApiResponse<{ message: string }>>('/api/v1/auth/resend-verification-email', { email });
   // ⚠️ BACKEND REQUIRED
   // Request: { email: string }
   // Response: { 
@@ -222,10 +222,23 @@ async resendOTP(email: string): Promise<{ message: string }> {
 
 // LINE 76-79: Get Current User
 async getCurrentUser(): Promise<User> {
-  const response = await apiClient.get<ApiResponse<User>>('/auth/me');
+  const response = await apiClient.get<ApiResponse<User>>('/api/v1/user/me');
   // ⚠️ BACKEND REQUIRED
   // Headers: Authorization: Bearer {token}
   // Response: User object
+  return handleApiResponse(response);
+}
+
+// Get User Hello (Welcome Message)
+async getUserHello(): Promise<{ message: string; firstName: string }> {
+  const response = await apiClient.get<ApiResponse<{ message: string; firstName: string }>>('/api/v1/user/hello');
+  // ⚠️ BACKEND REQUIRED
+  // Headers: Authorization: Bearer {token}
+  // Response: {
+  //   message: "Welcome back, {firstName}!",
+  //   firstName: string
+  // }
+  // Used to display personalized greeting in dashboard
   return handleApiResponse(response);
 }
 ```

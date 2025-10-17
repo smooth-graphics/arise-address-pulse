@@ -5,11 +5,20 @@ import { useToast } from '@/hooks/use-toast';
 
 export const USER_QUERY_KEYS = {
   profile: ['user', 'profile'] as const,
+  hello: ['user', 'hello'] as const,
   notificationSettings: ['user', 'notifications'] as const,
   securitySettings: ['user', 'security'] as const,
   organizationMembers: ['user', 'organization', 'members'] as const,
   activeSessions: ['user', 'sessions'] as const,
 } as const;
+
+export const useUserHello = () => {
+  return useQuery({
+    queryKey: USER_QUERY_KEYS.hello,
+    queryFn: userService.getUserHello,
+    staleTime: 10 * 60 * 1000, // 10 minutes
+  });
+};
 
 export const useUserProfile = () => {
   return useQuery({

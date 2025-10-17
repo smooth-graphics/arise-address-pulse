@@ -7,6 +7,7 @@ import { useWalletBalance, useUsageStats } from '@/hooks/api/useWallet';
 import { useNotifications, useMarkAllNotificationsAsRead } from '@/hooks/api/useNotifications';
 import { useVerificationHistory } from '@/hooks/api/useVerification';
 import { useUsageLimit } from '@/hooks/api/useUsageLimit';
+import { useUserHello } from '@/hooks/api/useUser';
 import { mockUsageLimitService } from '@/services/mock/mockUsageLimitService';
 import { useState } from "react";
 import { UsageAlertBanner } from '@/components/notifications/UsageAlertBanner';
@@ -167,6 +168,7 @@ function Overview() {
   const { data: notifications, isLoading: notificationsLoading } = useNotifications({ limit: 6 });
   const { data: recentSearches, isLoading: searchesLoading } = useVerificationHistory({ limit: 5 });
   const { data: usageLimit } = useUsageLimit(user?.id || '');
+  const { data: helloData, isLoading: helloLoading } = useUserHello();
   const markAllAsRead = useMarkAllNotificationsAsRead();
   
   const [selectedFilter, setSelectedFilter] = useState("verified");
@@ -183,7 +185,7 @@ function Overview() {
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-4.5 border-b border-gray-100">
         <h1 className="text-2xl font-bold text-gray-700 tracking-tight">
-          Overview
+          {helloLoading ? 'Overview' : helloData?.message || 'Overview'}
         </h1>
 
         <div className="flex items-center gap-4">

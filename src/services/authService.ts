@@ -47,12 +47,12 @@ class AuthService {
   }
 
   async verifyOTP(data: VerifyOTPRequest): Promise<LoginResponse> {
-    const response = await apiClient.post<ApiResponse<LoginResponse>>("/api/v1/auth/verify-otp", data);
+    const response = await apiClient.post<ApiResponse<LoginResponse>>("/api/v1/auth/verify-email", data);
     return handleApiResponse(response);
   }
 
   async resendOTP(email: string): Promise<{ message: string }> {
-    const response = await apiClient.post<ApiResponse<{ message: string }>>("/api/v1/auth/resend-otp", { email });
+    const response = await apiClient.post<ApiResponse<{ message: string }>>("/api/v1/auth/resend-verification-email", { email });
     return handleApiResponse(response);
   }
 
