@@ -2,7 +2,11 @@ version: '3.8'
 
 services:
   app:
-    build: .
+    build:
+      context: .
+      args:
+        VITE_API_BASE_URL: /api
+        VITE_USE_REAL_API: "true"
     ports:
       - "3000:80"
     environment:

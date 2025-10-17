@@ -14,6 +14,10 @@ RUN npm ci
 # Copy source code
 COPY . .
 
+# Build arguments for environment
+ARG VITE_API_BASE_URL=/api
+ARG VITE_USE_REAL_API=true
+
 # Build the application
 RUN npm run build
 

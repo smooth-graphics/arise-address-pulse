@@ -2,7 +2,10 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 
 // API Configuration
 export const API_CONFIG = {
-  BASE_URL: import.meta.env.VITE_API_BASE_URL || "https://genietalapi.projectgenietalmetaverse.org",
+  // Use /api for production (goes through nginx proxy)
+  // Use full URL for development (direct to backend)
+  BASE_URL: import.meta.env.VITE_API_BASE_URL || 
+           (import.meta.env.PROD ? "/api" : "https://genietalapi.projectgenietalmetaverse.org"),
   TIMEOUT: 30000,
   RETRY_ATTEMPTS: 3,
   RETRY_DELAY: 1000,
@@ -20,6 +23,13 @@ export const apiClient: AxiosInstance = axios.create({
 // Request interceptor for adding auth tokens
 apiClient.interceptors.request.use(
   (config) => {
+    console.log('🔵 API Request:', {
+      url: config.url,
+      method: config.method,
+      baseURL: config.baseURL,
+      fullURL: `${config.baseURL}${config.url}`,
+    });
+    
     const token = localStorage.getItem("auth_token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -27,6 +37,7 @@ apiClient.interceptors.request.use(
     return config;
   },
   (error) => {
+    console.error('🔴 Request Error:', error);
     return Promise.reject(error);
   },
 );
@@ -34,9 +45,18 @@ apiClient.interceptors.request.use(
 // Response interceptor for handling common errors
 apiClient.interceptors.response.use(
   (response: AxiosResponse) => {
+    console.log('✅ API Response:', response.status, response.config.url);
     return response;
   },
   async (error) => {
+    console.error('❌ API Error:', {
+      message: error.message,
+      code: error.code,
+      url: error.config?.url,
+      status: error.response?.status,
+      data: error.response?.data,
+    });
+    
     const originalRequest = error.config;
 
     // Handle 401 errors (token expired)
