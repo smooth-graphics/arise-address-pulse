@@ -4,7 +4,7 @@ export const FEATURES = {
   USE_REAL_API: import.meta.env.VITE_USE_REAL_API === "false" || true,
 
   // Individual feature flags
-  REAL_AUTH: import.meta.env.VITE_REAL_AUTH === "true" || false,
+  REAL_AUTH: import.meta.env.VITE_REAL_AUTH === "false" || false,
   REAL_WALLET: import.meta.env.VITE_REAL_WALLET === "true" || false,
   REAL_VERIFICATION: import.meta.env.VITE_REAL_VERIFICATION === "true" || false,
   REAL_NOTIFICATIONS: import.meta.env.VITE_REAL_NOTIFICATIONS === "true" || false,
