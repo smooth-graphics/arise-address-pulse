@@ -370,7 +370,7 @@ const FAQ = () => {
                         </p>
                         <div className="flex flex-wrap gap-1">
                           {faq.tags.map((tag) => (
-                            <Badge key={tag} className="text-xs px-4 py-1 bg-gradient-to-r from-bold-red/10 to-vibrant-orange/10 rounded-full border border-bold-red/20 text-bold-red font-semibold">
+                            <Badge key={tag} className="text-xs px-4 py-1 bg-gradient-to-r from-bold-red/10 to-vibrant-orange/10 rounded-full border border-bold-red/20 text-white font-semibold">
                               {tag}
                             </Badge>
                           ))}
