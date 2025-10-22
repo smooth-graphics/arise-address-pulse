@@ -357,7 +357,7 @@ const FAQ = () => {
                           {faq.question}
                         </h3>
                         <div className="flex flex-wrap gap-1">
-                          <Badge variant="secondary" className="text-xs bg-orange/20 text-white border-orange/30">
+                          <Badge variant="secondary" className="text-xs bg-orange text-white border-orange">
                             {faq.category}
                           </Badge>
                         </div>
@@ -370,7 +370,7 @@ const FAQ = () => {
                         </p>
                         <div className="flex flex-wrap gap-1">
                           {faq.tags.map((tag) => (
-                            <Badge key={tag} variant="outline" className="text-xs">
+                            <Badge key={tag} variant="outline" className="text-xs bg-orange text-white border-orange">
                               {tag}
                             </Badge>
                           ))}
