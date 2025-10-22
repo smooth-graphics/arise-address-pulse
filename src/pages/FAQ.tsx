@@ -357,7 +357,7 @@ const FAQ = () => {
                           {faq.question}
                         </h3>
                         <div className="flex flex-wrap gap-1">
-                          <Badge variant="secondary" className="text-xs">
+                          <Badge variant="secondary" className="text-xs bg-orange/20 text-white border-orange/30">
                             {faq.category}
                           </Badge>
                         </div>
