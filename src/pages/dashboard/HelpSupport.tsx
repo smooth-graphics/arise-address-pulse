@@ -101,7 +101,7 @@ export default function HelpSupportPage() {
                 <div key={index} className="border-b border-genital-stroke/50">
                   <button
                     onClick={() => handleFaqToggle(index)}
-                    className="w-full flex items-center justify-between py-4.25 px-3 text-left hover:bg-gray-50/50 transition-colors"
+                    className="w-full flex items-center justify-between py-6 px-3 text-left hover:bg-gray-50/50 transition-colors"
                   >
                     <span className="text-base font-medium text-genital-gray-700 leading-6 flex-1 pr-4">
                       {faq.question}
