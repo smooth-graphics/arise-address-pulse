@@ -171,7 +171,7 @@ export const useUpdateNotificationPreferences = () => {
 // Real-time notifications hook
 export const useRealTimeNotifications = (onNewNotification?: (notification: any) => void) => {
   const queryClient = useQueryClient();
-  const wsRef = useRef<WebSocket | null>(null);
+  const wsRef = useRef<WebSocket | { close: () => void } | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -202,7 +202,7 @@ export const useRealTimeNotifications = (onNewNotification?: (notification: any)
   }, [queryClient, toast, onNewNotification]);
 
   return {
-    isConnected: wsRef.current?.readyState === WebSocket.OPEN,
+    isConnected: wsRef.current && 'readyState' in wsRef.current ? wsRef.current.readyState === WebSocket.OPEN : !!wsRef.current,
     disconnect: () => wsRef.current?.close(),
   };
 };

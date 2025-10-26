@@ -1,4 +1,4 @@
-import { apiClient, handleApiResponse, ApiResponse } from '@/config/api';
+import { nextApiClient as apiClient, handleApiResponse, ApiResponse } from '@/config/api';
 
 export interface Notification {
   id: string;
@@ -113,43 +113,77 @@ class NotificationService {
     return handleApiResponse(response);
   }
 
-  // WebSocket connection for real-time notifications
-  connectToNotifications(onNotification: (notification: Notification) => void): WebSocket | null {
+  // WebSocket connection for real-time notifications with polling fallback
+  connectToNotifications(onNotification: (notification: Notification) => void): WebSocket | { close: () => void } | null {
     const token = localStorage.getItem('auth_token');
     if (!token) {
       console.warn('No auth token found, cannot connect to notifications');
       return null;
     }
 
-    const wsUrl = import.meta.env.VITE_WS_URL || 'ws://localhost:3001';
-    const ws = new WebSocket(`${wsUrl}/notifications?token=${token}`);
-
-    ws.onopen = () => {
-      console.log('Connected to notification service');
-    };
-
-    ws.onmessage = (event) => {
+    // Try WebSocket first (Next.js backend)
+    const wsUrl = import.meta.env.VITE_NEXTJS_WS_URL;
+    if (wsUrl) {
       try {
-        const notification = JSON.parse(event.data);
-        onNotification(notification);
+        const ws = new WebSocket(`${wsUrl}/notifications?token=${token}`);
+
+        ws.onopen = () => {
+          console.log('✅ Connected to Next.js notification WebSocket');
+        };
+
+        ws.onmessage = (event) => {
+          try {
+            const notification = JSON.parse(event.data);
+            onNotification(notification);
+          } catch (error) {
+            console.error('Failed to parse notification:', error);
+          }
+        };
+
+        ws.onerror = (error) => {
+          console.error('WebSocket error, will attempt reconnect:', error);
+        };
+
+        ws.onclose = () => {
+          console.log('Disconnected from notification service');
+          // Attempt to reconnect after 5 seconds
+          setTimeout(() => {
+            this.connectToNotifications(onNotification);
+          }, 5000);
+        };
+
+        return ws;
       } catch (error) {
-        console.error('Failed to parse notification:', error);
+        console.warn('WebSocket not available, falling back to polling:', error);
+      }
+    }
+
+    // Fallback to polling if WebSocket is not available
+    console.log('📡 Using polling fallback for notifications (checking every 30s)');
+    let lastNotificationId: string | null = null;
+    
+    const pollInterval = setInterval(async () => {
+      try {
+        const data = await this.getNotifications({ isRead: false, limit: 5 });
+        if (data.notifications.length > 0) {
+          const latestNotification = data.notifications[0];
+          // Only notify if it's a new notification
+          if (latestNotification.id !== lastNotificationId) {
+            lastNotificationId = latestNotification.id;
+            onNotification(latestNotification);
+          }
+        }
+      } catch (error) {
+        console.error('Error polling notifications:', error);
+      }
+    }, 30000); // Poll every 30 seconds
+
+    return { 
+      close: () => {
+        clearInterval(pollInterval);
+        console.log('Stopped polling notifications');
       }
     };
-
-    ws.onerror = (error) => {
-      console.error('WebSocket error:', error);
-    };
-
-    ws.onclose = () => {
-      console.log('Disconnected from notification service');
-      // Attempt to reconnect after 5 seconds
-      setTimeout(() => {
-        this.connectToNotifications(onNotification);
-      }, 5000);
-    };
-
-    return ws;
   }
 }
 

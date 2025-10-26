@@ -2,118 +2,153 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 
 // API Configuration
 export const API_CONFIG = {
-  // Use /api for production (goes through nginx proxy)
-  // Use full URL for development (direct to backend)
-  BASE_URL: import.meta.env.VITE_API_BASE_URL || 
-           (import.meta.env.PROD ? "/api" : "https://genietalapi.projectgenietalmetaverse.org"),
+  // Java Backend (Auth, Verification)
+  JAVA_BASE_URL: import.meta.env.VITE_JAVA_API_BASE_URL || 
+                 (import.meta.env.PROD ? "/api/java" : "https://genietalapi.projectgenietalmetaverse.org"),
+  
+  // Next.js Backend (Notifications, Wallet)
+  NEXTJS_BASE_URL: import.meta.env.VITE_NEXTJS_API_BASE_URL || 
+                   (import.meta.env.PROD ? "/api/nextjs" : "http://localhost:3000"),
+  
   TIMEOUT: 30000,
   RETRY_ATTEMPTS: 3,
   RETRY_DELAY: 1000,
 } as const;
 
-// Create axios instance with default configuration
-export const apiClient: AxiosInstance = axios.create({
-  baseURL: API_CONFIG.BASE_URL,
+// Java Backend API Client (Auth, Verification)
+export const javaApiClient: AxiosInstance = axios.create({
+  baseURL: API_CONFIG.JAVA_BASE_URL,
   timeout: API_CONFIG.TIMEOUT,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-// Request interceptor for adding auth tokens
-apiClient.interceptors.request.use(
-  (config) => {
-    console.log('🔵 API Request:', {
-      url: config.url,
-      method: config.method,
-      baseURL: config.baseURL,
-      fullURL: `${config.baseURL}${config.url}`,
-    });
-    
-    const token = localStorage.getItem("auth_token");
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
+// Next.js Backend API Client (Notifications, Wallet)
+export const nextApiClient: AxiosInstance = axios.create({
+  baseURL: API_CONFIG.NEXTJS_BASE_URL,
+  timeout: API_CONFIG.TIMEOUT,
+  headers: {
+    "Content-Type": "application/json",
   },
-  (error) => {
-    console.error('🔴 Request Error:', error);
-    return Promise.reject(error);
-  },
-);
+});
 
-// Response interceptor for handling common errors
-apiClient.interceptors.response.use(
-  (response: AxiosResponse) => {
-    console.log('✅ API Response:', response.status, response.config.url);
-    return response;
-  },
-  async (error) => {
-    console.error('❌ API Error:', {
-      message: error.message,
-      code: error.code,
-      url: error.config?.url,
-      method: error.config?.method,
-      status: error.response?.status,
-      statusText: error.response?.statusText,
-      data: error.response?.data,
-      requestData: error.config?.data,
-    });
-    
-    // Log detailed backend validation errors for 400 responses
-    if (error.response?.status === 400) {
-      console.error('🔴 Backend Validation Error (400):', {
-        endpoint: error.config?.url,
-        sentData: error.config?.data ? JSON.parse(error.config.data) : null,
-        backendResponse: error.response?.data,
-      });
-    }
-    
-    const originalRequest = error.config;
+// Legacy apiClient - defaults to Java backend for backward compatibility
+export const apiClient: AxiosInstance = javaApiClient;
 
-    // Handle 405 errors (Method Not Allowed)
-    if (error.response?.status === 405) {
-      console.error('⚠️ HTTP 405 - Method Not Allowed:', {
+// Shared request interceptor for adding auth tokens
+const createRequestInterceptor = (clientName: string) => (config: any) => {
+  console.log(`🔵 ${clientName} Request:`, {
+    url: config.url,
+    method: config.method,
+    baseURL: config.baseURL,
+    fullURL: `${config.baseURL}${config.url}`,
+  });
+  
+  const token = localStorage.getItem("auth_token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+};
+
+const requestErrorInterceptor = (error: any) => {
+  console.error('🔴 Request Error:', error);
+  return Promise.reject(error);
+};
+
+// Shared response interceptor for handling common errors
+const createResponseInterceptor = (clientName: string, client: AxiosInstance) => {
+  return [
+    (response: AxiosResponse) => {
+      console.log(`✅ ${clientName} Response:`, response.status, response.config.url);
+      return response;
+    },
+    async (error: any) => {
+      console.error(`❌ ${clientName} Error:`, {
+        message: error.message,
+        code: error.code,
         url: error.config?.url,
         method: error.config?.method,
-        fullURL: `${error.config?.baseURL}${error.config?.url}`,
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        data: error.response?.data,
+        requestData: error.config?.data,
       });
-    }
-
-    // Handle 401 errors (token expired)
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-
-      // Try to refresh token or redirect to login
-      const refreshToken = localStorage.getItem("refresh_token");
-      if (refreshToken) {
-        try {
-          const response = await axios.post(`${API_CONFIG.BASE_URL}/auth/refresh`, {
-            refresh_token: refreshToken,
-          });
-
-          const { access_token } = response.data;
-          localStorage.setItem("auth_token", access_token);
-
-          // Retry original request with new token
-          originalRequest.headers.Authorization = `Bearer ${access_token}`;
-          return apiClient(originalRequest);
-        } catch (refreshError) {
-          // Refresh failed, redirect to login
-          localStorage.removeItem("auth_token");
-          localStorage.removeItem("refresh_token");
-          window.location.href = "/auth/login";
-          return Promise.reject(refreshError);
-        }
-      } else {
-        // No refresh token, redirect to login
-        localStorage.removeItem("auth_token");
-        window.location.href = "/auth/login";
+      
+      // Log detailed backend validation errors for 400 responses
+      if (error.response?.status === 400) {
+        console.error('🔴 Backend Validation Error (400):', {
+          endpoint: error.config?.url,
+          sentData: error.config?.data ? JSON.parse(error.config.data) : null,
+          backendResponse: error.response?.data,
+        });
       }
-    }
+      
+      const originalRequest = error.config;
 
-    return Promise.reject(error);
-  },
+      // Handle 405 errors (Method Not Allowed)
+      if (error.response?.status === 405) {
+        console.error('⚠️ HTTP 405 - Method Not Allowed:', {
+          url: error.config?.url,
+          method: error.config?.method,
+          fullURL: `${error.config?.baseURL}${error.config?.url}`,
+        });
+      }
+
+      // Handle 401 errors (token expired) - Only refresh from Java backend
+      if (error.response?.status === 401 && !originalRequest._retry) {
+        originalRequest._retry = true;
+
+        const refreshToken = localStorage.getItem("refresh_token");
+        if (refreshToken) {
+          try {
+            // Always refresh from Java backend (auth service)
+            const response = await javaApiClient.post("/auth/refresh", {
+              refresh_token: refreshToken,
+            });
+
+            const { access_token } = response.data;
+            localStorage.setItem("auth_token", access_token);
+
+            // Retry original request with new token on the original client
+            originalRequest.headers.Authorization = `Bearer ${access_token}`;
+            return client(originalRequest);
+          } catch (refreshError) {
+            // Refresh failed, redirect to login
+            localStorage.removeItem("auth_token");
+            localStorage.removeItem("refresh_token");
+            window.location.href = "/auth/login";
+            return Promise.reject(refreshError);
+          }
+        } else {
+          // No refresh token, redirect to login
+          localStorage.removeItem("auth_token");
+          window.location.href = "/auth/login";
+        }
+      }
+
+      return Promise.reject(error);
+    }
+  ];
+};
+
+// Apply interceptors to Java Backend Client
+javaApiClient.interceptors.request.use(
+  createRequestInterceptor("Java API"),
+  requestErrorInterceptor
+);
+javaApiClient.interceptors.response.use(
+  ...createResponseInterceptor("Java API", javaApiClient)
+);
+
+// Apply interceptors to Next.js Backend Client
+nextApiClient.interceptors.request.use(
+  createRequestInterceptor("Next.js API"),
+  requestErrorInterceptor
+);
+nextApiClient.interceptors.response.use(
+  ...createResponseInterceptor("Next.js API", nextApiClient)
 );
 
 // API Response types

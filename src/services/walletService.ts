@@ -1,4 +1,4 @@
-import { apiClient, handleApiResponse, ApiResponse } from '@/config/api';
+import { nextApiClient as apiClient, handleApiResponse, ApiResponse } from '@/config/api';
 
 export interface WalletBalance {
   balance: number;

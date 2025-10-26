@@ -1,4 +1,4 @@
-import { apiClient, handleApiResponse, ApiResponse } from '@/config/api';
+import { javaApiClient as apiClient, handleApiResponse, ApiResponse } from '@/config/api';
 import { 
   VerificationRequest, 
   VerificationDocument, 
