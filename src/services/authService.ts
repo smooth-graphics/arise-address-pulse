@@ -34,13 +34,13 @@ export interface ResetPasswordRequest {
 
 class AuthService {
   async login(credentials: LoginRequest): Promise<LoginResponse> {
-    const response = await apiClient.post<ApiResponse<LoginResponse>>("/auth/login", credentials);
+    const response = await apiClient.post<ApiResponse<LoginResponse>>("/auth/public/login", credentials);
     return handleApiResponse(response);
   }
 
   async signup(data: SignupData): Promise<{ message: string; requiresVerification: boolean }> {
     const response = await apiClient.post<ApiResponse<{ message: string; requiresVerification: boolean }>>(
-      "/auth/register",
+      "/auth/public/onboard",
       data,
     );
     return handleApiResponse(response);
