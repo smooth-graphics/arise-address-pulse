@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/java/(.*)",
-      "destination": "https://genietalapi.projectgenietalmetaverse.org/api/v1/$1"
+      "destination": "https://genietalapi.projectgenietalmetaverse.org/$1"
     },
     {
       "source": "/api/nextjs/(.*)",
@@ -10,7 +10,7 @@
     },
     {
       "source": "/api/(.*)",
-      "destination": "https://genietalapi.projectgenietalmetaverse.org/api/v1/$1"
+      "destination": "https://genietalapi.projectgenietalmetaverse.org/$1"
     },
     {
       "source": "/(.*)",
