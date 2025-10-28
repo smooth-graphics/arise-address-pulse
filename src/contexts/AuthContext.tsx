@@ -96,7 +96,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Extract error message from various possible error formats
       let errorMessage = "Failed to create account. Please try again.";
       
-      if (error?.response?.data?.message) {
+      // Handle network/CORS errors
+      if (error?.code === 'ERR_NETWORK' && !error?.response) {
+        errorMessage = "Unable to connect to the server. Please check your internet connection or try again from the production site.";
+      } else if (error?.response?.data?.message) {
         errorMessage = error.response.data.message;
       } else if (error?.response?.data?.error) {
         errorMessage = error.response.data.error;

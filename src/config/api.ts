@@ -1,16 +1,24 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 
-// API Configuration - Direct Backend URLs (No Proxy)
+// Runtime detection for Vercel preview deployments
+const isVercelPreview = typeof window !== 'undefined' && 
+                        window.location.hostname.endsWith('vercel.app');
+
+// API Configuration - Direct Backend URLs (Production) or Proxy (Vercel Preview)
 export const API_CONFIG = {
-  // Java Backend (Auth, Verification) - Always use direct URL
-  JAVA_BASE_URL: import.meta.env.VITE_JAVA_API_BASE_URL || 
-                 "https://genietalapi.projectgenietalmetaverse.org",
+  // Java Backend (Auth, Verification)
+  JAVA_BASE_URL: isVercelPreview 
+                   ? "/api/java" 
+                   : (import.meta.env.VITE_JAVA_API_BASE_URL || 
+                      "https://genietalapi.projectgenietalmetaverse.org"),
   
-  // Next.js Backend (Notifications, Wallet) - Always use direct URL
-  NEXTJS_BASE_URL: import.meta.env.VITE_NEXTJS_API_BASE_URL || 
-                   (import.meta.env.PROD 
-                     ? "https://api.projectgenietalmetaverse.org" 
-                     : "http://localhost:3000"),
+  // Next.js Backend (Notifications, Wallet)
+  NEXTJS_BASE_URL: isVercelPreview 
+                     ? "/api/nextjs" 
+                     : (import.meta.env.VITE_NEXTJS_API_BASE_URL || 
+                        (import.meta.env.PROD 
+                          ? "https://api.projectgenietalmetaverse.org" 
+                          : "http://localhost:3000")),
   
   TIMEOUT: 30000,
   RETRY_ATTEMPTS: 3,
@@ -38,14 +46,39 @@ export const nextApiClient: AxiosInstance = axios.create({
 // Legacy apiClient - defaults to Java backend for backward compatibility
 export const apiClient: AxiosInstance = javaApiClient;
 
+// Utility to mask sensitive fields in logs
+const maskSensitiveData = (data: any): any => {
+  if (!data) return data;
+  
+  try {
+    const parsed = typeof data === 'string' ? JSON.parse(data) : data;
+    const masked = { ...parsed };
+    
+    // Mask sensitive fields
+    const sensitiveFields = ['password', 'confirmPassword', 'newPassword', 'currentPassword'];
+    sensitiveFields.forEach(field => {
+      if (masked[field]) {
+        masked[field] = '***REDACTED***';
+      }
+    });
+    
+    return masked;
+  } catch {
+    return data;
+  }
+};
+
 // Shared request interceptor for adding auth tokens
 const createRequestInterceptor = (clientName: string) => (config: any) => {
-  console.log(`🔵 ${clientName} Request:`, {
-    url: config.url,
-    method: config.method,
-    baseURL: config.baseURL,
-    fullURL: `${config.baseURL}${config.url}`,
-  });
+  if (import.meta.env.DEV) {
+    console.log(`🔵 ${clientName} Request:`, {
+      url: config.url,
+      method: config.method,
+      baseURL: config.baseURL,
+      fullURL: `${config.baseURL}${config.url}`,
+      data: maskSensitiveData(config.data),
+    });
+  }
   
   const token = localStorage.getItem("auth_token");
   if (token) {
@@ -63,34 +96,38 @@ const requestErrorInterceptor = (error: any) => {
 const createResponseInterceptor = (clientName: string, client: AxiosInstance) => {
   return [
     (response: AxiosResponse) => {
-      console.log(`✅ ${clientName} Response:`, response.status, response.config.url);
+      if (import.meta.env.DEV) {
+        console.log(`✅ ${clientName} Response:`, response.status, response.config.url);
+      }
       return response;
     },
     async (error: any) => {
-      console.error(`❌ ${clientName} Error:`, {
-        message: error.message,
-        code: error.code,
-        url: error.config?.url,
-        method: error.config?.method,
-        status: error.response?.status,
-        statusText: error.response?.statusText,
-        data: error.response?.data,
-        requestData: error.config?.data,
-      });
-      
-      // Log detailed backend validation errors for 400 responses
-      if (error.response?.status === 400) {
-        console.error('🔴 Backend Validation Error (400):', {
-          endpoint: error.config?.url,
-          sentData: error.config?.data ? JSON.parse(error.config.data) : null,
-          backendResponse: error.response?.data,
+      if (import.meta.env.DEV) {
+        console.error(`❌ ${clientName} Error:`, {
+          message: error.message,
+          code: error.code,
+          url: error.config?.url,
+          method: error.config?.method,
+          status: error.response?.status,
+          statusText: error.response?.statusText,
+          data: error.response?.data,
+          requestData: maskSensitiveData(error.config?.data),
         });
+        
+        // Log detailed backend validation errors for 400 responses
+        if (error.response?.status === 400) {
+          console.error('🔴 Backend Validation Error (400):', {
+            endpoint: error.config?.url,
+            sentData: maskSensitiveData(error.config?.data),
+            backendResponse: error.response?.data,
+          });
+        }
       }
       
       const originalRequest = error.config;
 
       // Handle 405 errors (Method Not Allowed)
-      if (error.response?.status === 405) {
+      if (error.response?.status === 405 && import.meta.env.DEV) {
         console.error('⚠️ HTTP 405 - Method Not Allowed:', {
           url: error.config?.url,
           method: error.config?.method,
