@@ -1,14 +1,16 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 
-// API Configuration
+// API Configuration - Direct Backend URLs (No Proxy)
 export const API_CONFIG = {
-  // Java Backend (Auth, Verification)
+  // Java Backend (Auth, Verification) - Always use direct URL
   JAVA_BASE_URL: import.meta.env.VITE_JAVA_API_BASE_URL || 
-                 (import.meta.env.PROD ? "/api/java" : "https://genietalapi.projectgenietalmetaverse.org"),
+                 "https://genietalapi.projectgenietalmetaverse.org",
   
-  // Next.js Backend (Notifications, Wallet)
+  // Next.js Backend (Notifications, Wallet) - Always use direct URL
   NEXTJS_BASE_URL: import.meta.env.VITE_NEXTJS_API_BASE_URL || 
-                   (import.meta.env.PROD ? "/api/nextjs" : "http://localhost:3000"),
+                   (import.meta.env.PROD 
+                     ? "https://api.projectgenietalmetaverse.org" 
+                     : "http://localhost:3000"),
   
   TIMEOUT: 30000,
   RETRY_ATTEMPTS: 3,

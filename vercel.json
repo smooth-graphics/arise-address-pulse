@@ -1,10 +1,6 @@
 {
   "rewrites": [
     {
-      "source": "/api/nextjs/(.*)",
-      "destination": "http://your-nextjs-backend-url/$1"
-    },
-    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

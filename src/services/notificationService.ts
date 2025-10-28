@@ -121,13 +121,11 @@ class NotificationService {
       return null;
     }
 
-    // Try WebSocket first (Next.js backend)
-    const wsPath = import.meta.env.VITE_NEXTJS_WS_URL || '/api/nextjs';
-    if (wsPath) {
+    // WebSocket disabled - fallback to polling only
+    // (No WebSocket server available)
+    const wsUrl = import.meta.env.VITE_NEXTJS_WS_URL;
+    if (wsUrl && false) { // Disabled - skip WebSocket connection
       try {
-        // Build absolute WebSocket URL from current location
-        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const wsUrl = `${protocol}//${window.location.host}${wsPath}`;
         const ws = new WebSocket(`${wsUrl}/notifications?token=${token}`);
 
         ws.onopen = () => {
