@@ -122,9 +122,12 @@ class NotificationService {
     }
 
     // Try WebSocket first (Next.js backend)
-    const wsUrl = import.meta.env.VITE_NEXTJS_WS_URL;
-    if (wsUrl) {
+    const wsPath = import.meta.env.VITE_NEXTJS_WS_URL || '/api/nextjs';
+    if (wsPath) {
       try {
+        // Build absolute WebSocket URL from current location
+        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const wsUrl = `${protocol}//${window.location.host}${wsPath}`;
         const ws = new WebSocket(`${wsUrl}/notifications?token=${token}`);
 
         ws.onopen = () => {
