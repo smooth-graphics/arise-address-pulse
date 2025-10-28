@@ -57,10 +57,21 @@ export default async function handler(req: Request) {
   // Prepare request to backend (do not forward Origin)
   const headers = filterHeaders(req.headers);
 
+  // Read request body for non-GET/HEAD/OPTIONS methods
+  let bodyContent: string | undefined;
+  if (!["GET", "HEAD", "OPTIONS"].includes(req.method)) {
+    try {
+      bodyContent = await req.text();
+    } catch (e) {
+      // Body already consumed or empty
+      bodyContent = undefined;
+    }
+  }
+
   const init: RequestInit = {
     method: req.method,
     headers,
-    body: ["GET", "HEAD"].includes(req.method) ? undefined : (req as any).body,
+    body: bodyContent,
   };
 
   let upstream: Response;
