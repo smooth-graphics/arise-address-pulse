@@ -82,6 +82,7 @@ export default async function handler(req: Request) {
   const resHeaders = new Headers(upstream.headers);
   const cors = buildCorsHeaders(origin, req);
   Object.entries(cors).forEach(([k, v]) => resHeaders.set(k, v));
+  resHeaders.set("x-proxy", "vercel-edge-java");
 
   return new Response(upstream.body, { status: upstream.status, headers: resHeaders });
 }
