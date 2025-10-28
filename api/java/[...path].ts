@@ -56,6 +56,10 @@ export default async function handler(req: Request) {
 
   // Prepare request to backend (do not forward Origin)
   const headers = filterHeaders(req.headers);
+  // Ensure default Accept header for consistent upstream behavior
+  if (!headers.has("accept")) {
+    headers.set("accept", "application/json, */*;q=0.8");
+  }
 
   // Read request body for non-GET/HEAD/OPTIONS methods
   let bodyContent: string | undefined;
@@ -94,6 +98,21 @@ export default async function handler(req: Request) {
   const cors = buildCorsHeaders(origin, req);
   Object.entries(cors).forEach(([k, v]) => resHeaders.set(k, v));
   resHeaders.set("x-proxy", "vercel-edge-java");
+  resHeaders.set("x-target", targetUrl.toString());
+  resHeaders.set("x-method", req.method);
+
+  if (!upstream.ok) {
+    // Surface upstream error text to help diagnose 4xx/5xx like 405
+    let text = "";
+    try {
+      text = await upstream.text();
+    } catch {}
+    // Preserve content-type if available, otherwise default to text/plain
+    if (!resHeaders.get("content-type")) {
+      resHeaders.set("content-type", "text/plain; charset=utf-8");
+    }
+    return new Response(text, { status: upstream.status, headers: resHeaders });
+  }
 
   return new Response(upstream.body, { status: upstream.status, headers: resHeaders });
 }
